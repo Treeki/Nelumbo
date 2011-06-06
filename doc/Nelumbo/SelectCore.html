@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Class: Nelumbo::SelectCore</title>
+
+	<link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+	<script src="../js/jquery.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/thickbox-compressed.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/quicksearch.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/darkfish.js" type="text/javascript"
+		charset="utf-8"></script>
+
+</head>
+<body class="class">
+
+	<div id="metadata">
+		<div id="home-metadata">
+			<div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+			</div>
+		</div>
+
+		<div id="file-metadata">
+			<div id="file-list-section" class="section">
+				<h3 class="section-header">In Files</h3>
+				<div class="section-body">
+					<ul>
+					
+						<li><a href="../lib/nelumbo/select_core_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/nelumbo/select_core.rb">lib/nelumbo/select_core.rb</a></li>
+					
+					</ul>
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="class-metadata">
+
+			<!-- Parent Class -->
+			
+			<div id="parent-class-section" class="section">
+				<h3 class="section-header">Parent</h3>
+				
+				<p class="link">Object</p>
+				
+			</div>
+			
+
+			<!-- Namespace Contents -->
+			
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#method-c-new">::new</a></li>
+					
+					<li><a href="#method-i-add_bot">#add_bot</a></li>
+					
+					<li><a href="#method-i-remove_bot">#remove_bot</a></li>
+					
+					<li><a href="#method-i-run">#run</a></li>
+					
+					<li><a href="#method-i-write_line">#write_line</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Included Modules -->
+			
+		</div>
+
+		<div id="project-metadata">
+			
+			
+			<div id="fileindex-section" class="section project-section">
+				<h3 class="section-header">Files</h3>
+				<ul>
+				
+					<li class="file"><a href="../Gemfile.html">Gemfile</a></li>
+				
+					<li class="file"><a href="../Rakefile.html">Rakefile</a></li>
+				
+				</ul>
+			</div>
+			
+
+			<div id="classindex-section" class="section project-section">
+				<h3 class="section-header">Class Index
+					<span class="search-toggle"><img src="../images/find.png"
+						height="16" width="16" alt="[+]"
+						title="show/hide quicksearch" /></span></h3>
+				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+				<fieldset>
+					<legend>Quicksearch</legend>
+					<input type="text" name="quicksearch" value=""
+						class="quicksearch-field" />
+				</fieldset>
+				</form>
+
+				<ul class="link-list">
+				
+					<li><a href="../Nelumbo.html">Nelumbo</a></li>
+				
+					<li><a href="../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
+				
+					<li><a href="../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
+				
+					<li><a href="../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
+				
+					<li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
+				
+					<li><a href="../Nelumbo/FurcEvents.html">Nelumbo::FurcEvents</a></li>
+				
+					<li><a href="../Nelumbo/FurcEvents/ClassMethods.html">Nelumbo::FurcEvents::ClassMethods</a></li>
+				
+					<li><a href="../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
+				
+					<li><a href="../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
+				
+					<li><a href="../Integer.html">Integer</a></li>
+				
+					<li><a href="../TestBot.html">TestBot</a></li>
+				
+				</ul>
+				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+	<div id="documentation">
+		<h1 class="class">Nelumbo::SelectCore</h1>
+
+		<div id="description">
+			<p>
+The <a href="SelectCore.html">Nelumbo::SelectCore</a> class can be used as
+a core for any number of bots, multiplexing them using the IO#select
+function.
+</p>
+<p>
+The running bots can be changed on-the-fly.
+</p>
+
+		</div>
+
+		<!-- Constants -->
+		
+		<div id="constants-list" class="section">
+			<h3 class="section-header">Constants</h3>
+			<dl>
+			
+				<dt><a name="TIMER_GRANULARITY">TIMER_GRANULARITY</a></dt>
+				
+				<dd class="description"></dd>
+				
+			
+			</dl>
+		</div>
+		
+
+		<!-- Attributes -->
+		
+		<div id="attribute-method-details" class="method-section section">
+			<h3 class="section-header">Attributes</h3>
+
+			
+			<div id="running-attribute-method" class="method-detail">
+				<a name="running"></a>
+				
+				<div class="method-heading attribute-method-heading">
+					<span class="method-name">running</span><span
+						class="attribute-access-type">[R]</span>
+				</div>
+
+				<div class="method-description">
+				
+				
+				
+				</div>
+			</div>
+			
+		</div>
+		
+
+		<!-- Methods -->
+		
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="new-method" class="method-detail ">
+				<a name="method-c-new"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">new</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="new-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/select_core.rb, line 10</span>
+10:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
+11:                         <span class="ruby-ivar">@bots</span> = []
+12:                         <span class="ruby-ivar">@bot_lookup_by_socket</span> = {}
+13:                         <span class="ruby-ivar">@bot_lookup_by_object</span> = {}
+14:                         <span class="ruby-ivar">@running</span> = <span class="ruby-keyword kw">false</span>
+15:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="add-bot-method" class="method-detail ">
+				<a name="method-i-add_bot"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">add_bot</span><span
+						class="method-args">(bot_class)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="add-bot-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/select_core.rb, line 19</span>
+19:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_bot</span>(<span class="ruby-identifier">bot_class</span>)
+20:                         <span class="ruby-identifier">bot</span> = {<span class="ruby-identifier">object</span><span class="ruby-operator">:</span> <span class="ruby-identifier">bot_class</span>}
+21:                         <span class="ruby-ivar">@bots</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">bot</span>
+22: 
+23:                         <span class="ruby-identifier">h_write_line</span> = <span class="ruby-identifier">proc</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span> <span class="ruby-identifier">write_line</span>(<span class="ruby-identifier">bot</span>, <span class="ruby-identifier">line</span>) }
+24:                         <span class="ruby-identifier">h_disconnect</span> = <span class="ruby-identifier">proc</span> { <span class="ruby-identifier">remove_bot</span>(<span class="ruby-identifier">bot</span>) }
+25:                         <span class="ruby-identifier">bot_class</span>.<span class="ruby-identifier">set_core_hooks</span>(<span class="ruby-identifier">h_write_line</span>, <span class="ruby-identifier">h_disconnect</span>)
+26: 
+27:                         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:read_buffer</span>] = <span class="ruby-value str">''</span>
+28:                         <span class="ruby-comment cmt"># TODO: make this configurable</span>
+29:                         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>] = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'lightbringer.furcadia.com'</span>, <span class="ruby-value">6500</span>)
+30: 
+31:                         <span class="ruby-ivar">@bot_lookup_by_socket</span>[<span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>]] = <span class="ruby-identifier">bot</span>
+32:                         <span class="ruby-ivar">@bot_lookup_by_object</span>[<span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>]] = <span class="ruby-identifier">bot</span>
+33:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="remove-bot-method" class="method-detail ">
+				<a name="method-i-remove_bot"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">remove_bot</span><span
+						class="method-args">(bot)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="remove-bot-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/select_core.rb, line 35</span>
+35:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_bot</span>(<span class="ruby-identifier">bot</span>)
+36:                         <span class="ruby-comment cmt"># TODO: figure out some other way to do this, calling dispatch_event</span>
+37:                         <span class="ruby-comment cmt"># from a Core is kinda weird</span>
+38:                         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:disconnect</span>
+39:                         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>].<span class="ruby-identifier">close</span>
+40: 
+41:                         <span class="ruby-ivar">@bots</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">bot</span>
+42:                         <span class="ruby-ivar">@bot_lookup_by_socket</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>]
+43:                         <span class="ruby-ivar">@bot_lookup_by_object</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>]
+44:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="run-method" class="method-detail ">
+				<a name="method-i-run"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">run</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="run-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/select_core.rb, line 50</span>
+50:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">run</span>
+51:                         <span class="ruby-comment cmt"># this is where all the fun happens</span>
+52:                         <span class="ruby-ivar">@running</span> = <span class="ruby-keyword kw">true</span>
+53:                         <span class="ruby-identifier">target_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-constant">TIMER_GRANULARITY</span>
+54: 
+55:                         <span class="ruby-keyword kw">while</span> <span class="ruby-ivar">@running</span>
+56:                                 <span class="ruby-identifier">current_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+57:                                 <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">current_time</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">target_time</span>
+58:                                         <span class="ruby-identifier">target_time</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">TIMER_GRANULARITY</span>
+59: 
+60:                                         <span class="ruby-ivar">@bots</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">b</span><span class="ruby-operator">|</span>
+61:                                                 <span class="ruby-comment cmt"># TODO: store the last tick in the Bot object</span>
+62:                                                 <span class="ruby-identifier">b</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">timer_tick</span>
+63:                                         <span class="ruby-keyword kw">end</span>
+64:                                 <span class="ruby-keyword kw">end</span>
+65: 
+66:                                 <span class="ruby-comment cmt"># do the actual processing</span>
+67:                                 <span class="ruby-identifier">read_sockets</span> = <span class="ruby-ivar">@bots</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>[<span class="ruby-value">:socket</span>] }
+68:                                 <span class="ruby-identifier">arrays</span> = <span class="ruby-constant">IO</span>.<span class="ruby-identifier">select</span>(<span class="ruby-identifier">read_sockets</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>, (<span class="ruby-identifier">target_time</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>).<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">abs</span>)
+69: 
+70:                                 <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">arrays</span>.<span class="ruby-identifier">nil?</span>
+71:                                 <span class="ruby-identifier">arrays</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">socket</span><span class="ruby-operator">|</span>
+72:                                         <span class="ruby-identifier">bot</span> = <span class="ruby-ivar">@bot_lookup_by_socket</span>[<span class="ruby-identifier">socket</span>]
+73: 
+74:                                         <span class="ruby-comment cmt"># this one had some stuff</span>
+75:                                         <span class="ruby-identifier">data</span> = <span class="ruby-identifier">bot</span>[<span class="ruby-value">:read_buffer</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">recvfrom</span>(<span class="ruby-value">512</span>)[<span class="ruby-value">0</span>]
+76:                                         <span class="ruby-identifier">packet</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+77: 
+78:                                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">data</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;\n&quot;</span>
+79:                                                 <span class="ruby-comment cmt"># we have a complete line, nothing to buffer</span>
+80:                                                 <span class="ruby-identifier">bot</span>[<span class="ruby-value">:read_buffer</span>] = <span class="ruby-value str">''</span>
+81:                                         <span class="ruby-keyword kw">else</span>
+82:                                                 <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+83:                                                         <span class="ruby-comment cmt"># put the last (incomplete) line into the buffer</span>
+84:                                                         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:read_buffer</span>] = <span class="ruby-identifier">packet</span>.<span class="ruby-identifier">pop</span>
+85:                                                 <span class="ruby-keyword kw">else</span>
+86:                                                         <span class="ruby-identifier">remove_bot</span> <span class="ruby-identifier">bot</span>
+87:                                                         <span class="ruby-keyword kw">next</span>
+88:                                                 <span class="ruby-keyword kw">end</span>
+89:                                         <span class="ruby-keyword kw">end</span>
+90: 
+91:                                         <span class="ruby-identifier">packet</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+92:                                                 <span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">line_received</span>(<span class="ruby-identifier">line</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">empty?</span>
+93:                                         <span class="ruby-keyword kw">end</span>
+94:                                 <span class="ruby-keyword kw">end</span>
+95:                         <span class="ruby-keyword kw">end</span>
+96:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="write-line-method" class="method-detail ">
+				<a name="method-i-write_line"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">write_line</span><span
+						class="method-args">(bot, line)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="write-line-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/select_core.rb, line 46</span>
+46:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">write_line</span>(<span class="ruby-identifier">bot</span>, <span class="ruby-identifier">line</span>)
+47:                         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>].<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;#{line}\n&quot;</span>
+48:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+
+	</div>
+
+
+	<div id="rdoc-debugging-section-dump" class="debugging-section">
+	
+		<p>Disabled; run with --debug to generate this.</p>
+	
+	</div>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+
+</body>
+</html>
+

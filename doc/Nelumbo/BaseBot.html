@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Class: Nelumbo::BaseBot</title>
+
+	<link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+	<script src="../js/jquery.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/thickbox-compressed.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/quicksearch.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/darkfish.js" type="text/javascript"
+		charset="utf-8"></script>
+
+</head>
+<body class="class">
+
+	<div id="metadata">
+		<div id="home-metadata">
+			<div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+			</div>
+		</div>
+
+		<div id="file-metadata">
+			<div id="file-list-section" class="section">
+				<h3 class="section-header">In Files</h3>
+				<div class="section-body">
+					<ul>
+					
+						<li><a href="../lib/nelumbo/base_bot_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/nelumbo/base_bot.rb">lib/nelumbo/base_bot.rb</a></li>
+					
+					</ul>
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="class-metadata">
+
+			<!-- Parent Class -->
+			
+			<div id="parent-class-section" class="section">
+				<h3 class="section-header">Parent</h3>
+				
+				<p class="link"><a href="EventHandler.html">Nelumbo::EventHandler</a></p>
+				
+			</div>
+			
+
+			<!-- Namespace Contents -->
+			
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#method-c-new">::new</a></li>
+					
+					<li><a href="#method-i-line_received">#line_received</a></li>
+					
+					<li><a href="#method-i-run">#run</a></li>
+					
+					<li><a href="#method-i-timer_tick">#timer_tick</a></li>
+					
+					<li><a href="#method-i-try_parse_login">#try_parse_login</a></li>
+					
+					<li><a href="#method-i-try_parse_speech">#try_parse_speech</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Included Modules -->
+			
+			<div id="includes-section" class="section">
+				<h3 class="section-header">Included Modules</h3>
+				<ul class="link-list">
+				
+				
+					<li><span class="include">FurcEvents</span></li>
+				
+				
+				
+					<li><span class="include">CoreHooks</span></li>
+				
+				
+				</ul>
+			</div>
+			
+		</div>
+
+		<div id="project-metadata">
+			
+			
+			<div id="fileindex-section" class="section project-section">
+				<h3 class="section-header">Files</h3>
+				<ul>
+				
+					<li class="file"><a href="../Gemfile.html">Gemfile</a></li>
+				
+					<li class="file"><a href="../Rakefile.html">Rakefile</a></li>
+				
+				</ul>
+			</div>
+			
+
+			<div id="classindex-section" class="section project-section">
+				<h3 class="section-header">Class Index
+					<span class="search-toggle"><img src="../images/find.png"
+						height="16" width="16" alt="[+]"
+						title="show/hide quicksearch" /></span></h3>
+				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+				<fieldset>
+					<legend>Quicksearch</legend>
+					<input type="text" name="quicksearch" value=""
+						class="quicksearch-field" />
+				</fieldset>
+				</form>
+
+				<ul class="link-list">
+				
+					<li><a href="../Nelumbo.html">Nelumbo</a></li>
+				
+					<li><a href="../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
+				
+					<li><a href="../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
+				
+					<li><a href="../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
+				
+					<li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
+				
+					<li><a href="../Nelumbo/FurcEvents.html">Nelumbo::FurcEvents</a></li>
+				
+					<li><a href="../Nelumbo/FurcEvents/ClassMethods.html">Nelumbo::FurcEvents::ClassMethods</a></li>
+				
+					<li><a href="../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
+				
+					<li><a href="../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
+				
+					<li><a href="../Integer.html">Integer</a></li>
+				
+					<li><a href="../TestBot.html">TestBot</a></li>
+				
+				</ul>
+				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+	<div id="documentation">
+		<h1 class="class">Nelumbo::BaseBot</h1>
+
+		<div id="description">
+			<p>
+The <a href="BaseBot.html">Nelumbo::BaseBot</a> class implements a simple
+bot that can communicate with Furcadia and handle events using <a
+href="EventHandler.html">Nelumbo::EventHandler</a>.
+</p>
+<p>
+Socket and timer handling is done using a Core, which can be passed to
+BaseBot#new. If none is specified, a new instance of <a
+href="SimpleCore.html">Nelumbo::SimpleCore</a> will be used.
+</p>
+<p>
+Usage of this class directly is not recommended. <a
+href="Bot.html">Nelumbo::Bot</a> implements plugins and various other
+features.
+</p>
+
+		</div>
+
+		<!-- Constants -->
+		
+
+		<!-- Attributes -->
+		
+		<div id="attribute-method-details" class="method-section section">
+			<h3 class="section-header">Attributes</h3>
+
+			
+			<div id="core-attribute-method" class="method-detail">
+				<a name="core"></a>
+				
+				<div class="method-heading attribute-method-heading">
+					<span class="method-name">core</span><span
+						class="attribute-access-type">[R]</span>
+				</div>
+
+				<div class="method-description">
+				
+				
+				
+				</div>
+			</div>
+			
+		</div>
+		
+
+		<!-- Methods -->
+		
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="new-method" class="method-detail ">
+				<a name="method-c-new"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">new</span><span
+						class="method-args">(core = nil)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="new-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 18</span>
+18:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">core</span> = <span class="ruby-keyword kw">nil</span>)
+19:                         <span class="ruby-ivar">@core</span> = (<span class="ruby-identifier">core</span> <span class="ruby-operator">||</span> <span class="ruby-constant">SimpleCore</span>.<span class="ruby-identifier">new</span>)
+20:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="line-received-method" class="method-detail ">
+				<a name="method-i-line_received"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">line_received</span><span
+						class="method-args">(line)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Hook called by the Core when a line is received from the server.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="line-received-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 38</span>
+38:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_received</span>(<span class="ruby-identifier">line</span>)
+39:                         <span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
+40: 
+41:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">try_parse_login</span>(<span class="ruby-identifier">line</span>)
+42:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
+43:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="run-method" class="method-detail ">
+				<a name="method-i-run"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">run</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Connect and run the bot. This method will block until the bot disconnects.
+Note: If you are not using <a
+href="SimpleCore.html">Nelumbo::SimpleCore</a> (the default when no core is
+specified), then this method may do nothing.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="run-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 25</span>
+25:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">run</span>
+26:                         <span class="ruby-ivar">@core</span>.<span class="ruby-identifier">run</span>(<span class="ruby-keyword kw">self</span>)
+27:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="timer-tick-method" class="method-detail ">
+				<a name="method-i-timer_tick"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">timer_tick</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Hook called by the Core at a specific interval. The time between ticks is
+not fixed.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="timer-tick-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 32</span>
+32:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">timer_tick</span>
+33:                         <span class="ruby-comment cmt"># TODO: handle this</span>
+34:                         <span class="ruby-identifier">puts</span> <span class="ruby-value str">'timer ticked'</span>
+35:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="private-instance-method-details" class="method-section section">
+			<h3 class="section-header">Private Instance Methods</h3>
+
+		
+			<div id="try-parse-login-method" class="method-detail ">
+				<a name="method-i-try_parse_login"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">try_parse_login</span><span
+						class="method-args">(line)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="try-parse-login-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 46</span>
+46:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try_parse_login</span>(<span class="ruby-identifier">line</span>)
+47:                         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">line</span>
+48:                         <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'Dragonroar'</span>
+49:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:connect</span>
+50:                         <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;'</span>
+51:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:login</span>
+52:                         <span class="ruby-keyword kw">else</span>
+53:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+54:                         <span class="ruby-keyword kw">end</span>
+55: 
+56:                         <span class="ruby-keyword kw">true</span>
+57:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="try-parse-speech-method" class="method-detail ">
+				<a name="method-i-try_parse_speech"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">try_parse_speech</span><span
+						class="method-args">(line)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="try-parse-speech-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 59</span>
+59:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
+60:                         <span class="ruby-keyword kw">if</span> <span class="ruby-regexp re">/^\(&lt;font color='whisper'&gt;\[ &lt;name shortname='(?&lt;shortname&gt;[^']+)' src='whisper-from'&gt;(?&lt;name&gt;[^&lt;]+)&lt;\/name&gt; whispers, &quot;(?&lt;message&gt;.+)&quot; to you. \]&lt;\/font&gt;$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">line</span>
+61:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:whisper</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">shortname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">shortname</span>, <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>
+62:                         <span class="ruby-keyword kw">else</span>
+63:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+64:                         <span class="ruby-keyword kw">end</span>
+65: 
+66:                         <span class="ruby-keyword kw">true</span>
+67:                 <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+
+	</div>
+
+
+	<div id="rdoc-debugging-section-dump" class="debugging-section">
+	
+		<p>Disabled; run with --debug to generate this.</p>
+	
+	</div>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+
+</body>
+</html>
+
