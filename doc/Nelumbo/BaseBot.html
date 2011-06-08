@@ -152,9 +152,11 @@
 				
 					<li><a href="../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
 				
-					<li><a href="../Integer.html">Integer</a></li>
-				
 					<li><a href="../TestBot.html">TestBot</a></li>
+				
+					<li><a href="../TestBot/Bot.html">TestBot::Bot</a></li>
+				
+					<li><a href="../Integer.html">Integer</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -181,7 +183,7 @@ href="SimpleCore.html">Nelumbo::SimpleCore</a> will be used.
 <p>
 Usage of this class directly is not recommended. <a
 href="Bot.html">Nelumbo::Bot</a> implements plugins and various other
-features.
+niceties that are useful for most bots.
 </p>
 
 		</div>
@@ -283,11 +285,14 @@ Hook called by the Core when a line is received from the server.
 <pre>
     <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 38</span>
 38:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_received</span>(<span class="ruby-identifier">line</span>)
-39:                         <span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
+39:                         <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:raw</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line</span>
 40: 
 41:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">try_parse_login</span>(<span class="ruby-identifier">line</span>)
-42:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
-43:                 <span class="ruby-keyword kw">end</span></pre>
+42: 
+43:                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'('</span>
+44:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
+45:                         <span class="ruby-keyword kw">end</span>
+46:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -401,19 +406,19 @@ not fixed.
 					<div class="method-source-code"
 						id="try-parse-login-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 46</span>
-46:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try_parse_login</span>(<span class="ruby-identifier">line</span>)
-47:                         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">line</span>
-48:                         <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'Dragonroar'</span>
-49:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:connect</span>
-50:                         <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;'</span>
-51:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:login</span>
-52:                         <span class="ruby-keyword kw">else</span>
-53:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
-54:                         <span class="ruby-keyword kw">end</span>
-55: 
-56:                         <span class="ruby-keyword kw">true</span>
-57:                 <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 49</span>
+49:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try_parse_login</span>(<span class="ruby-identifier">line</span>)
+50:                         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">line</span>
+51:                         <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'Dragonroar'</span>
+52:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:connect</span>
+53:                         <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;'</span>
+54:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:login</span>
+55:                         <span class="ruby-keyword kw">else</span>
+56:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+57:                         <span class="ruby-keyword kw">end</span>
+58: 
+59:                         <span class="ruby-keyword kw">true</span>
+60:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -444,16 +449,18 @@ not fixed.
 					<div class="method-source-code"
 						id="try-parse-speech-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 59</span>
-59:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
-60:                         <span class="ruby-keyword kw">if</span> <span class="ruby-regexp re">/^\(&lt;font color='whisper'&gt;\[ &lt;name shortname='(?&lt;shortname&gt;[^']+)' src='whisper-from'&gt;(?&lt;name&gt;[^&lt;]+)&lt;\/name&gt; whispers, &quot;(?&lt;message&gt;.+)&quot; to you. \]&lt;\/font&gt;$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">line</span>
-61:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:whisper</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">shortname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">shortname</span>, <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>
-62:                         <span class="ruby-keyword kw">else</span>
-63:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
-64:                         <span class="ruby-keyword kw">end</span>
-65: 
-66:                         <span class="ruby-keyword kw">true</span>
-67:                 <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/base_bot.rb, line 62</span>
+62:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
+63:                         <span class="ruby-keyword kw">if</span> <span class="ruby-regexp re">/^\(&lt;name shortname='(?&lt;shortname&gt;[^']+)'&gt;(?&lt;name&gt;[^&lt;]+)&lt;\/name&gt;: (?&lt;message&gt;.+)$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">line</span>
+64:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:speech</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">shortname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">shortname</span>, <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>
+65:                         <span class="ruby-keyword kw">elsif</span> <span class="ruby-regexp re">/^\(&lt;font color='whisper'&gt;\[ &lt;name shortname='(?&lt;shortname&gt;[^']+)' src='whisper-from'&gt;(?&lt;name&gt;[^&lt;]+)&lt;\/name&gt; whispers, &quot;(?&lt;message&gt;.+)&quot; to you. \]&lt;\/font&gt;$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">line</span>
+66:                                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:whisper</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">shortname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">shortname</span>, <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>
+67:                         <span class="ruby-keyword kw">else</span>
+68:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+69:                         <span class="ruby-keyword kw">end</span>
+70: 
+71:                         <span class="ruby-keyword kw">true</span>
+72:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>

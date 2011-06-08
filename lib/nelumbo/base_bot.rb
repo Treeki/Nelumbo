@@ -7,7 +7,7 @@ module Nelumbo
 	# will be used.
 	#
 	# Usage of this class directly is not recommended. Nelumbo::Bot implements
-	# plugins and various other features.
+	# plugins and various other niceties that are useful for most bots.
 	#
 	class BaseBot < EventHandler
 		include FurcEvents
@@ -36,10 +36,13 @@ module Nelumbo
 
 		# Hook called by the Core when a line is received from the server.
 		def line_received(line)
-			puts line
+			dispatch_event :raw, line: line
 
 			return if try_parse_login(line)
-			return if try_parse_speech(line)
+
+			if line[0] == '('
+				return if try_parse_speech(line)
+			end
 		end
 
 		private
@@ -57,7 +60,9 @@ module Nelumbo
 		end
 
 		def try_parse_speech(line)
-			if /^\(<font color='whisper'>\[ <name shortname='(?<shortname>[^']+)' src='whisper-from'>(?<name>[^<]+)<\/name> whispers, "(?<message>.+)" to you. \]<\/font>$/ =~ line
+			if /^\(<name shortname='(?<shortname>[^']+)'>(?<name>[^<]+)<\/name>: (?<message>.+)$/ =~ line
+				dispatch_event :speech, name: name, shortname: shortname, text: message
+			elsif /^\(<font color='whisper'>\[ <name shortname='(?<shortname>[^']+)' src='whisper-from'>(?<name>[^<]+)<\/name> whispers, "(?<message>.+)" to you. \]<\/font>$/ =~ line
 				dispatch_event :whisper, name: name, shortname: shortname, text: message
 			else
 				return false

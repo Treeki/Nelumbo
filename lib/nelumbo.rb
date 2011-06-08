@@ -1,16 +1,11 @@
-require 'active_support/all'
+require 'nelumbo/base'
 
-require 'socket'
+# TODO: figure out how well this works...
+nelumbo_caller = caller.reject{|c| c =~ /^<internal/}.first
+nelumbo_caller_file_name = nelumbo_caller.split(':').first
+nelumbo_caller_file_name.gsub! /\.rb$/, ''
 
-require 'nelumbo/event_handler'
-require 'nelumbo/furc_events'
-require 'nelumbo/core_hooks'
-require 'nelumbo/select_core'
-require 'nelumbo/simple_core'
-require 'nelumbo/base_bot'
-require 'nelumbo/bot'
-require 'nelumbo/helpers'
-
-module Nelumbo
-	VERSION = '0.0.1'
+at_exit do
+	bot_module = nelumbo_caller_file_name.camelize.constantize
+	bot_module::Bot.new.run
 end

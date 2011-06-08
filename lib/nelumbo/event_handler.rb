@@ -32,7 +32,8 @@ module Nelumbo
 		class << self
 			attr_reader :events
 
-			# Initialise the events array for the class.
+			# Initialise the events array for the class. Don't call this
+			# method unless you know what you're doing!
 			def setup_events
 				@events = {}
 

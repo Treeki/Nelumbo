@@ -147,9 +147,11 @@
 				
 					<li><a href="../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
 				
-					<li><a href="../Integer.html">Integer</a></li>
-				
 					<li><a href="../TestBot.html">TestBot</a></li>
+				
+					<li><a href="../TestBot/Bot.html">TestBot::Bot</a></li>
+				
+					<li><a href="../Integer.html">Integer</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -263,10 +265,10 @@ can have its own @events hash and avoid conflicts.
 					<div class="method-source-code"
 						id="inherited-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 45</span>
-45:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">cls</span>)
-46:                                 <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">setup_events</span>
-47:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 46</span>
+46:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">cls</span>)
+47:                                 <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">setup_events</span>
+48:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -300,12 +302,12 @@ on_event_name.
 					<div class="method-source-code"
 						id="method-missing-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 50</span>
-50:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">name</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
-51:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">super</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-regexp re">/^on_(?&lt;event_name&gt;.+)$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>
-52: 
-53:                                 <span class="ruby-identifier">create_event_responder</span> <span class="ruby-identifier">event_name</span>.<span class="ruby-identifier">to_sym</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>, &amp;<span class="ruby-identifier">block</span>
-54:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 51</span>
+51:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">name</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
+52:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">super</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-regexp re">/^on_(?&lt;event_name&gt;.+)$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>
+53: 
+54:                                 <span class="ruby-identifier">create_event_responder</span> <span class="ruby-identifier">event_name</span>.<span class="ruby-identifier">to_sym</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>, &amp;<span class="ruby-identifier">block</span>
+55:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -330,7 +332,8 @@ on_event_name.
 				<div class="method-description">
 					
 					<p>
-Initialise the events array for the class.
+Initialise the events array for the class. Don&#8217;t call this method
+unless you know what you&#8217;re doing!
 </p>
 					
 
@@ -338,13 +341,13 @@ Initialise the events array for the class.
 					<div class="method-source-code"
 						id="setup-events-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 36</span>
-36:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup_events</span>
-37:                                 <span class="ruby-ivar">@events</span> = {}
-38: 
-39:                                 <span class="ruby-comment cmt"># copy the events that exist in every base class</span>
-40:                                 <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">superclass</span>)
-41:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 37</span>
+37:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup_events</span>
+38:                                 <span class="ruby-ivar">@events</span> = {}
+39: 
+40:                                 <span class="ruby-comment cmt"># copy the events that exist in every base class</span>
+41:                                 <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">superclass</span>)
+42:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -383,12 +386,12 @@ Add a new event responder.
 					<div class="method-source-code"
 						id="create-event-responder-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 89</span>
-89:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_event_responder</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">conditions</span>, &amp;<span class="ruby-identifier">block</span>)
-90:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;unknown event #{name}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">name</span>
-91:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;block not provided for #{name}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block_given?</span>
-92:                                 <span class="ruby-ivar">@events</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:responders</span>] <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">conditions</span>, <span class="ruby-value">:block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>}
-93:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 90</span>
+90:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_event_responder</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">conditions</span>, &amp;<span class="ruby-identifier">block</span>)
+91:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;unknown event #{name}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">name</span>
+92:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;block not provided for #{name}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block_given?</span>
+93:                                 <span class="ruby-ivar">@events</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:responders</span>] <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">conditions</span>, <span class="ruby-value">:block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>}
+94:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -423,13 +426,13 @@ responder&#8217;s condition hash and the event data hash.
 					<div class="method-source-code"
 						id="define-event-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 72</span>
-72:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">block</span>)
-73:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;event #{name} is already defined&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">name</span>)
-74: 
-75:                                 <span class="ruby-identifier">block</span> = <span class="ruby-identifier">proc</span>{<span class="ruby-keyword kw">true</span>} <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block_given?</span>
-76:                                 <span class="ruby-ivar">@events</span>[<span class="ruby-identifier">name</span>] = {<span class="ruby-value">:check_block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>, <span class="ruby-value">:responders</span> =<span class="ruby-operator">&gt;</span> []}
-77:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 73</span>
+73:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">block</span>)
+74:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;event #{name} is already defined&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">name</span>)
+75: 
+76:                                 <span class="ruby-identifier">block</span> = <span class="ruby-identifier">proc</span>{<span class="ruby-keyword kw">true</span>} <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block_given?</span>
+77:                                 <span class="ruby-ivar">@events</span>[<span class="ruby-identifier">name</span>] = {<span class="ruby-value">:check_block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>, <span class="ruby-value">:responders</span> =<span class="ruby-operator">&gt;</span> []}
+78:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -464,12 +467,12 @@ event data hash using the === operator.
 					<div class="method-source-code"
 						id="define-event-with-args-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 82</span>
-82:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_event_with_args</span>(<span class="ruby-identifier">name</span>)
-83:                                 <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conditions</span>,<span class="ruby-identifier">event_data</span><span class="ruby-operator">|</span>
-84:                                         <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">all?</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">event_data</span>[<span class="ruby-identifier">k</span>]}
-85:                                 <span class="ruby-keyword kw">end</span>
-86:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 83</span>
+83:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_event_with_args</span>(<span class="ruby-identifier">name</span>)
+84:                                 <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conditions</span>,<span class="ruby-identifier">event_data</span><span class="ruby-operator">|</span>
+85:                                         <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">all?</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">event_data</span>[<span class="ruby-identifier">k</span>]}
+86:                                 <span class="ruby-keyword kw">end</span>
+87:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -503,15 +506,15 @@ class. Event responders themselves are not copied.
 					<div class="method-source-code"
 						id="steal-event-definitions-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 59</span>
-59:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">cls</span>)
-60:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
-61: 
-62:                                 <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">cls</span>.<span class="ruby-identifier">superclass</span>)
-63: 
-64:                                 <span class="ruby-identifier">to_add</span> = <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">keys</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">keys</span>
-65:                                 <span class="ruby-identifier">to_add</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">cls</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:check_block</span>]) }
-66:                         <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 60</span>
+60:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">cls</span>)
+61:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
+62: 
+63:                                 <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">cls</span>.<span class="ruby-identifier">superclass</span>)
+64: 
+65:                                 <span class="ruby-identifier">to_add</span> = <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">keys</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">keys</span>
+66:                                 <span class="ruby-identifier">to_add</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">cls</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:check_block</span>]) }
+67:                         <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -550,10 +553,10 @@ Return the data for the current event.
 					<div class="method-source-code"
 						id="data-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 100</span>
-100:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">data</span>
-101:                         <span class="ruby-ivar">@current_event_data</span>
-102:                 <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 101</span>
+101:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">data</span>
+102:                         <span class="ruby-ivar">@current_event_data</span>
+103:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -587,29 +590,29 @@ passed containing information about the event.
 					<div class="method-source-code"
 						id="dispatch-event-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 106</span>
-106:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">event_cls</span> = <span class="ruby-keyword kw">nil</span>)
-107:                         <span class="ruby-comment cmt"># this bit is inspired by Sinatra</span>
-108:                         <span class="ruby-identifier">event_cls</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>
-109:                         <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span>, <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">superclass</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
-110: 
-111:                         <span class="ruby-identifier">event</span> = <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>]
-112:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">nil?</span>
-113:                         <span class="ruby-comment cmt"># TODO: must come up with a better method for this which doesn't choke</span>
-114:                         <span class="ruby-comment cmt"># on subclassing</span>
-115:                         <span class="ruby-comment cmt">#raise &quot;cannot dispatch unknown event #{name}&quot; if event.nil?</span>
-116:                         <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">event</span>[<span class="ruby-value">:check_block</span>]
-117: 
-118:                         <span class="ruby-ivar">@current_event_data</span> = <span class="ruby-identifier">event_data</span>
-119: 
-120:                         <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_all_responders</span>) <span class="ruby-keyword kw">do</span>
-121:                                 <span class="ruby-identifier">event</span>[<span class="ruby-value">:responders</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">responder</span><span class="ruby-operator">|</span>
-122:                                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">instance_exec</span>(<span class="ruby-identifier">responder</span>[<span class="ruby-value">:conditions</span>], <span class="ruby-identifier">event_data</span>, &amp;<span class="ruby-identifier">checker</span>)
-123:                                                 <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_this_responder</span>) { <span class="ruby-identifier">instance_exec</span>(&amp;<span class="ruby-identifier">responder</span>[<span class="ruby-value">:block</span>]) }
-124:                                         <span class="ruby-keyword kw">end</span>
-125:                                 <span class="ruby-keyword kw">end</span>
-126:                         <span class="ruby-keyword kw">end</span>
-127:                 <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 107</span>
+107:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">event_cls</span> = <span class="ruby-keyword kw">nil</span>)
+108:                         <span class="ruby-comment cmt"># this bit is inspired by Sinatra</span>
+109:                         <span class="ruby-identifier">event_cls</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>
+110:                         <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span>, <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">superclass</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
+111: 
+112:                         <span class="ruby-identifier">event</span> = <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>]
+113:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">nil?</span>
+114:                         <span class="ruby-comment cmt"># TODO: must come up with a better method for this which doesn't choke</span>
+115:                         <span class="ruby-comment cmt"># on subclassing</span>
+116:                         <span class="ruby-comment cmt">#raise &quot;cannot dispatch unknown event #{name}&quot; if event.nil?</span>
+117:                         <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">event</span>[<span class="ruby-value">:check_block</span>]
+118: 
+119:                         <span class="ruby-ivar">@current_event_data</span> = <span class="ruby-identifier">event_data</span>
+120: 
+121:                         <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_all_responders</span>) <span class="ruby-keyword kw">do</span>
+122:                                 <span class="ruby-identifier">event</span>[<span class="ruby-value">:responders</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">responder</span><span class="ruby-operator">|</span>
+123:                                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">instance_exec</span>(<span class="ruby-identifier">responder</span>[<span class="ruby-value">:conditions</span>], <span class="ruby-identifier">event_data</span>, &amp;<span class="ruby-identifier">checker</span>)
+124:                                                 <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_this_responder</span>) { <span class="ruby-identifier">instance_exec</span>(&amp;<span class="ruby-identifier">responder</span>[<span class="ruby-value">:block</span>]) }
+125:                                         <span class="ruby-keyword kw">end</span>
+126:                                 <span class="ruby-keyword kw">end</span>
+127:                         <span class="ruby-keyword kw">end</span>
+128:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -642,10 +645,10 @@ Halt processing for the current responder.
 					<div class="method-source-code"
 						id="halt-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 131</span>
-131:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">halt</span>
-132:                         <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_this_responder</span>
-133:                 <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 132</span>
+132:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">halt</span>
+133:                         <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_this_responder</span>
+134:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -678,10 +681,10 @@ Halt processing for the current event.
 					<div class="method-source-code"
 						id="halt-all-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 136</span>
-136:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">halt_all</span>
-137:                         <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_all_responders</span>
-138:                 <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 137</span>
+137:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">halt_all</span>
+138:                         <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_all_responders</span>
+139:                 <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>

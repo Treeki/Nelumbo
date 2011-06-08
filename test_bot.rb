@@ -3,20 +3,24 @@
 $LOAD_PATH.unshift File.join(File.dirname($0), 'lib')
 require 'nelumbo'
 
-class TestBot < Nelumbo::Bot
-	on_connect do
-		write_line "connect #{ARGV.join(' ')}"
-		write_line 'desc Just testing.'
-		write_line 'color t::)5,&(@-&$%#'
-	end
+module TestBot; end
+
+class TestBot::Bot < Nelumbo::Bot
+	set color_code: 't::)5,&(@-&$%#'
+	set description: 'Just testing.'
+
+	on_raw { puts data[:line] }
+
+	on_connect { puts "Connected!" }
+	on_login { puts "Logged in!" }
 
 	on_whisper shortname: 'treeki', text: /^raw / do
 		write_line data[:text].slice(4..-1)
 	end
 end
 
-b = TestBot.new
-b.run
+TestBot::Bot.set username: ARGV.first, password: ARGV.last
+
 
 =begin
 class TestBot < Nelumbo::Bot
