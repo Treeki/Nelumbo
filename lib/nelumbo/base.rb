@@ -14,7 +14,6 @@ require 'nelumbo/select_core'
 require 'nelumbo/simple_core'
 require 'nelumbo/base_bot'
 require 'nelumbo/bot'
-require 'nelumbo/helpers'
 
 module Nelumbo
 	VERSION = '0.0.1'
