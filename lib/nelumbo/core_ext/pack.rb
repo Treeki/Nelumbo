@@ -14,8 +14,8 @@ class String
 				# Colour code
 				cc_format = self[offset]
 				if cc_format == 't'
-					output << slice(offset, 13)
-					offset += 13
+					output << slice(offset, 14)
+					offset += 14
 				else
 					raise "unsupported colour code type: #{cc_format}"
 				end
@@ -51,18 +51,18 @@ end
 class Array
 	# Packs a Furcadia protocol string. TODO: document this.
 	def furc_pack(format)
-		output = ''
+		output = ''.force_encoding(Encoding::BINARY)
 
 		self.zip(format.chars) do |element, piece|
 			case piece
 			when 'x'
-				# Skip
-				next
+				# Pass this bit through directly
+				output << element
 
 			when '!'
 				# Colour code
 				if element.start_with? 't'
-					cc = element.slice(0,13).rjust(13,'#')
+					cc = element.slice(0,14).ljust(14,'#')
 					output << cc
 				else
 					raise "unsupported colour code type: #{element[0]}"

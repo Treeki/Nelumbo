@@ -36,7 +36,7 @@ class Numeric
 	# Encodes a number into a base 220 string of the specified length.
 	def encode_b220(length)
 		value = self
-		output = ' '*length
+		output = (' '*length).force_encoding(Encoding::BINARY)
 		length.times do |index|
 			output.setbyte(index, (value % 220) + 35)
 			value = (value / 220).floor
