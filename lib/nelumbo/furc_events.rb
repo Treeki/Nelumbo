@@ -8,6 +8,7 @@ module Nelumbo
 		module ClassMethods
 			def setup_furc_events
 				# Connection Housekeeping
+				define_event :init_bot
 				define_event :connect
 				define_event :login
 				define_event :disconnect

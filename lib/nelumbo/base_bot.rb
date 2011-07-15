@@ -13,16 +13,19 @@ module Nelumbo
 		include FurcEvents
 		include CoreHooks
 
-		attr_reader :core
+		attr_reader :core, :state
 
 		def initialize(core = nil)
 			@core = (core || SimpleCore.new)
+			@state = :inactive
 		end
 
 		# Connect and run the bot. This method will block until the bot disconnects.
 		# Note: If you are not using Nelumbo::SimpleCore (the default when no
 		# core is specified), then this method may do nothing.
 		def run
+			dispatch_event :init_bot
+			@state = :login
 			@core.run(self)
 		end
 
@@ -38,7 +41,7 @@ module Nelumbo
 		def line_received(line)
 			dispatch_event :raw, line: line
 
-			return if try_parse_login(line)
+			return if @state == :login and try_parse_login(line)
 
 			if line[0] == '('
 				return if try_parse_speech(line)
@@ -51,6 +54,7 @@ module Nelumbo
 			when 'Dragonroar'
 				dispatch_event :connect
 			when '&&&&&&&&&&&&&'
+				@state = :active
 				dispatch_event :login
 			else
 				return false
