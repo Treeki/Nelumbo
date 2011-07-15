@@ -2,6 +2,11 @@ require 'active_support/all'
 
 require 'socket'
 
+require 'nelumbo/core_ext/output'
+require 'nelumbo/core_ext/shortname'
+require 'nelumbo/core_ext/numbers'
+require 'nelumbo/core_ext/pack'
+
 require 'nelumbo/event_handler'
 require 'nelumbo/furc_events'
 require 'nelumbo/core_hooks'
