@@ -33,7 +33,7 @@ describe Nelumbo::EventHandler do
 			on_test_event  { throw :t_e }
 			on_test_event2 { throw :t_e2 }
 
-			on_test_args { |args| throw args[:verifier] }
+			on_test_args { throw data[:verifier] }
 
 			on_test_cond(:num => 123, :str => 'foo', :regex => /bar/) { throw :success_all }
 
