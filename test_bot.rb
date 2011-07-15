@@ -6,6 +6,8 @@ require 'nelumbo'
 module TestBot; end
 
 class TestBot::Bot < Nelumbo::Bot
+	include Nelumbo::PlayerTracking
+
 	set color_code: 't::)5,&(@-&$%#'
 	set description: 'Just testing.'
 
