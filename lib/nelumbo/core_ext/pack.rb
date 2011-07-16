@@ -10,12 +10,13 @@ class String
 				# Skip
 				offset += 1
 
-			when '!'
-				# Colour code
+			when 'k', 'K'
+				# Colour code: lowercase = colours only, uppercase = full code
 				cc_format = self[offset]
+				cc_size = (piece == 'K') ? 13 : 10
 				if cc_format == 't'
-					output << slice(offset, 14)
-					offset += 14
+					output << slice(offset, cc_size + 1)
+					offset += cc_size + 1
 				else
 					raise "unsupported colour code type: #{cc_format}"
 				end
@@ -59,10 +60,11 @@ class Array
 				# Pass this bit through directly
 				output << element
 
-			when '!'
-				# Colour code
+			when 'k', 'K'
+				# Colour code: lowercase = colours only, uppercase = full code
+				cc_size = (piece == 'K') ? 13 : 10
 				if element.start_with? 't'
-					cc = element.slice(0,14).ljust(14,'#')
+					cc = element.slice(0,cc_size+1).ljust(cc_size+1,'#')
 					output << cc
 				else
 					raise "unsupported colour code type: #{element[0]}"

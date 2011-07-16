@@ -26,7 +26,8 @@ describe "Nelumbo's String#furc_unpack" do
 	end
 
 	it "should unpack colour codes" do
-		'tABCDEFGHIJKLM'.furc_unpack('!').should == 'tABCDEFGHIJKLM'
+		'tABCDEFGHIJ'.furc_unpack('k').should == 'tABCDEFGHIJ'
+		'tABCDEFGHIJKLM'.furc_unpack('K').should == 'tABCDEFGHIJKLM'
 	end
 
 	it "should handle the skip character correctly" do
@@ -74,15 +75,18 @@ describe "Nelumbo's Array#furc_pack" do
 
 	context "when packing colour codes" do
 		it "should not mangle them" do
-			['tABCDEFGHIJKLM'].furc_pack('!').should == 'tABCDEFGHIJKLM'
+			['tABCDEFGHIJ'].furc_pack('k').should == 'tABCDEFGHIJ'
+			['tABCDEFGHIJKLM'].furc_pack('K').should == 'tABCDEFGHIJKLM'
 		end
 
 		it "should trim colour codes which are too long" do
-			['tABCDEFGHIJKLMNOPQRSTUV'].furc_pack('!').should == 'tABCDEFGHIJKLM'
+			['tABCDEFGHIJKLMNOPQRSTUV'].furc_pack('k').should == 'tABCDEFGHIJ'
+			['tABCDEFGHIJKLMNOPQRSTUV'].furc_pack('K').should == 'tABCDEFGHIJKLM'
 		end
 
 		it "should pad colour codes which are too short" do
-			['tABCDEF'].furc_pack('!').should == 'tABCDEF#######'
+			['tABCDEF'].furc_pack('k').should == 'tABCDEF####'
+			['tABCDEF'].furc_pack('K').should == 'tABCDEF#######'
 		end
 	end
 
