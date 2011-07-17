@@ -15,6 +15,7 @@ require 'nelumbo/simple_core'
 require 'nelumbo/base_bot'
 require 'nelumbo/bot'
 require 'nelumbo/player_tracking'
+require 'nelumbo/map_and_script_tracking'
 
 module Nelumbo
 	VERSION = '0.0.1'

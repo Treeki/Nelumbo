@@ -7,11 +7,12 @@ module TestBot; end
 
 class TestBot::Bot < Nelumbo::Bot
 	include Nelumbo::PlayerTracking
+	include Nelumbo::MapAndScriptTracking
 
 	set color_code: 't::)5,&(@-&$%#'
 	set description: 'Just testing.'
 
-	on_raw line: /^[^~=3678]/ do
+	on_raw line: /^[^~=>0123678]/ do
 		puts data[:line].inspect
 	end
 
@@ -22,8 +23,8 @@ class TestBot::Bot < Nelumbo::Bot
 		write_line data[:text].slice(4..-1)
 	end
 
-	on_player_entered { puts "Entered:"; p data }
-	on_player_left { puts "Left:"; p data }
+	#on_player_entered { puts "Entered:"; p data }
+	#on_player_left { puts "Left:"; p data }
 end
 
 TestBot::Bot.set username: ARGV.first, password: ARGV.last
