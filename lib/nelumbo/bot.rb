@@ -99,7 +99,7 @@ module Nelumbo
 
 		on_enter_dream do
 			# TODO: more handling for this
-			write_line 'vascodagama'
+			write_line 'vascodagama' unless setting(:do_not_send_vascodagama)
 		end
 	end
 end
