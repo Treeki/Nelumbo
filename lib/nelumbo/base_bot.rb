@@ -44,6 +44,8 @@ module Nelumbo
 			dispatch_event :raw, line: line
 
 			if line[0] == '('
+				dispatch_event :message, line: line.from(1)
+
 				try_parse_speech(line)
 				return
 			end
