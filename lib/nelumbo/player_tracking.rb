@@ -11,7 +11,10 @@ module Nelumbo
 
 			attr_reader :uid, :shortname
 			attr_accessor :name, :color_code
-			attr_accessor :x, :y, :shape, :visible, :afk_time
+			attr_accessor :x, :y, :visible, :afk_start_time
+
+			# transient info that may or may not be up-to-date
+			attr_accessor :entry_code, :shape, :held_object, :cookies
 		end
 
 		module ClassMethods
@@ -26,23 +29,27 @@ module Nelumbo
 				end
 
 				on_raw line: /^</ do
-					uid,x,y,shape,name,colors,flags,afk = data[:line].furc_unpack('xDBBBS!AD')
+					uid,x,y,shape,name,colors,flags,afk = data[:line].furc_unpack('xDBBBSkAD')
 
-					player = Player.new(uid, name)
+					player = find_player_by_uid(uid)
+					if player.nil?
+						player = Player.new(uid, name)
+
+						@player_list << player
+						@player_lookup_by_uid[uid] = player
+						@player_lookup_by_shortname[player.shortname] = player
+					end
+
 					player.x = x
 					player.y = y
 					player.shape = shape
 					player.color_code = colors
-					player.visible = ((flags & 2) != 0)
-					player.afk_time = afk
-
-					@player_list << player
-					@player_lookup_by_uid[uid] = player
-					@player_lookup_by_shortname[player.shortname] = player
+					player.visible = (shape > 0)
+					player.afk_start_time = (afk > 0) ? nil : (Time.now - afk)
 
 					dispatch_event :player_entered,
 						player: player, uid: uid, shortname: player.shortname,
-						is_new: ((flags & 4) != 0)
+						is_new: ((flags & 4) != 0), flags: flags
 				end
 
 				on_raw line: /^(\/|A)/ do
@@ -55,7 +62,7 @@ module Nelumbo
 				end
 
 				on_raw line: /^B/ do
-					uid,shape,colors = data[:line].furc_unpack('xDB!')
+					uid,shape,colors = data[:line].furc_unpack('xDBk')
 
 					player = request_player_by_uid(uid)
 					player.shape = shape
@@ -125,9 +132,15 @@ module Nelumbo
 		end
 
 
+		# Returns a Nelumbo::Player matching the specified user ID.
+		# If it isn't known to the bot, it requests the server to resend it
+		# and halts the current event.
 		def request_player_by_uid(uid)
 			player = find_player_by_uid(uid)
-			write_line "rev #{uid.encode_b220}"
+			return player unless player.nil?
+
+			write_line "rev #{uid.encode_b220(4)}"
+			halt
 		end
 	end
 end
