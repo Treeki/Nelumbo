@@ -116,6 +116,8 @@ module Nelumbo
 			#raise "cannot dispatch unknown event #{name}" if event.nil?
 			checker = event[:check_block]
 
+			# save the previous data so that events can be stacked
+			saved_event_data = @current_event_data
 			@current_event_data = event_data
 
 			catch(:halt_all_responders) do
@@ -125,6 +127,8 @@ module Nelumbo
 					end
 				end
 			end
+
+			@current_event_data = saved_event_data
 		end
 
 
