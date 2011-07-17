@@ -34,17 +34,22 @@ module Nelumbo
 		# The time between ticks is not fixed.
 		def timer_tick
 			# TODO: handle this
-			puts 'timer ticked'
+			#puts 'timer ticked'
 		end
 
 		# Hook called by the Core when a line is received from the server.
 		def line_received(line)
-			dispatch_event :raw, line: line
-
 			return if @state == :login and try_parse_login(line)
 
+			dispatch_event :raw, line: line
+
 			if line[0] == '('
-				return if try_parse_speech(line)
+				try_parse_speech(line)
+				return
+			end
+
+			if line[0,2] == ']c'
+				dispatch_event :enter_dream
 			end
 		end
 
@@ -53,7 +58,7 @@ module Nelumbo
 			case line
 			when 'Dragonroar'
 				dispatch_event :connect
-			when '&&&&&&&&&&&&&'
+			when /^&/
 				@state = :active
 				dispatch_event :login
 			else
