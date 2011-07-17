@@ -96,5 +96,10 @@ module Nelumbo
 			write_line "color #{setting :color_code}" if setting?(:color_code)
 			write_line "desc #{setting :description}" if setting?(:description)
 		end
+
+		on_enter_dream do
+			# TODO: more handling for this
+			write_line 'vascodagama'
+		end
 	end
 end

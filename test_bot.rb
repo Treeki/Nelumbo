@@ -11,7 +11,9 @@ class TestBot::Bot < Nelumbo::Bot
 	set color_code: 't::)5,&(@-&$%#'
 	set description: 'Just testing.'
 
-	on_raw { puts data[:line] }
+	on_raw line: /^[^~=3678]/ do
+		puts data[:line].inspect
+	end
 
 	on_connect { puts "Connected!" }
 	on_login { puts "Logged in!" }
@@ -19,9 +21,13 @@ class TestBot::Bot < Nelumbo::Bot
 	on_whisper shortname: 'treeki', text: /^raw / do
 		write_line data[:text].slice(4..-1)
 	end
+
+	on_player_entered { puts "Entered:"; p data }
+	on_player_left { puts "Left:"; p data }
 end
 
 TestBot::Bot.set username: ARGV.first, password: ARGV.last
+TestBot::Bot.new.run
 
 
 =begin
