@@ -2,6 +2,7 @@ require 'set'
 
 module Nelumbo
 	module Script
+		# This class parses a DragonSpeak file from an IO object into tokens.
 		class Tokenizer
 			NEW_LINE_CHARS = Set.new(["\r", "\n"])
 			VARIABLE_END_CHARS = Set.new([' ', '(', ')', '[', ']', '.', ',', "\r", "\n"])
@@ -17,8 +18,11 @@ module Nelumbo
 				@next_var_can_expand = false
 				true
 			end
+			private :reset_state
 
 			def each_token
+				return to_enum(:each_token) unless block_given?
+
 				@input.each_char do |char|
 					# DIAF, carriage returns
 					next if char == "\r"
@@ -93,6 +97,7 @@ module Nelumbo
 								@current_state = :variable_part
 							else
 								@current_state = :variable_check_expansion
+								reset_state and redo
 							end
 						else
 							@variable[:name] += char
@@ -119,9 +124,12 @@ module Nelumbo
 						end
 
 					when :variable_part
+						@current_state = :variable_check_expansion
+
 						if char == 'x' or char == 'y'
 							@variable[:part] = char
-							@current_state = :variable_check_expansion
+						else
+							reset_state and redo
 						end
 
 					when :variable_check_expansion
@@ -131,7 +139,7 @@ module Nelumbo
 						end
 
 						@current_state = :nothing
-						yield @variable
+						yield @variable unless @variable[:name].empty?
 
 						# if it wasn't ), then pass the character on in case
 						# it might need to be parsed
@@ -146,13 +154,15 @@ module Nelumbo
 						end
 
 					when :string_variable
-						unless STRING_VARIABLE_APPROVED_CHARS.include?(char)
+						if STRING_VARIABLE_APPROVED_CHARS.include?(char)
+							@variable[:name] += char
+						else
 							if char == '['
 								@current_state = :string_variable_array_def
 								@array_string = ''
 							else
 								@current_state = :nothing
-								yield @variable
+								yield @variable unless @variable[:name].empty?
 							end
 						end
 
@@ -162,7 +172,7 @@ module Nelumbo
 						else
 							@variable[:array_count] = @array_string.to_i
 							@current_state = :nothing
-							yield :variable
+							yield @variable unless @variable[:name].empty?
 
 							reset_state and redo if char != ']'
 						end
@@ -172,7 +182,8 @@ module Nelumbo
 							@pointer_string += char
 						else
 							@current_state = :nothing
-							yield({type: :variable_pointer, number: @pointer_string.to_i})
+							v_ptr = {type: :variable_pointer, number: @pointer_string.to_i}
+							yield v_ptr unless @pointer_string.empty?
 
 							reset_state and redo
 						end
