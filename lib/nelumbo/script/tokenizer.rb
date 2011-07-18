@@ -1,5 +1,3 @@
-require 'set'
-
 module Nelumbo
 	module Script
 		# This class parses a DragonSpeak file from an IO object into tokens.

@@ -1,10 +1,7 @@
 $: << Dir.pwd + '/lib'
 
 require 'benchmark'
-require 'nelumbo/script/tokenizer'
-require 'nelumbo/script/line_parser'
-require 'nelumbo/script/language'
-require 'nelumbo/script/dragon_speak'
+require 'nelumbo'
 
 t = Nelumbo::Script::Tokenizer.new(File.open('/home/me/Furcadia/Dreams/Spring2011_Final/final version with clearing.ds', 'r'))
 tokens = t.each_token.to_a

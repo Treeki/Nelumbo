@@ -1,5 +1,3 @@
-require 'set'
-
 module Nelumbo
 	module Script
 		module LanguageDSL
