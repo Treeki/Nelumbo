@@ -2,7 +2,7 @@ $: << Dir.pwd + '/lib'
 
 require 'benchmark'
 require 'nelumbo/script/tokenizer'
-require 'nelumbo/script/parser'
+require 'nelumbo/script/line_parser'
 require 'nelumbo/script/language'
 require 'nelumbo/script/dragon_speak'
 
