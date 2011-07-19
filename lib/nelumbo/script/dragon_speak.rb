@@ -1,6 +1,14 @@
 module Nelumbo
 	module Script
 		class DragonSpeak < Language
+			CAUSE = 0
+			CONDITION = 1
+			AREA = 3
+			FILTER = 4
+			EFFECT = 5
+
+			EFFECTS = Set.new([AREA, FILTER, EFFECT])
+
 			# CAUSES
 			define_category(0) do
 				# Dream Initialisation

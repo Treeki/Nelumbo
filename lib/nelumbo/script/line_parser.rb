@@ -4,7 +4,7 @@ module Nelumbo
 		# Nelumbo::Script::Tokenizer) into a list of DS lines and comments.
 		#
 		# Since DragonSpeak's syntax is dependent on which lines are used and
-		# the parameters they have, this class requires an instance of
+		# the parameters they have, this class requires a subclass of
 		# Nelumbo::Script::Language.
 		#
 		class LineParser

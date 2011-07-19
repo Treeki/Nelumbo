@@ -13,6 +13,7 @@ module Nelumbo
 			end
 
 			def reset_state
+				@comment_possible = false
 				@next_var_can_expand = false
 				true
 			end
@@ -35,6 +36,8 @@ module Nelumbo
 						if NEW_LINE_CHARS.include?(char)
 							yield({type: :version, string: @version})
 							@current_state = :nothing
+							@comment_possible = true
+							next
 						else
 							@version += char
 						end
@@ -45,8 +48,10 @@ module Nelumbo
 							@current_state = :number
 							@number_string = char 
 						when '*'
-							@current_state = :comment
-							@comment = ''
+							if @comment_possible
+								@current_state = :comment
+								@comment = ''
+							end
 						when '('
 							@next_var_can_expand = true
 							next
@@ -187,7 +192,12 @@ module Nelumbo
 						end
 					end
 
+					# a bit of a hack...
+					p = @comment_possible
 					reset_state
+					if NEW_LINE_CHARS.include?(char) or (p and [' ',"\t"].include?(char))
+						@comment_possible = true
+					end
 				end
 
 			rescue EOFError
