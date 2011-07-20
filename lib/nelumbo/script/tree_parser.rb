@@ -1,7 +1,8 @@
 module Nelumbo
 	module Script
 		# This class turns a list of script lines (as produced by
-		# Nelumbo::Script::LineParser) into a set of blocks.
+		# Nelumbo::Script::LineParser) into a set of blocks and performs other
+		# semantic analysis, including creating a variable table.
 		#
 		# Each block consists of one or more triggers and a set of effects.
 		# Each trigger consists of a cause and zero or more conditions.
@@ -43,10 +44,75 @@ module Nelumbo
 				@current_block = nil
 				@current_trigger = nil
 				@number = 0
+				@variables_by_name = {}
+				@svariables_by_name = {}
+				@next_variable = 0
+				@next_svariable = 0
 			end
 
 			def assign_line_number
 				@number += 1
+			end
+
+			def add_variable(v)
+				return if variable?(v)
+
+				@variables_by_name[v[:name]] = @next_variable
+				count = v[:array_count] || 1
+				@next_variable += count * 2
+			end
+
+			def add_string_variable(v)
+				return if string_variable?(v)
+
+				@svariables_by_name[v[:name]] = @next_svariable
+				count = v[:array_count] || 1
+				@next_svariable += count
+			end
+
+			def variable?(v)
+				if Hash === v
+					@variables_by_name.key?(v[:name])
+				else
+					@variables_by_name.key?(v)
+				end
+			end
+
+			def string_variable?(v)
+				if Hash === v
+					@svariables_by_name.key?(v[:name])
+				else
+					@svariables_by_name.key?(v)
+				end
+			end
+
+			def index_of_variable(v)
+				if Hash === v
+					@variables_by_name[v[:name]] + ((v[:part] == :y) ? 1 : 0)
+				else
+					@variables_by_name[v]
+				end
+			end
+
+			def index_of_string_variable(v)
+				if Hash === v
+					@svariables_by_name[v[:name]]
+				else
+					@svariables_by_name[v]
+				end
+			end
+
+			def process_line(line)
+				line[:number] = assign_line_number
+
+				line.values.each do |v|
+					case v[:type]
+					when :variable
+						add_variable(v)
+					when :string_variable
+						add_string_variable(v)
+					end
+				end
 			end
 
 			def new_block?
