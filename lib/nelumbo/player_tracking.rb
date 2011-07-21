@@ -26,6 +26,7 @@ module Nelumbo
 					@player_list = []
 					@player_lookup_by_uid = {}
 					@player_lookup_by_shortname = {}
+					@player_lookup_by_position = {}
 				end
 
 				on_raw line: /^</ do
@@ -40,8 +41,7 @@ module Nelumbo
 						@player_lookup_by_shortname[player.shortname] = player
 					end
 
-					player.x = x
-					player.y = y
+					move_player player, x, y
 					player.shape = shape
 					player.color_code = colors
 					player.visible = (shape > 0)
@@ -56,8 +56,7 @@ module Nelumbo
 					uid,x,y,shape = data[:line].furc_unpack('xDBBB')
 
 					player = request_player_by_uid(uid)
-					player.x = x
-					player.y = y
+					move_player player, x, y
 					player.shape = shape
 				end
 
@@ -73,8 +72,7 @@ module Nelumbo
 					uid,x,y = data[:line].furc_unpack('xDBB')
 
 					player = request_player_by_uid(uid)
-					player.x = x
-					player.y = y
+					move_player player, x, y
 					player.visible = false
 				end
 
@@ -82,8 +80,7 @@ module Nelumbo
 					uid,x,y,shape,entry_code,held_object,cookies = data[:line].furc_unpack('xDBBBDDB')
 
 					player = request_player_by_uid(uid)
-					player.x = x
-					player.y = y
+					move_player player, x, y
 					player.shape = shape
 					player.entry_code = entry_code
 					player.held_object = held_object
@@ -99,6 +96,7 @@ module Nelumbo
 					@player_list.delete player
 					@player_lookup_by_uid.delete uid
 					@player_lookup_by_shortname.delete player.shortname
+					@player_lookup_by_position.delete (player.x << 12) | player.y
 
 					dispatch_event :player_left, player: player, uid: uid, shortname: player.shortname
 				end
@@ -119,6 +117,22 @@ module Nelumbo
 		# shortnames/longnames into account
 		def find_player_by_name(name)
 			@player_lookup_by_shortname[name.to_shortname]
+		end
+
+		# Returns a Nelumbo::Player at the specified position
+		def find_player_at_position(x, y)
+			@player_lookup_by_position[(x << 12) | y]
+		end
+
+		# Moves a player to a position. This *MUST* be used or
+		# find_player_at_position will not work correctly!
+		def move_player(player, x, y)
+			return if player.x == x and player.y == y
+
+			@player_lookup_by_position.delete (x << 12) | y
+			player.x = x
+			player.y = y
+			@player_lookup_by_position[(x << 12) | y] = player
 		end
 
 		# If a block is given, each player known to the bot is passed to it.

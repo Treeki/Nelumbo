@@ -3,9 +3,14 @@ require 'active_support/all'
 require 'socket'
 require 'set'
 
+# C extension
+require 'nelumbo/nelumbo'
+
+# Submodules
 require 'nelumbo/core_ext'
 require 'nelumbo/script'
 
+# Main stuff (TODO: Move into a Bot module)
 require 'nelumbo/event_handler'
 require 'nelumbo/furc_events'
 require 'nelumbo/core_hooks'

@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+require 'rake'
 $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
@@ -7,15 +8,19 @@ Gem::Specification.new do |s|
   s.authors     = ["Treeki"]
   s.email       = ["treeki@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Framework for creating bots and handling data files for the online MMOSG Furcadia.}
+  s.description = <<END
+Framework for creating bots and handling data files for the online MMOSG Furcadia. Todo: Add more here.
+END
 
   #s.rubyforge_project = "nelumbo"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = Dir['**/*']
+  s.test_files         = Dir['spec/**/*']
+  s.executables   = []
   s.require_paths = ["lib"]
+
+  s.extensions << "ext/nelumbo/extconf.rb"
 
   s.required_ruby_version = '>=1.9'
 
