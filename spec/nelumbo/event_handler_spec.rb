@@ -1,35 +1,8 @@
 require 'nelumbo'
 
 describe Nelumbo::EventHandler do
-	it 'should define events' do
-		cls = Class.new(Nelumbo::EventHandler) do
-			define_event :test_event
-			define_event :test_event2
-		end
-	end
-
-	it 'should define events with arguments' do
-		cls = Class.new(Nelumbo::EventHandler) do
-			define_event_with_args :test_event_with_args
-		end
-	end
-
-	it 'should fail when defining an event that exists' do
-		expect do
-			cls = Class.new(Nelumbo::EventHandler) do
-				define_event :test_event
-				define_event :test_event
-			end
-		end.to raise_error /is already defined/
-	end
-
 	describe 'when dispatching events' do
 		cls = Class.new(Nelumbo::EventHandler) do
-			define_event :test_event
-			define_event :test_event2
-			define_event_with_args :test_args
-			define_event_with_args :test_cond
-
 			on_test_event  { throw :t_e }
 			on_test_event2 { throw :t_e2 }
 
@@ -45,10 +18,6 @@ describe Nelumbo::EventHandler do
 			attr_accessor :halt_check
 			attr_accessor :halt_all_check
 			attr_accessor :halt_ft_check
-
-			define_event :halt_event
-			define_event :halt_all_event
-			define_event :halt_ft_event
 
 			on_halt_event do
 				@halt_check = :success
@@ -124,15 +93,10 @@ describe Nelumbo::EventHandler do
 
 	describe 'when using subclasses' do
 		cls_a = Class.new(Nelumbo::EventHandler) do
-			define_event :base_event_a
-			define_event :event_a
-
 			on_base_event_a { throw :base_a_worked }
 		end
 
 		cls_b = Class.new(cls_a) do
-			define_event :event_b
-
 			on_event_a { throw :a_worked }
 			on_event_b { throw :b_worked }
 		end

@@ -1,717 +1,492 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 
-	<title>Class: Nelumbo::EventHandler</title>
+  <title>Class: Nelumbo::EventHandler</title>
 
-	<link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
 
-	<script src="../js/jquery.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="../js/thickbox-compressed.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="../js/quicksearch.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="../js/darkfish.js" type="text/javascript"
-		charset="utf-8"></script>
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
-<body class="class">
+<body id="top" class="class">
 
-	<div id="metadata">
-		<div id="home-metadata">
-			<div id="home-section" class="section">
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
         <h3 class="section-header">
           <a href="../index.html">Home</a>
           <a href="../index.html#classes">Classes</a>
           <a href="../index.html#methods">Methods</a>
         </h3>
-			</div>
-		</div>
+      </div>
+    </div>
 
-		<div id="file-metadata">
-			<div id="file-list-section" class="section">
-				<h3 class="section-header">In Files</h3>
-				<div class="section-body">
-					<ul>
-					
-						<li><a href="../lib/nelumbo/event_handler_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-							class="thickbox" title="lib/nelumbo/event_handler.rb">lib/nelumbo/event_handler.rb</a></li>
-					
-					</ul>
-				</div>
-			</div>
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../lib/nelumbo/event_handler_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/nelumbo/event_handler.rb">lib/nelumbo/event_handler.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
 
-			
-		</div>
+      
+    </div>
 
-		<div id="class-metadata">
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../Object.html">Object</a></p>
+        
+      </div>
+      
 
-			<!-- Parent Class -->
-			
-			<div id="parent-class-section" class="section">
-				<h3 class="section-header">Parent</h3>
-				
-				<p class="link">Object</p>
-				
-			</div>
-			
+      
 
-			<!-- Namespace Contents -->
-			
+      
 
-			<!-- Method Quickref -->
-			
-			<div id="method-list-section" class="section">
-				<h3 class="section-header">Methods</h3>
-				<ul class="link-list">
-					
-					<li><a href="#method-c-create_event_responder">::create_event_responder</a></li>
-					
-					<li><a href="#method-c-define_event">::define_event</a></li>
-					
-					<li><a href="#method-c-define_event_with_args">::define_event_with_args</a></li>
-					
-					<li><a href="#method-c-inherited">::inherited</a></li>
-					
-					<li><a href="#method-c-method_missing">::method_missing</a></li>
-					
-					<li><a href="#method-c-setup_events">::setup_events</a></li>
-					
-					<li><a href="#method-c-steal_event_definitions">::steal_event_definitions</a></li>
-					
-					<li><a href="#method-i-data">#data</a></li>
-					
-					<li><a href="#method-i-dispatch_event">#dispatch_event</a></li>
-					
-					<li><a href="#method-i-halt">#halt</a></li>
-					
-					<li><a href="#method-i-halt_all">#halt_all</a></li>
-					
-				</ul>
-			</div>
-			
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-i-_check_event_condition">#_check_event_condition</a></li>
+          
+          <li><a href="#method-i-_exec_event_list">#_exec_event_list</a></li>
+          
+          <li><a href="#method-i-data">#data</a></li>
+          
+          <li><a href="#method-i-dispatch_event">#dispatch_event</a></li>
+          
+          <li><a href="#method-i-halt">#halt</a></li>
+          
+          <li><a href="#method-i-halt_all">#halt_all</a></li>
+          
+        </ul>
+      </div>
+      
 
-			<!-- Included Modules -->
-			
-		</div>
+      
+    </div>
 
-		<div id="project-metadata">
-			
-			
-			<div id="fileindex-section" class="section project-section">
-				<h3 class="section-header">Files</h3>
-				<ul>
-				
-					<li class="file"><a href="../Gemfile.html">Gemfile</a></li>
-				
-					<li class="file"><a href="../Rakefile.html">Rakefile</a></li>
-				
-				</ul>
-			</div>
-			
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../Gemfile.html">Gemfile</a></li>
+        
+          <li class="file"><a href="../Rakefile.html">Rakefile</a></li>
+        
+          <li class="file"><a href="../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
 
-			<div id="classindex-section" class="section project-section">
-				<h3 class="section-header">Class Index
-					<span class="search-toggle"><img src="../images/find.png"
-						height="16" width="16" alt="[+]"
-						title="show/hide quicksearch" /></span></h3>
-				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
-				<fieldset>
-					<legend>Quicksearch</legend>
-					<input type="text" name="quicksearch" value=""
-						class="quicksearch-field" />
-				</fieldset>
-				</form>
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
 
-				<ul class="link-list">
-				
-					<li><a href="../Nelumbo.html">Nelumbo</a></li>
-				
-					<li><a href="../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
-				
-					<li><a href="../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
-				
-					<li><a href="../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
-				
-					<li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
-				
-					<li><a href="../Nelumbo/FurcEvents.html">Nelumbo::FurcEvents</a></li>
-				
-					<li><a href="../Nelumbo/FurcEvents/ClassMethods.html">Nelumbo::FurcEvents::ClassMethods</a></li>
-				
-					<li><a href="../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
-				
-					<li><a href="../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
-				
-					<li><a href="../TestBot.html">TestBot</a></li>
-				
-					<li><a href="../TestBot/Bot.html">TestBot::Bot</a></li>
-				
-					<li><a href="../Integer.html">Integer</a></li>
-				
-				</ul>
-				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
-			</div>
+        <ul class="link-list">
+        
+          <li><a href="../Nelumbo.html">Nelumbo</a></li>
+        
+          <li><a href="../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
+        
+          <li><a href="../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
+        
+          <li><a href="../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
+        
+          <li><a href="../Nelumbo/EventDSL.html">Nelumbo::EventDSL</a></li>
+        
+          <li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
+        
+          <li><a href="../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../Nelumbo/Script.html">Nelumbo::Script</a></li>
+        
+          <li><a href="../Nelumbo/Script/DragonSpeak.html">Nelumbo::Script::DragonSpeak</a></li>
+        
+          <li><a href="../Nelumbo/Script/Language.html">Nelumbo::Script::Language</a></li>
+        
+          <li><a href="../Nelumbo/Script/LanguageDSL.html">Nelumbo::Script::LanguageDSL</a></li>
+        
+          <li><a href="../Nelumbo/Script/LanguageDSL/CategoryProxy.html">Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
+        
+          <li><a href="../Nelumbo/Script/LanguageDSL/LineProxy.html">Nelumbo::Script::LanguageDSL::LineProxy</a></li>
+        
+          <li><a href="../Nelumbo/Script/LineParser.html">Nelumbo::Script::LineParser</a></li>
+        
+          <li><a href="../Nelumbo/Script/Tokenizer.html">Nelumbo::Script::Tokenizer</a></li>
+        
+          <li><a href="../Nelumbo/Script/TreeParser.html">Nelumbo::Script::TreeParser</a></li>
+        
+          <li><a href="../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
+        
+          <li><a href="../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
+        
+          <li><a href="../Nelumbo/World.html">Nelumbo::World</a></li>
+        
+          <li><a href="../Nelumbo/World/Context.html">Nelumbo::World::Context</a></li>
+        
+          <li><a href="../Nelumbo/World/Player.html">Nelumbo::World::Player</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking.html">Nelumbo::WorldTracking</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking/AdvancedImplementation.html">Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking/AdvancedImplementation/ClassMethods.html">Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking/ClassMethods.html">Nelumbo::WorldTracking::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking/SimpleImplementation.html">Nelumbo::WorldTracking::SimpleImplementation</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking/SimpleImplementation/ClassMethods.html">Nelumbo::WorldTracking::SimpleImplementation::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/WorldTracking/SimpleImplementation/Player.html">Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
+        
+          <li><a href="../Array.html">Array</a></li>
+        
+          <li><a href="../Integer.html">Integer</a></li>
+        
+          <li><a href="../Numeric.html">Numeric</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../String.html">String</a></li>
+        
+          <li><a href="../TestBot.html">TestBot</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
 
-			
-		</div>
-	</div>
+      
+    </div>
+  </div>
 
-	<div id="documentation">
-		<h1 class="class">Nelumbo::EventHandler</h1>
+  <div id="documentation">
+    <h1 class="class">Nelumbo::EventHandler</h1>
 
-		<div id="description">
-			<p>
-The <a href="EventHandler.html">Nelumbo::EventHandler</a> class provides a
-system for handling events using a simple Sinatra-style DSL.
-</p>
-<p>
-A subclass of <a href="EventHandler.html">EventHandler</a> can define
-various events (with optional conditions).
-</p>
-<pre>
-  class SomeBot &lt; Nelumbo::EventHandler
-    define_event :connect
-    define_event_with_args :message
-    define_event(:random) { rand(3) == 1 } # this is not a bad idea. really!
+    <div id="description" class="description">
+      
+<p>The <a href="EventHandler.html">Nelumbo::EventHandler</a> class provides a
+system for handling events using a simple Sinatra-style DSL.</p>
+
+<p><a href="EventHandler.html">EventHandler</a> allows subclasses (and modules
+that extend <a href="EventDSL.html">EventDSL</a>) to add event responders
+using class methods, like this:</p>
+
+<pre>class BaconBot &lt; SomeBot
+  on_connect { puts &quot;We connected!&quot; }
+  on_message { puts &quot;A message was received!&quot; }
+  on_message(text: /chunky bacon/i) { puts &quot;Someone seems hungry...&quot; }
+  on_message(user: 'Treeki') do |data|
+    puts &quot;Treeki said #{data[:text]}!&quot;
+    halt_all if data[:text] =~ /do nothing else/i
   end
-</pre>
-<p>
-This class can in turn be subclassed by a user, who can add event
-responders using class methods like this:
-</p>
+end</pre>
+
+<p>Events can be raised like this:</p>
+
+<pre>bb = BaconBot.new
+bb.dispatch_event :connect
+bb.dispatch_event :message, user: 'Treeki', text: 'Chunky bacon!!'
+bb.dispatch_event :message, :user =&gt; 'Treeki', :text =&gt; 'alternate syntax is fun'</pre>
+
+<p>Dispatching an event will send it to everything listed in
+<tt>singleton_class.ancestors</tt>. The list is processed in reverse order,
+so that base classes handle events first. There is one exception - the bot
+object’s class will ALWAYS be processed last. (Modules mixed in using
+Mixology appear in the ancestors list before the top class for some
+reason.)</p>
+
+    </div><!-- description -->
+
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="_check_event_condition-method" class="method-detail ">
+          <a name="method-i-_check_event_condition"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">_check_event_condition</span><span
+              class="method-args">(conditions, event_data)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>@private</p>
+            
+
+            
+            <div class="method-source-code" id="_check_event_condition-source">
 <pre>
-  class BaconBot &lt; SomeBot
-    on_connect { puts &quot;We connected!&quot; }
-    on_message { puts &quot;A message was received!&quot; }
-    on_message(text: /chunky bacon/i) { puts &quot;Someone seems hungry...&quot; }
-    on_message(user: 'Treeki') do |data|
-      puts &quot;Treeki said #{data[:text]}!&quot;
-      halt_all if data[:text] =~ /do nothing else/i
-    end
-    on_random { puts &quot;This might or might not happen!&quot; }
-  end
-</pre>
-<p>
-Events can be called like this:
-</p>
+<span class="ruby-comment"># File lib/nelumbo/event_handler.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">_check_event_condition</span>(<span class="ruby-identifier">conditions</span>, <span class="ruby-identifier">event_data</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">event_data</span>.<span class="ruby-identifier">nil?</span>
+
+        <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">all?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">event_data</span>[<span class="ruby-identifier">k</span>] }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- _check_event_condition-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- _check_event_condition-method -->
+
+      
+        <div id="_exec_event_list-method" class="method-detail ">
+          <a name="method-i-_exec_event_list"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">_exec_event_list</span><span
+              class="method-args">(event_list)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>@private</p>
+            
+
+            
+            <div class="method-source-code" id="_exec_event_list-source">
 <pre>
-  bb = BaconBot.new
-  bb.dispatch_event :connect
-  bb.dispatch_event :message, user: 'Treeki', text: 'Chunky bacon!!'
-  bb.dispatch_event :message, :user =&gt; 'Treeki', :text =&gt; 'alternate syntax is fun'</pre>
+<span class="ruby-comment"># File lib/nelumbo/event_handler.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">_exec_event_list</span>(<span class="ruby-identifier">event_list</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">event_list</span>.<span class="ruby-identifier">nil?</span>
 
-		</div>
+        <span class="ruby-identifier">event_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">responder</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">_check_event_condition</span>(<span class="ruby-identifier">responder</span>[<span class="ruby-value">:conditions</span>], <span class="ruby-ivar">@current_event_data</span>)
+                        <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_this_responder</span>) { <span class="ruby-identifier">instance_exec</span>(&amp;<span class="ruby-identifier">responder</span>[<span class="ruby-value">:block</span>]) }
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- _exec_event_list-source -->
+            
+          </div>
 
-		<!-- Constants -->
-		
+          
 
-		<!-- Attributes -->
-		
-		<div id="attribute-method-details" class="method-section section">
-			<h3 class="section-header">Attributes</h3>
+          
+        </div><!-- _exec_event_list-method -->
 
-			
-			<div id="events-attribute-method" class="method-detail">
-				<a name="events"></a>
-				
-				<div class="method-heading attribute-method-heading">
-					<span class="method-name">events</span><span
-						class="attribute-access-type">[R]</span>
-				</div>
+      
+        <div id="data-method" class="method-detail ">
+          <a name="method-i-data"></a>
 
-				<div class="method-description">
-				
-				
-				
-				</div>
-			</div>
-			
-		</div>
-		
+          
+          <div class="method-heading">
+            <span class="method-name">data</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
 
-		<!-- Methods -->
-		
-		<div id="public-class-method-details" class="method-section section">
-			<h3 class="section-header">Public Class Methods</h3>
+          <div class="method-description">
+            
+            <p>Return the data for the current event.</p>
+            
 
-		
-			<div id="inherited-method" class="method-detail ">
-				<a name="method-c-inherited"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">inherited</span><span
-						class="method-args">(cls)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Hook that calls <a
-href="EventHandler.html#method-c-setup_events">setup_events</a> on every
-subclass of <a href="EventHandler.html">EventHandler</a>, so that each one
-can have its own @events hash and avoid conflicts.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="inherited-source">
+            
+            <div class="method-source-code" id="data-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 46</span>
-46:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">cls</span>)
-47:                                 <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">setup_events</span>
-48:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
+<span class="ruby-comment"># File lib/nelumbo/event_handler.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">data</span>
+        <span class="ruby-ivar">@current_event_data</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- data-source -->
+            
+          </div>
 
-				
+          
 
-				
-			</div>
+          
+        </div><!-- data-method -->
 
-		
-			<div id="method-missing-method" class="method-detail ">
-				<a name="method-c-method_missing"></a>
+      
+        <div id="dispatch_event-method" class="method-detail ">
+          <a name="method-i-dispatch_event"></a>
 
-				<div class="method-heading">
-				
-					<span class="method-name">method_missing</span><span
-						class="method-args">(name, *args, &block)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
+          
+          <div class="method-heading">
+            <span class="method-name">dispatch_event</span><span
+              class="method-args">(name, event_data = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
 
-				<div class="method-description">
-					
-					<p>
-Hook that allows a subclass to define an event responder using
-on_event_name.
-</p>
-					
+          <div class="method-description">
+            
+            <p>Call the responders associated with an event. An optional data hash can be
+passed containing information about the event.</p>
+            
 
-					
-					<div class="method-source-code"
-						id="method-missing-source">
+            
+            <div class="method-source-code" id="dispatch_event-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 51</span>
-51:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">name</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
-52:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">super</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-regexp re">/^on_(?&lt;event_name&gt;.+)$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>
-53: 
-54:                                 <span class="ruby-identifier">create_event_responder</span> <span class="ruby-identifier">event_name</span>.<span class="ruby-identifier">to_sym</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>, &amp;<span class="ruby-identifier">block</span>
-55:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
+<span class="ruby-comment"># File lib/nelumbo/event_handler.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span> = <span class="ruby-keyword">nil</span>)
+        <span class="ruby-comment"># save the previous data so that events can be stacked</span>
+        <span class="ruby-identifier">saved_event_data</span> = <span class="ruby-ivar">@current_event_data</span>
+        <span class="ruby-ivar">@current_event_data</span> = <span class="ruby-identifier">event_data</span>
 
-				
+        <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_all_responders</span>) <span class="ruby-keyword">do</span>
+                <span class="ruby-comment"># this will take care of all plugins (mixed-in modules)</span>
+                <span class="ruby-comment"># AND subclasses. yay!</span>
+                <span class="ruby-identifier">singleton_class</span>.<span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">reverse_each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mod</span><span class="ruby-operator">|</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">mod</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
+                                <span class="ruby-identifier">_exec_event_list</span>(<span class="ruby-identifier">mod</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>])
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
 
-				
-			</div>
+                <span class="ruby-comment"># however, Mixology's got one little quirk: a mixed-in module</span>
+                <span class="ruby-comment"># (in this case, a plugin) appears *above* the class in the</span>
+                <span class="ruby-comment"># tree, so we ignore it in the loop above and process it here</span>
+                <span class="ruby-identifier">_exec_event_list</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>])
+        <span class="ruby-keyword">end</span>
 
-		
-			<div id="setup-events-method" class="method-detail ">
-				<a name="method-c-setup_events"></a>
+        <span class="ruby-ivar">@current_event_data</span> = <span class="ruby-identifier">saved_event_data</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- dispatch_event-source -->
+            
+          </div>
 
-				<div class="method-heading">
-				
-					<span class="method-name">setup_events</span><span
-						class="method-args">()</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
+          
 
-				<div class="method-description">
-					
-					<p>
-Initialise the events array for the class. Don&#8217;t call this method
-unless you know what you&#8217;re doing!
-</p>
-					
+          
+        </div><!-- dispatch_event-method -->
 
-					
-					<div class="method-source-code"
-						id="setup-events-source">
+      
+        <div id="halt-method" class="method-detail ">
+          <a name="method-i-halt"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">halt</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Halt processing for the current responder.</p>
+            
+
+            
+            <div class="method-source-code" id="halt-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 37</span>
-37:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup_events</span>
-38:                                 <span class="ruby-ivar">@events</span> = {}
-39: 
-40:                                 <span class="ruby-comment cmt"># copy the events that exist in every base class</span>
-41:                                 <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">superclass</span>)
-42:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
+<span class="ruby-comment"># File lib/nelumbo/event_handler.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">halt</span>
+        <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_this_responder</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- halt-source -->
+            
+          </div>
 
-				
+          
 
-				
-			</div>
+          
+        </div><!-- halt-method -->
 
-		
-		</div>
-	
-		<div id="private-class-method-details" class="method-section section">
-			<h3 class="section-header">Private Class Methods</h3>
+      
+        <div id="halt_all-method" class="method-detail ">
+          <a name="method-i-halt_all"></a>
 
-		
-			<div id="create-event-responder-method" class="method-detail ">
-				<a name="method-c-create_event_responder"></a>
+          
+          <div class="method-heading">
+            <span class="method-name">halt_all</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
 
-				<div class="method-heading">
-				
-					<span class="method-name">create_event_responder</span><span
-						class="method-args">(name, conditions, &block)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
+          <div class="method-description">
+            
+            <p>Halt processing for the current event.</p>
+            
 
-				<div class="method-description">
-					
-					<p>
-Add a new event responder.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="create-event-responder-source">
+            
+            <div class="method-source-code" id="halt_all-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 90</span>
-90:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_event_responder</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">conditions</span>, &amp;<span class="ruby-identifier">block</span>)
-91:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;unknown event #{name}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">name</span>
-92:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;block not provided for #{name}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block_given?</span>
-93:                                 <span class="ruby-ivar">@events</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:responders</span>] <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">conditions</span>, <span class="ruby-value">:block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>}
-94:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
+<span class="ruby-comment"># File lib/nelumbo/event_handler.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">halt_all</span>
+        <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_all_responders</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- halt_all-source -->
+            
+          </div>
 
-				
+          
 
-				
-			</div>
+          
+        </div><!-- halt_all-method -->
 
-		
-			<div id="define-event-method" class="method-detail ">
-				<a name="method-c-define_event"></a>
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
 
-				<div class="method-heading">
-				
-					<span class="method-name">define_event</span><span
-						class="method-args">(name, &block)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
+  </div><!-- documentation -->
 
-				<div class="method-description">
-					
-					<p>
-Define a new event type. If a block is given, then it is used to determine
-whether a responder should be called or not. It is passed the
-responder&#8217;s condition hash and the event data hash.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="define-event-source">
-<pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 73</span>
-73:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">block</span>)
-74:                                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;event #{name} is already defined&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">name</span>)
-75: 
-76:                                 <span class="ruby-identifier">block</span> = <span class="ruby-identifier">proc</span>{<span class="ruby-keyword kw">true</span>} <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block_given?</span>
-77:                                 <span class="ruby-ivar">@events</span>[<span class="ruby-identifier">name</span>] = {<span class="ruby-value">:check_block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>, <span class="ruby-value">:responders</span> =<span class="ruby-operator">&gt;</span> []}
-78:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="define-event-with-args-method" class="method-detail ">
-				<a name="method-c-define_event_with_args"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">define_event_with_args</span><span
-						class="method-args">(name)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Define a new event type which uses arguments. No block can be given. It
-uses the conditions specified by the responder and checks them against the
-event data hash using the === operator.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="define-event-with-args-source">
-<pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 83</span>
-83:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_event_with_args</span>(<span class="ruby-identifier">name</span>)
-84:                                 <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conditions</span>,<span class="ruby-identifier">event_data</span><span class="ruby-operator">|</span>
-85:                                         <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">all?</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">event_data</span>[<span class="ruby-identifier">k</span>]}
-86:                                 <span class="ruby-keyword kw">end</span>
-87:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="steal-event-definitions-method" class="method-detail ">
-				<a name="method-c-steal_event_definitions"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">steal_event_definitions</span><span
-						class="method-args">(cls)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Create a definition for each event that exists in the ancestors of this
-class. Event responders themselves are not copied.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="steal-event-definitions-source">
-<pre>
-    <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 60</span>
-60:                         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">cls</span>)
-61:                                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
-62: 
-63:                                 <span class="ruby-identifier">steal_event_definitions</span>(<span class="ruby-identifier">cls</span>.<span class="ruby-identifier">superclass</span>)
-64: 
-65:                                 <span class="ruby-identifier">to_add</span> = <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">keys</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">keys</span>
-66:                                 <span class="ruby-identifier">to_add</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">define_event</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">cls</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:check_block</span>]) }
-67:                         <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-		</div>
-	
-		<div id="public-instance-method-details" class="method-section section">
-			<h3 class="section-header">Public Instance Methods</h3>
-
-		
-			<div id="data-method" class="method-detail ">
-				<a name="method-i-data"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">data</span><span
-						class="method-args">()</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Return the data for the current event.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="data-source">
-<pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 101</span>
-101:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">data</span>
-102:                         <span class="ruby-ivar">@current_event_data</span>
-103:                 <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="dispatch-event-method" class="method-detail ">
-				<a name="method-i-dispatch_event"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">dispatch_event</span><span
-						class="method-args">(name, event_data = nil, event_cls = nil)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Call the responders associated with an event. An optional data hash can be
-passed containing information about the event.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="dispatch-event-source">
-<pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 107</span>
-107:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">event_cls</span> = <span class="ruby-keyword kw">nil</span>)
-108:                         <span class="ruby-comment cmt"># this bit is inspired by Sinatra</span>
-109:                         <span class="ruby-identifier">event_cls</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>
-110:                         <span class="ruby-identifier">dispatch_event</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">event_data</span>, <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">superclass</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:events</span>)
-111: 
-112:                         <span class="ruby-identifier">event</span> = <span class="ruby-identifier">event_cls</span>.<span class="ruby-identifier">events</span>[<span class="ruby-identifier">name</span>]
-113:                         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">nil?</span>
-114:                         <span class="ruby-comment cmt"># TODO: must come up with a better method for this which doesn't choke</span>
-115:                         <span class="ruby-comment cmt"># on subclassing</span>
-116:                         <span class="ruby-comment cmt">#raise &quot;cannot dispatch unknown event #{name}&quot; if event.nil?</span>
-117:                         <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">event</span>[<span class="ruby-value">:check_block</span>]
-118: 
-119:                         <span class="ruby-ivar">@current_event_data</span> = <span class="ruby-identifier">event_data</span>
-120: 
-121:                         <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_all_responders</span>) <span class="ruby-keyword kw">do</span>
-122:                                 <span class="ruby-identifier">event</span>[<span class="ruby-value">:responders</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">responder</span><span class="ruby-operator">|</span>
-123:                                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">instance_exec</span>(<span class="ruby-identifier">responder</span>[<span class="ruby-value">:conditions</span>], <span class="ruby-identifier">event_data</span>, &amp;<span class="ruby-identifier">checker</span>)
-124:                                                 <span class="ruby-identifier">catch</span>(<span class="ruby-value">:halt_this_responder</span>) { <span class="ruby-identifier">instance_exec</span>(&amp;<span class="ruby-identifier">responder</span>[<span class="ruby-value">:block</span>]) }
-125:                                         <span class="ruby-keyword kw">end</span>
-126:                                 <span class="ruby-keyword kw">end</span>
-127:                         <span class="ruby-keyword kw">end</span>
-128:                 <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="halt-method" class="method-detail ">
-				<a name="method-i-halt"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">halt</span><span
-						class="method-args">()</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Halt processing for the current responder.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="halt-source">
-<pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 132</span>
-132:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">halt</span>
-133:                         <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_this_responder</span>
-134:                 <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="halt-all-method" class="method-detail ">
-				<a name="method-i-halt_all"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">halt_all</span><span
-						class="method-args">()</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					<p>
-Halt processing for the current event.
-</p>
-					
-
-					
-					<div class="method-source-code"
-						id="halt-all-source">
-<pre>
-     <span class="ruby-comment cmt"># File lib/nelumbo/event_handler.rb, line 137</span>
-137:                 <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">halt_all</span>
-138:                         <span class="ruby-identifier">throw</span> <span class="ruby-value">:halt_all_responders</span>
-139:                 <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-		</div>
-	
-
-	</div>
-
-
-	<div id="rdoc-debugging-section-dump" class="debugging-section">
-	
-		<p>Disabled; run with --debug to generate this.</p>
-	
-	</div>
-
-	<div id="validator-badges">
-		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
-		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
-			Rdoc Generator</a> 1.1.6</small>.</p>
-	</div>
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
 
 </body>
 </html>

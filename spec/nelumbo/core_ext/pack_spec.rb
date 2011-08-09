@@ -35,7 +35,7 @@ describe "Nelumbo's String#furc_unpack" do
 	end
 
 	it "should not screw up when all of these are used together" do
-		result = '$%$%%abcde(abcdetABCDEFGHIJKLMqq%'.furc_unpack('bBsS!xxa')
+		result = '$%$%%abcde(abcdetABCDEFGHIJKLMqq%'.furc_unpack('bBsSKxxa')
 		result.should == [385,441,'abcde','abcde','tABCDEFGHIJKLM',5]
 	end
 
@@ -96,7 +96,7 @@ describe "Nelumbo's Array#furc_pack" do
 
 	it "should not screw up when all of these are used together" do
 		result = [385,441,'abcde','abcde','tABCDEFGHIJKLM','q','q',5]
-		result.furc_pack('bBsS!xxa').should == '$%$%%abcde(abcdetABCDEFGHIJKLMqq%'
+		result.furc_pack('bBsSKxxa').should == '$%$%%abcde(abcdetABCDEFGHIJKLMqq%'
 	end
 
 	it "should handle encodings properly" do

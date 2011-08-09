@@ -10,9 +10,6 @@ module Nelumbo
 	# can be modified at any time and override (but do not replace) the class
 	# settings.
 	#
-	# == Plugin Manager
-	# TODO
-	#
 	# == Connection
 	# The Bot class handles logging in for you.
 	#

@@ -25,6 +25,7 @@ END
   s.required_ruby_version = '>=1.9'
 
   s.add_dependency('i18n')
+  s.add_dependency('mixology')
   s.add_dependency('activesupport')
   s.add_dependency('rspec-core')
   s.add_dependency('rspec-expectations')

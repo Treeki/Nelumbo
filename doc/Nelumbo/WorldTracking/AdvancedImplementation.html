@@ -1,0 +1,1017 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: Nelumbo::WorldTracking::AdvancedImplementation</title>
+
+  <link rel="stylesheet" href="../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../index.html">Home</a>
+          <a href="../../index.html#classes">Classes</a>
+          <a href="../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../lib/nelumbo/world_tracking_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/nelumbo/world_tracking.rb">lib/nelumbo/world_tracking.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+      <!-- Namespace Contents -->
+      <div id="namespace-list-section" class="section">
+        <h3 class="section-header">Namespace</h3>
+        <ul class="link-list">
+          
+          <li><span class="type">MODULE</span> <a href="AdvancedImplementation/ClassMethods.html">Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-i-create_and_add_player">#create_and_add_player</a></li>
+          
+          <li><a href="#method-i-delete_and_remove_player">#delete_and_remove_player</a></li>
+          
+          <li><a href="#method-i-ds_var">#ds_var</a></li>
+          
+          <li><a href="#method-i-ds_var_y">#ds_var_y</a></li>
+          
+          <li><a href="#method-i-each_player">#each_player</a></li>
+          
+          <li><a href="#method-i-find_player_at_position">#find_player_at_position</a></li>
+          
+          <li><a href="#method-i-find_player_by_name">#find_player_by_name</a></li>
+          
+          <li><a href="#method-i-find_player_by_uid">#find_player_by_uid</a></li>
+          
+          <li><a href="#method-i-init_source_dream_list">#init_source_dream_list</a></li>
+          
+          <li><a href="#method-i-init_world_engine">#init_world_engine</a></li>
+          
+          <li><a href="#method-i-load_ds_file">#load_ds_file</a></li>
+          
+          <li><a href="#method-i-move_tracked_player">#move_tracked_player</a></li>
+          
+          <li><a href="#method-i-normalise_dream_url">#normalise_dream_url</a></li>
+          
+          <li><a href="#method-i-preprocess_ds_token">#preprocess_ds_token</a></li>
+          
+          <li><a href="#method-i-produce_map">#produce_map</a></li>
+          
+          <li><a href="#method-i-register_source_dream">#register_source_dream</a></li>
+          
+          <li><a href="#method-i-reset_world_tracking">#reset_world_tracking</a></li>
+          
+          <li><a href="#method-i-set_ds_var">#set_ds_var</a></li>
+          
+          <li><a href="#method-i-set_ds_var_y">#set_ds_var_y</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../../Gemfile.html">Gemfile</a></li>
+        
+          <li class="file"><a href="../../Rakefile.html">Rakefile</a></li>
+        
+          <li class="file"><a href="../../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="../../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../Nelumbo.html">Nelumbo</a></li>
+        
+          <li><a href="../../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
+        
+          <li><a href="../../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
+        
+          <li><a href="../../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
+        
+          <li><a href="../../Nelumbo/EventDSL.html">Nelumbo::EventDSL</a></li>
+        
+          <li><a href="../../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
+        
+          <li><a href="../../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../../Nelumbo/Script.html">Nelumbo::Script</a></li>
+        
+          <li><a href="../../Nelumbo/Script/DragonSpeak.html">Nelumbo::Script::DragonSpeak</a></li>
+        
+          <li><a href="../../Nelumbo/Script/Language.html">Nelumbo::Script::Language</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LanguageDSL.html">Nelumbo::Script::LanguageDSL</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LanguageDSL/CategoryProxy.html">Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LanguageDSL/LineProxy.html">Nelumbo::Script::LanguageDSL::LineProxy</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LineParser.html">Nelumbo::Script::LineParser</a></li>
+        
+          <li><a href="../../Nelumbo/Script/Tokenizer.html">Nelumbo::Script::Tokenizer</a></li>
+        
+          <li><a href="../../Nelumbo/Script/TreeParser.html">Nelumbo::Script::TreeParser</a></li>
+        
+          <li><a href="../../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
+        
+          <li><a href="../../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
+        
+          <li><a href="../../Nelumbo/World.html">Nelumbo::World</a></li>
+        
+          <li><a href="../../Nelumbo/World/Context.html">Nelumbo::World::Context</a></li>
+        
+          <li><a href="../../Nelumbo/World/Player.html">Nelumbo::World::Player</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking.html">Nelumbo::WorldTracking</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/AdvancedImplementation.html">Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/AdvancedImplementation/ClassMethods.html">Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/ClassMethods.html">Nelumbo::WorldTracking::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/SimpleImplementation.html">Nelumbo::WorldTracking::SimpleImplementation</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/SimpleImplementation/ClassMethods.html">Nelumbo::WorldTracking::SimpleImplementation::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/SimpleImplementation/Player.html">Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
+        
+          <li><a href="../../Array.html">Array</a></li>
+        
+          <li><a href="../../Integer.html">Integer</a></li>
+        
+          <li><a href="../../Numeric.html">Numeric</a></li>
+        
+          <li><a href="../../Object.html">Object</a></li>
+        
+          <li><a href="../../String.html">String</a></li>
+        
+          <li><a href="../../TestBot.html">TestBot</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">Nelumbo::WorldTracking::AdvancedImplementation</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="context-attribute-method" class="method-detail">
+          <a name="context"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">context</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="create_and_add_player-method" class="method-detail ">
+          <a name="method-i-create_and_add_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">create_and_add_player</span><span
+              class="method-args">(uid, name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="create_and_add_player-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 242</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_and_add_player</span>(<span class="ruby-identifier">uid</span>, <span class="ruby-identifier">name</span>)
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">create_and_add_player</span>(<span class="ruby-identifier">uid</span>, <span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- create_and_add_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- create_and_add_player-method -->
+
+      
+        <div id="delete_and_remove_player-method" class="method-detail ">
+          <a name="method-i-delete_and_remove_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_and_remove_player</span><span
+              class="method-args">(player)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="delete_and_remove_player-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 246</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_and_remove_player</span>(<span class="ruby-identifier">player</span>)
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">delete_and_remove_player</span>(<span class="ruby-identifier">player</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_and_remove_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_and_remove_player-method -->
+
+      
+        <div id="ds_var-method" class="method-detail ">
+          <a name="method-i-ds_var"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">ds_var</span><span
+              class="method-args">(name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="ds_var-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 396</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ds_var</span>(<span class="ruby-identifier">name</span>)
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>])
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- ds_var-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- ds_var-method -->
+
+      
+        <div id="ds_var_y-method" class="method-detail ">
+          <a name="method-i-ds_var_y"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">ds_var_y</span><span
+              class="method-args">(name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="ds_var_y-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 400</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ds_var_y</span>(<span class="ruby-identifier">name</span>)
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- ds_var_y-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- ds_var_y-method -->
+
+      
+        <div id="each_player-method" class="method-detail ">
+          <a name="method-i-each_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">each_player</span><span
+              class="method-args">(&block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="each_player-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 254</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">each_player</span>(&amp;<span class="ruby-identifier">block</span>); <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">each_player</span>(&amp;<span class="ruby-identifier">block</span>); <span class="ruby-keyword">end</span></pre>
+            </div><!-- each_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- each_player-method -->
+
+      
+        <div id="find_player_at_position-method" class="method-detail ">
+          <a name="method-i-find_player_at_position"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_player_at_position</span><span
+              class="method-args">(x, y)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="find_player_at_position-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 252</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_player_at_position</span>(<span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span>); <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">find_player_at_position</span>(<span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span>); <span class="ruby-keyword">end</span></pre>
+            </div><!-- find_player_at_position-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_player_at_position-method -->
+
+      
+        <div id="find_player_by_name-method" class="method-detail ">
+          <a name="method-i-find_player_by_name"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_player_by_name</span><span
+              class="method-args">(name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="find_player_by_name-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 251</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_player_by_name</span>(<span class="ruby-identifier">name</span>); <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">find_player_by_name</span>(<span class="ruby-identifier">name</span>); <span class="ruby-keyword">end</span></pre>
+            </div><!-- find_player_by_name-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_player_by_name-method -->
+
+      
+        <div id="find_player_by_uid-method" class="method-detail ">
+          <a name="method-i-find_player_by_uid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_player_by_uid</span><span
+              class="method-args">(uid)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="find_player_by_uid-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 250</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_player_by_uid</span>(<span class="ruby-identifier">uid</span>); <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">find_player_by_uid</span>(<span class="ruby-identifier">uid</span>); <span class="ruby-keyword">end</span></pre>
+            </div><!-- find_player_by_uid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_player_by_uid-method -->
+
+      
+        <div id="init_source_dream_list-method" class="method-detail ">
+          <a name="method-i-init_source_dream_list"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">init_source_dream_list</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="init_source_dream_list-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 262</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">init_source_dream_list</span>
+        <span class="ruby-ivar">@world_source_dreams</span> = {}
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- init_source_dream_list-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- init_source_dream_list-method -->
+
+      
+        <div id="init_world_engine-method" class="method-detail ">
+          <a name="method-i-init_world_engine"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">init_world_engine</span><span
+              class="method-args">(url, line_count)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="init_world_engine-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 270</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">init_world_engine</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">line_count</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Initialising World Tracking for #{url}.&quot;</span>
+
+        <span class="ruby-identifier">dream_path</span> = <span class="ruby-ivar">@world_source_dreams</span>[<span class="ruby-identifier">normalise_dream_url</span>(<span class="ruby-identifier">url</span>)]
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">dream_path</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;No source path is registered for this dream.&quot;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment"># TODO: Abstract this into a Map class</span>
+        <span class="ruby-identifier">map_version</span>, <span class="ruby-identifier">map_data</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">map_header</span> = {}
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">dream_path</span>, <span class="ruby-string">'rb'</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">map_version</span> = <span class="ruby-identifier">f</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+
+                <span class="ruby-keyword">while</span> (<span class="ruby-identifier">line</span> = <span class="ruby-identifier">f</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>) <span class="ruby-operator">!=</span> <span class="ruby-string">'BODY'</span>
+                        <span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">'='</span>, <span class="ruby-value">2</span>)
+                        <span class="ruby-identifier">map_header</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">value</span>
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-identifier">map_data</span> = <span class="ruby-identifier">f</span>.<span class="ruby-identifier">read</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-ivar">@current_map_version</span> = <span class="ruby-identifier">map_version</span>
+        <span class="ruby-ivar">@current_map_header</span> = <span class="ruby-identifier">map_header</span>
+
+        <span class="ruby-identifier">width</span> = <span class="ruby-identifier">map_header</span>[<span class="ruby-string">'width'</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-identifier">height</span> = <span class="ruby-identifier">map_header</span>[<span class="ruby-string">'height'</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">load_map</span> <span class="ruby-identifier">map_data</span>, <span class="ruby-identifier">width</span>, <span class="ruby-identifier">height</span>
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Map data loaded (#{width}x#{height})&quot;</span>
+
+        <span class="ruby-identifier">load_ds_file</span>(<span class="ruby-identifier">dream_path</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp">/\.map$/</span>, <span class="ruby-string">'.ds'</span>))
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Dream initialised.&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- init_world_engine-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- init_world_engine-method -->
+
+      
+        <div id="load_ds_file-method" class="method-detail ">
+          <a name="method-i-load_ds_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">load_ds_file</span><span
+              class="method-args">(path)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="load_ds_file-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 312</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_ds_file</span>(<span class="ruby-identifier">path</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Loading DS file...&quot;</span>
+
+        <span class="ruby-identifier">tokens</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">'r'</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+                <span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">Script</span><span class="ruby-operator">::</span><span class="ruby-constant">Tokenizer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">f</span>).<span class="ruby-identifier">each_token</span>.<span class="ruby-identifier">to_a</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;(1/4) Tokenizer complete&quot;</span>
+
+        <span class="ruby-identifier">line_parser</span> = <span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">Script</span><span class="ruby-operator">::</span><span class="ruby-constant">LineParser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">Script</span><span class="ruby-operator">::</span><span class="ruby-constant">DragonSpeak</span>, <span class="ruby-identifier">tokens</span>)
+        <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">line_parser</span>.<span class="ruby-identifier">lines</span>.<span class="ruby-identifier">to_a</span>
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;(2/4) Line parser complete&quot;</span>
+
+        <span class="ruby-identifier">tree_parser</span> = <span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">Script</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeParser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">Script</span><span class="ruby-operator">::</span><span class="ruby-constant">DragonSpeak</span>)
+        <span class="ruby-identifier">tree_parser</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">lines</span>)
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;(3/4) Tree parser complete&quot;</span>
+
+        <span class="ruby-ivar">@ds_variables</span> = <span class="ruby-identifier">tree_parser</span>.<span class="ruby-identifier">variables_by_name</span>
+
+        <span class="ruby-comment"># This code is messy and I should rework it some day..</span>
+
+        <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">:category</span>]
+
+                <span class="ruby-identifier">category</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:category</span>)
+                <span class="ruby-identifier">type</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:type</span>)
+                <span class="ruby-identifier">annotation</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:annotation</span>)
+                <span class="ruby-identifier">line</span>.<span class="ruby-identifier">delete</span> <span class="ruby-value">:number</span>
+
+                <span class="ruby-identifier">params</span> = []
+
+                <span class="ruby-identifier">spec</span> = <span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">Script</span><span class="ruby-operator">::</span><span class="ruby-constant">DragonSpeak</span>.<span class="ruby-identifier">spec_for_line</span>(<span class="ruby-identifier">category</span>, <span class="ruby-identifier">type</span>)
+
+                <span class="ruby-comment"># Note: Strings and string variables are ignored, and</span>
+                <span class="ruby-comment"># simply passed through as 0. They are not necessary for</span>
+                <span class="ruby-comment"># a DS engine which only needs the client-side stuff.</span>
+                <span class="ruby-identifier">line</span>.<span class="ruby-identifier">each_value</span>.<span class="ruby-identifier">zip</span>(<span class="ruby-identifier">spec</span>.<span class="ruby-identifier">each_value</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token</span>, <span class="ruby-identifier">spec_bit</span><span class="ruby-operator">|</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-constant">Array</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+                                <span class="ruby-identifier">token</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tok</span><span class="ruby-operator">|</span>
+                                        <span class="ruby-identifier">params</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">preprocess_ds_token</span>(<span class="ruby-identifier">tok</span>, <span class="ruby-identifier">spec_bit</span>, <span class="ruby-identifier">tree_parser</span>)
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">params</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">preprocess_ds_token</span>(<span class="ruby-identifier">token</span>, <span class="ruby-identifier">spec_bit</span>, <span class="ruby-identifier">tree_parser</span>)
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-identifier">p</span> <span class="ruby-identifier">category</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">params</span>
+                
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">annotation</span>
+                        <span class="ruby-identifier">split_an</span> = <span class="ruby-identifier">annotation</span>.<span class="ruby-identifier">split</span>
+                        <span class="ruby-identifier">annotation</span> = {<span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-identifier">split_an</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_sym</span>}
+                        
+                        <span class="ruby-keyword">case</span> <span class="ruby-identifier">annotation</span>[<span class="ruby-value">:action</span>]
+                        <span class="ruby-keyword">when</span> <span class="ruby-value">:event</span>
+                                <span class="ruby-identifier">annotation</span>[<span class="ruby-value">:name</span>] = <span class="ruby-identifier">split_an</span>[<span class="ruby-value">1</span>]
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;unknown annotation type: #{annotation[:action]}&quot;</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">add_ds_line</span>(<span class="ruby-identifier">category</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">params</span>, <span class="ruby-identifier">annotation</span>)
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;(4/4) DS loaded&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- load_ds_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- load_ds_file-method -->
+
+      
+        <div id="move_tracked_player-method" class="method-detail ">
+          <a name="method-i-move_tracked_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">move_tracked_player</span><span
+              class="method-args">(player, x, y)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="move_tracked_player-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 255</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_tracked_player</span>(<span class="ruby-identifier">player</span>, <span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span>); <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">move_tracked_player</span>(<span class="ruby-identifier">player</span>, <span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span>); <span class="ruby-keyword">end</span></pre>
+            </div><!-- move_tracked_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- move_tracked_player-method -->
+
+      
+        <div id="normalise_dream_url-method" class="method-detail ">
+          <a name="method-i-normalise_dream_url"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">normalise_dream_url</span><span
+              class="method-args">(url)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="normalise_dream_url-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 257</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">normalise_dream_url</span>(<span class="ruby-identifier">url</span>)
+        <span class="ruby-comment"># TODO: make this better</span>
+        <span class="ruby-identifier">url</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">%(/$)</span>, <span class="ruby-string">''</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- normalise_dream_url-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- normalise_dream_url-method -->
+
+      
+        <div id="preprocess_ds_token-method" class="method-detail ">
+          <a name="method-i-preprocess_ds_token"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">preprocess_ds_token</span><span
+              class="method-args">(token, spec_bit, tree_parser)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="preprocess_ds_token-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 380</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">preprocess_ds_token</span>(<span class="ruby-identifier">token</span>, <span class="ruby-identifier">spec_bit</span>, <span class="ruby-identifier">tree_parser</span>)
+        <span class="ruby-keyword">case</span> <span class="ruby-identifier">token</span>[<span class="ruby-value">:type</span>]
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:number</span>
+                <span class="ruby-identifier">token</span>[<span class="ruby-value">:number</span>]
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:variable</span>
+                <span class="ruby-identifier">base</span> = (<span class="ruby-identifier">spec_bit</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/variable/</span>) <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">50000</span>
+                <span class="ruby-identifier">base</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tree_parser</span>.<span class="ruby-identifier">index_of_variable</span>(<span class="ruby-identifier">token</span>)
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:variable_pointer</span>
+                <span class="ruby-identifier">base</span> = (<span class="ruby-identifier">spec_bit</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/variable/</span>) <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">50000</span>
+                <span class="ruby-identifier">base</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">token</span>[<span class="ruby-value">:number</span>]
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-value">0</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- preprocess_ds_token-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- preprocess_ds_token-method -->
+
+      
+        <div id="produce_map-method" class="method-detail ">
+          <a name="method-i-produce_map"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">produce_map</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="produce_map-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 307</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">produce_map</span>
+        <span class="ruby-comment"># TODO: Abstract this into a Map class</span>
+        <span class="ruby-ivar">@current_map_version</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@current_map_header</span>.<span class="ruby-identifier">each_pair</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;#{k}=#{v}\n&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">''</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;BODY\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">save_map</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- produce_map-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- produce_map-method -->
+
+      
+        <div id="register_source_dream-method" class="method-detail ">
+          <a name="method-i-register_source_dream"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">register_source_dream</span><span
+              class="method-args">(url, path)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="register_source_dream-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 266</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_source_dream</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">path</span>)
+        <span class="ruby-ivar">@world_source_dreams</span>[<span class="ruby-identifier">normalise_dream_url</span>(<span class="ruby-identifier">url</span>)] = <span class="ruby-identifier">path</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- register_source_dream-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- register_source_dream-method -->
+
+      
+        <div id="reset_world_tracking-method" class="method-detail ">
+          <a name="method-i-reset_world_tracking"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset_world_tracking</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="reset_world_tracking-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 202</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset_world_tracking</span>
+        <span class="ruby-ivar">@context</span> = <span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">World</span><span class="ruby-operator">::</span><span class="ruby-constant">Context</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>)
+
+        <span class="ruby-identifier">write_line</span> <span class="ruby-string">'dreambookmark 0'</span>
+
+        <span class="ruby-ivar">@world_ds_count</span> = <span class="ruby-value">-1</span>
+        <span class="ruby-ivar">@world_waiting_for_url</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset_world_tracking-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset_world_tracking-method -->
+
+      
+        <div id="set_ds_var-method" class="method-detail ">
+          <a name="method-i-set_ds_var"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_ds_var</span><span
+              class="method-args">(name, value)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_ds_var-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 404</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_ds_var</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>)
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">set_variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>], <span class="ruby-identifier">value</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- set_ds_var-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_ds_var-method -->
+
+      
+        <div id="set_ds_var_y-method" class="method-detail ">
+          <a name="method-i-set_ds_var_y"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_ds_var_y</span><span
+              class="method-args">(name, value)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_ds_var_y-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 408</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_ds_var_y</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>)
+        <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">set_variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">value</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- set_ds_var_y-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_ds_var_y-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

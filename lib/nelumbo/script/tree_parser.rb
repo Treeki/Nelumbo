@@ -16,7 +16,15 @@ module Nelumbo
 				reset!
 
 				line_array.each do |line|
-					
+					process_line line
+
+					if line[:type] == :comment
+						if /\[NB\] (?<command>.*)$/ =~ line[:string]
+							@next_annotation = command
+						end
+						next
+					end
+
 					case line[:category]
 					when @language::CAUSE
 						if new_block?
@@ -29,6 +37,11 @@ module Nelumbo
 					when *@language::EFFECTS
 						add_effect(line)
 					end
+
+					if @next_annotation
+						line[:annotation] = @next_annotation
+						@next_annotation = nil
+					end
 				end
 			end
 
@@ -37,7 +50,42 @@ module Nelumbo
 			end
 
 			attr_reader :blocks
+			attr_reader :variables_by_name
+			attr_reader :svariables_by_name
 			
+			public
+			def variable?(v)
+				if Hash === v
+					@variables_by_name.key?(v[:name])
+				else
+					@variables_by_name.key?(v)
+				end
+			end
+
+			def string_variable?(v)
+				if Hash === v
+					@svariables_by_name.key?(v[:name])
+				else
+					@svariables_by_name.key?(v)
+				end
+			end
+
+			def index_of_variable(v)
+				if Hash === v
+					@variables_by_name[v[:name]] + ((v[:part] == ?y) ? 1 : 0)
+				else
+					@variables_by_name[v]
+				end
+			end
+
+			def index_of_string_variable(v)
+				if Hash === v
+					@svariables_by_name[v[:name]]
+				else
+					@svariables_by_name[v]
+				end
+			end
+
 			private
 			def reset!
 				@blocks = []
@@ -48,6 +96,7 @@ module Nelumbo
 				@svariables_by_name = {}
 				@next_variable = 0
 				@next_svariable = 0
+				@next_annotation = nil
 			end
 
 			def assign_line_number
@@ -70,42 +119,10 @@ module Nelumbo
 				@next_svariable += count
 			end
 
-			def variable?(v)
-				if Hash === v
-					@variables_by_name.key?(v[:name])
-				else
-					@variables_by_name.key?(v)
-				end
-			end
-
-			def string_variable?(v)
-				if Hash === v
-					@svariables_by_name.key?(v[:name])
-				else
-					@svariables_by_name.key?(v)
-				end
-			end
-
-			def index_of_variable(v)
-				if Hash === v
-					@variables_by_name[v[:name]] + ((v[:part] == :y) ? 1 : 0)
-				else
-					@variables_by_name[v]
-				end
-			end
-
-			def index_of_string_variable(v)
-				if Hash === v
-					@svariables_by_name[v[:name]]
-				else
-					@svariables_by_name[v]
-				end
-			end
-
 			def process_line(line)
-				line[:number] = assign_line_number
-
 				line.values.each do |v|
+					next unless Hash === v
+
 					case v[:type]
 					when :variable
 						add_variable(v)
@@ -113,6 +130,8 @@ module Nelumbo
 						add_string_variable(v)
 					end
 				end
+
+				line[:number] = assign_line_number
 			end
 
 			def new_block?
@@ -120,7 +139,6 @@ module Nelumbo
 			end
 
 			def make_new_trigger(cause)
-				cause[:number] = assign_line_number
 				@current_trigger = {cause: cause, conditions: []}
 				@current_block[:triggers] << @current_trigger
 			end
@@ -132,12 +150,10 @@ module Nelumbo
 			end
 
 			def add_condition(condition)
-				condition[:number] = assign_line_number
 				@current_trigger[:conditions] << condition
 			end
 
 			def add_effect(effect)
-				effect[:number] = assign_line_number
 				@current_block[:effects] << effect
 			end
 		end

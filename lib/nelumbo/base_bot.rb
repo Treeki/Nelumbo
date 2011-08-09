@@ -1,16 +1,38 @@
 module Nelumbo
 	# The Nelumbo::BaseBot class implements a simple bot that can communicate
-	# with Furcadia and handle events using Nelumbo::EventHandler.
+	# with Furcadia, handle events using Nelumbo::EventHandler and have
+	# plugins loaded.
 	#
 	# Socket and timer handling is done using a Core, which can be passed to
 	# BaseBot#new. If none is specified, a new instance of Nelumbo::SimpleCore
 	# will be used.
 	#
 	# Usage of this class directly is not recommended. Nelumbo::Bot implements
-	# plugins and various other niceties that are useful for most bots.
+	# login and various other niceties that are useful for most bots.
+	#
+	# BaseBot will raise these events:
+	# [init_bot]
+	#   Raised right before the bot connects.
+	# [connect]
+	#   Raised when the bot has connected and needs to log in.
+	# [login]
+	#   Raised when the bot has logged in.
+	# [disconnect]
+	#   Raised when the bot has disconnected.
+	# [raw]
+	#   A line is received from the server.
+	#   Data: +:line+
+	# [message]
+	#   A visible message is received from the server.
+	#   Data: +:line+
+	# [speech]
+	#   A player spoke within the bot's range.
+	#   Data: +:name+, +:shortname+, +:text+
+	# [whisper]
+	#   A player whispered the bot.
+	#   Data: +:name+, +:shortname+, +:text+
 	#
 	class BaseBot < EventHandler
-		include FurcEvents
 		include CoreHooks
 
 		attr_reader :core, :state
@@ -41,6 +63,8 @@ module Nelumbo
 		def line_received(line)
 			return if @state == :login and try_parse_login(line)
 
+			p line
+
 			dispatch_event :raw, line: line
 
 			if line[0] == '('
@@ -53,6 +77,22 @@ module Nelumbo
 			if line[0,2] == ']c'
 				dispatch_event :enter_dream
 			end
+		end
+
+
+		def load_plugin(mod)
+			mixin mod
+			mod.plugin_loaded(self)
+		end
+
+		def unload_plugin(mod)
+			mod.plugin_unloaded(self)
+			unmix mod
+		end
+
+
+		def say(line)
+			write_line "\"#{line}"
 		end
 
 		private

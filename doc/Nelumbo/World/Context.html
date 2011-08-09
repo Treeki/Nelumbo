@@ -1,0 +1,1901 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Nelumbo::World::Context</title>
+
+  <link rel="stylesheet" href="../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../index.html">Home</a>
+          <a href="../../index.html#classes">Classes</a>
+          <a href="../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../ext/nelumbo/nelumbo_c.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="ext/nelumbo/nelumbo.c">ext/nelumbo/nelumbo.c</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-add_ds_line">#add_ds_line</a></li>
+          
+          <li><a href="#method-i-button_pressed">#button_pressed</a></li>
+          
+          <li><a href="#method-i-create_and_add_player">#create_and_add_player</a></li>
+          
+          <li><a href="#method-i-delete_and_remove_player">#delete_and_remove_player</a></li>
+          
+          <li><a href="#method-i-dream_cookies">#dream_cookies</a></li>
+          
+          <li><a href="#method-i-each_player">#each_player</a></li>
+          
+          <li><a href="#method-i-facing_direction">#facing_direction</a></li>
+          
+          <li><a href="#method-i-find_player_at_position">#find_player_at_position</a></li>
+          
+          <li><a href="#method-i-find_player_by_name">#find_player_by_name</a></li>
+          
+          <li><a href="#method-i-find_player_by_uid">#find_player_by_uid</a></li>
+          
+          <li><a href="#method-i-floor">#floor</a></li>
+          
+          <li><a href="#method-i-height">#height</a></li>
+          
+          <li><a href="#method-i-item">#item</a></li>
+          
+          <li><a href="#method-i-load_map">#load_map</a></li>
+          
+          <li><a href="#method-i-move_tracked_player">#move_tracked_player</a></li>
+          
+          <li><a href="#method-i-moved_from_x">#moved_from_x</a></li>
+          
+          <li><a href="#method-i-moved_from_y">#moved_from_y</a></li>
+          
+          <li><a href="#method-i-moved_to_x">#moved_to_x</a></li>
+          
+          <li><a href="#method-i-moved_to_y">#moved_to_y</a></li>
+          
+          <li><a href="#method-i-number_said">#number_said</a></li>
+          
+          <li><a href="#method-i-player">#player</a></li>
+          
+          <li><a href="#method-i-player_cookies">#player_cookies</a></li>
+          
+          <li><a href="#method-i-player_moved-3F">#player_moved?</a></li>
+          
+          <li><a href="#method-i-players_in_dream">#players_in_dream</a></li>
+          
+          <li><a href="#method-i-process_line">#process_line</a></li>
+          
+          <li><a href="#method-i-save_map">#save_map</a></li>
+          
+          <li><a href="#method-i-set_floor">#set_floor</a></li>
+          
+          <li><a href="#method-i-set_item">#set_item</a></li>
+          
+          <li><a href="#method-i-set_variable">#set_variable</a></li>
+          
+          <li><a href="#method-i-set_wall">#set_wall</a></li>
+          
+          <li><a href="#method-i-trigger_x">#trigger_x</a></li>
+          
+          <li><a href="#method-i-trigger_y">#trigger_y</a></li>
+          
+          <li><a href="#method-i-variable">#variable</a></li>
+          
+          <li><a href="#method-i-wall">#wall</a></li>
+          
+          <li><a href="#method-i-width">#width</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../../Gemfile.html">Gemfile</a></li>
+        
+          <li class="file"><a href="../../Rakefile.html">Rakefile</a></li>
+        
+          <li class="file"><a href="../../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="../../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../Nelumbo.html">Nelumbo</a></li>
+        
+          <li><a href="../../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
+        
+          <li><a href="../../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
+        
+          <li><a href="../../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
+        
+          <li><a href="../../Nelumbo/EventDSL.html">Nelumbo::EventDSL</a></li>
+        
+          <li><a href="../../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
+        
+          <li><a href="../../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../../Nelumbo/Script.html">Nelumbo::Script</a></li>
+        
+          <li><a href="../../Nelumbo/Script/DragonSpeak.html">Nelumbo::Script::DragonSpeak</a></li>
+        
+          <li><a href="../../Nelumbo/Script/Language.html">Nelumbo::Script::Language</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LanguageDSL.html">Nelumbo::Script::LanguageDSL</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LanguageDSL/CategoryProxy.html">Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LanguageDSL/LineProxy.html">Nelumbo::Script::LanguageDSL::LineProxy</a></li>
+        
+          <li><a href="../../Nelumbo/Script/LineParser.html">Nelumbo::Script::LineParser</a></li>
+        
+          <li><a href="../../Nelumbo/Script/Tokenizer.html">Nelumbo::Script::Tokenizer</a></li>
+        
+          <li><a href="../../Nelumbo/Script/TreeParser.html">Nelumbo::Script::TreeParser</a></li>
+        
+          <li><a href="../../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
+        
+          <li><a href="../../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
+        
+          <li><a href="../../Nelumbo/World.html">Nelumbo::World</a></li>
+        
+          <li><a href="../../Nelumbo/World/Context.html">Nelumbo::World::Context</a></li>
+        
+          <li><a href="../../Nelumbo/World/Player.html">Nelumbo::World::Player</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking.html">Nelumbo::WorldTracking</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/AdvancedImplementation.html">Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/AdvancedImplementation/ClassMethods.html">Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/ClassMethods.html">Nelumbo::WorldTracking::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/SimpleImplementation.html">Nelumbo::WorldTracking::SimpleImplementation</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/SimpleImplementation/ClassMethods.html">Nelumbo::WorldTracking::SimpleImplementation::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/WorldTracking/SimpleImplementation/Player.html">Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
+        
+          <li><a href="../../Array.html">Array</a></li>
+        
+          <li><a href="../../Integer.html">Integer</a></li>
+        
+          <li><a href="../../Numeric.html">Numeric</a></li>
+        
+          <li><a href="../../Object.html">Object</a></li>
+        
+          <li><a href="../../String.html">String</a></li>
+        
+          <li><a href="../../TestBot.html">TestBot</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Nelumbo::World::Context</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(p1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Ruby Housekeeping</p>
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+static VALUE initialize(VALUE self, VALUE bot) {
+        GET_WC;
+
+        if (NIL_P(bot))
+                rb_raise(rb_eArgError, &quot;a bot must be passed to Context#new&quot;);
+
+        wc-&gt;bot = bot;
+
+        wc-&gt;playerList = rb_ary_new();
+
+        wc-&gt;playersByShortname = rb_hash_new();
+        wc-&gt;playersByUserID = rb_hash_new();
+        wc-&gt;playersByPosition = rb_hash_new();
+
+        return self;
+}</pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="add_ds_line-method" class="method-detail ">
+          <a name="method-i-add_ds_line"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_ds_line</span><span
+              class="method-args">(p1, p2, p3, p4)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_ds_line-source">
+<pre>
+static VALUE add_ds_line(VALUE self, VALUE category, VALUE type, VALUE params, VALUE annotation) {
+        Check_Type(category, T_FIXNUM); Check_Type(type, T_FIXNUM);
+        Check_Type(params, T_ARRAY);
+        if (!NIL_P(annotation)) {
+                Check_Type(annotation, T_HASH);
+        }
+
+        GET_WC;
+
+        DSLine *line = &amp;wc-&gt;ds[wc-&gt;dsLineCount];
+        line-&gt;category = FIX2INT(category);
+        line-&gt;type = FIX2INT(type);
+
+        int i;
+        for (i = 0; i &lt; RARRAY_LEN(params); i++) {
+                line-&gt;params[i] = FIX2INT(RARRAY_PTR(params)[i]);
+        }
+
+        line-&gt;annotation = annotation;
+
+        wc-&gt;dsLineCount++;
+
+        return Qnil;
+}</pre>
+            </div><!-- add_ds_line-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_ds_line-method -->
+
+      
+        <div id="button_pressed-method" class="method-detail ">
+          <a name="method-i-button_pressed"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">button_pressed</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="button_pressed-source">
+<pre>
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- button_pressed-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- button_pressed-method -->
+
+      
+        <div id="create_and_add_player-method" class="method-detail ">
+          <a name="method-i-create_and_add_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">create_and_add_player</span><span
+              class="method-args">(p1, p2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p><a href="Player.html">Player</a> Management</p>
+            
+
+            
+            <div class="method-source-code" id="create_and_add_player-source">
+<pre>
+static VALUE create_and_add_player(VALUE self, VALUE uid, VALUE name) {
+        // uid might not be a fixnum so we don't check it
+        // NUM2INT takes care of raising an exception for us
+        Check_Type(name, T_STRING);
+
+        GET_WC;
+
+        VALUE initArgs[2];
+        initArgs[0] = uid;
+        initArgs[1] = name;
+
+        VALUE player = rb_class_new_instance(2, initArgs, cNelumboWorldPlayer);
+        Player *sPlayer;
+        Data_Get_Struct(player, Player, sPlayer);
+
+        rb_ary_push(wc-&gt;playerList, player);
+        rb_hash_aset(wc-&gt;playersByShortname, sPlayer-&gt;shortname, player);
+        rb_hash_aset(wc-&gt;playersByUserID, INT2NUM(sPlayer-&gt;uid), player);
+
+        return player;
+}</pre>
+            </div><!-- create_and_add_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- create_and_add_player-method -->
+
+      
+        <div id="delete_and_remove_player-method" class="method-detail ">
+          <a name="method-i-delete_and_remove_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_and_remove_player</span><span
+              class="method-args">(p1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="delete_and_remove_player-source">
+<pre>
+static VALUE delete_and_remove_player(VALUE self, VALUE player) {
+        GET_WC;
+
+        Player *sPlayer;
+        Data_Get_Struct(player, Player, sPlayer);
+
+        rb_ary_delete(wc-&gt;playerList, player);
+        rb_hash_delete(wc-&gt;playersByShortname, sPlayer-&gt;shortname);
+        rb_hash_delete(wc-&gt;playersByUserID, INT2NUM(sPlayer-&gt;uid));
+        rb_hash_delete(wc-&gt;playersByPosition, PLAYER_KEY(sPlayer-&gt;x, sPlayer-&gt;y));
+
+        return player;
+}</pre>
+            </div><!-- delete_and_remove_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_and_remove_player-method -->
+
+      
+        <div id="dream_cookies-method" class="method-detail ">
+          <a name="method-i-dream_cookies"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">dream_cookies</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="dream_cookies-source">
+<pre>
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- dream_cookies-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- dream_cookies-method -->
+
+      
+        <div id="each_player-method" class="method-detail ">
+          <a name="method-i-each_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">each_player</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="each_player-source">
+<pre>
+static VALUE each_player(VALUE self) {
+        if (rb_block_given_p()) {
+                GET_WC;
+                
+                int i, length = RARRAY_LEN(wc-&gt;playerList);
+                for (i = 0; i &lt; length; i++) {
+                        rb_yield(RARRAY_PTR(wc-&gt;playerList)[i]);
+                }
+
+                return Qnil;
+        } else {
+                return rb_funcall(self, rb_intern(&quot;to_enum&quot;), 1, ID2SYM(rb_intern(&quot;each_player&quot;)));
+        }
+}</pre>
+            </div><!-- each_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- each_player-method -->
+
+      
+        <div id="facing_direction-method" class="method-detail ">
+          <a name="method-i-facing_direction"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">facing_direction</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="facing_direction-source">
+<pre>
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- facing_direction-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- facing_direction-method -->
+
+      
+        <div id="find_player_at_position-method" class="method-detail ">
+          <a name="method-i-find_player_at_position"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_player_at_position</span><span
+              class="method-args">(p1, p2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="find_player_at_position-source">
+<pre>
+static VALUE find_player_at_position(VALUE self, VALUE x, VALUE y) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+        GET_WC;
+
+        return rb_hash_aref(wc-&gt;playersByPosition, PLAYER_KEY(FIX2INT(x) / 2, FIX2INT(y)));
+}</pre>
+            </div><!-- find_player_at_position-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_player_at_position-method -->
+
+      
+        <div id="find_player_by_name-method" class="method-detail ">
+          <a name="method-i-find_player_by_name"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_player_by_name</span><span
+              class="method-args">(p1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="find_player_by_name-source">
+<pre>
+static VALUE find_player_by_name(VALUE self, VALUE name) {
+        Check_Type(name, T_STRING);
+
+        GET_WC;
+
+        VALUE shortname = rb_funcall(name, rb_intern(&quot;to_shortname&quot;), 0);
+        return rb_hash_aref(wc-&gt;playersByShortname, shortname);
+}</pre>
+            </div><!-- find_player_by_name-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_player_by_name-method -->
+
+      
+        <div id="find_player_by_uid-method" class="method-detail ">
+          <a name="method-i-find_player_by_uid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_player_by_uid</span><span
+              class="method-args">(p1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="find_player_by_uid-source">
+<pre>
+static VALUE find_player_by_uid(VALUE self, VALUE uid) {
+        GET_WC;
+
+        return rb_hash_aref(wc-&gt;playersByUserID, uid);
+}</pre>
+            </div><!-- find_player_by_uid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_player_by_uid-method -->
+
+      
+        <div id="floor-method" class="method-detail ">
+          <a name="method-i-floor"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">floor</span><span
+              class="method-args">(p1, p2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="floor-source">
+<pre>
+static VALUE get_floor(VALUE self, VALUE x, VALUE y) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+        GET_WC;
+
+        int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+        fail_if_out_of_bounds(wc, realX, realY);
+
+        return INT2FIX(wc-&gt;floors[realX][realY]);
+}</pre>
+            </div><!-- floor-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- floor-method -->
+
+      
+        <div id="height-method" class="method-detail ">
+          <a name="method-i-height"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">height</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="height-source">
+<pre>
+static VALUE get_height(VALUE self) {
+        GET_WC;
+        return INT2FIX(wc-&gt;mapHeight);
+}</pre>
+            </div><!-- height-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- height-method -->
+
+      
+        <div id="item-method" class="method-detail ">
+          <a name="method-i-item"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">item</span><span
+              class="method-args">(p1, p2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="item-source">
+<pre>
+static VALUE get_item(VALUE self, VALUE x, VALUE y) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+        GET_WC;
+
+        int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+        fail_if_out_of_bounds(wc, realX, realY);
+
+        return INT2FIX(wc-&gt;items[realX][realY]);
+}</pre>
+            </div><!-- item-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- item-method -->
+
+      
+        <div id="load_map-method" class="method-detail ">
+          <a name="method-i-load_map"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">load_map</span><span
+              class="method-args">(p1, p2, p3)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Interfaces to C Methods</p>
+            
+
+            
+            <div class="method-source-code" id="load_map-source">
+<pre>
+static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height) {
+        Check_Type(buf, T_STRING);
+        Check_Type(width, T_FIXNUM); Check_Type(height, T_FIXNUM);
+
+        GET_WC;
+
+        int rWidth = FIX2INT(width), rHeight = FIX2INT(height);
+        VALUE rBuf = StringValue(buf);
+
+        if (rWidth &lt; 0 || rWidth &gt;= MAX_MAP_WIDTH || rHeight &lt; 0 || rHeight &gt;= MAX_MAP_HEIGHT) {
+                rb_raise(rb_eArgError, &quot;map size is out of bounds&quot;);
+        }
+
+        int expectedSize = rWidth * rHeight * 2 * 3;
+        if (RSTRING_LEN(rBuf) &lt; expectedSize) {
+                rb_raise(rb_eTypeError, &quot;buffer is too small to hold the map data&quot;);
+        }
+
+        wc_load_map(wc, RSTRING_PTR(rBuf), rWidth, rHeight);
+
+        return Qtrue;
+}</pre>
+            </div><!-- load_map-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- load_map-method -->
+
+      
+        <div id="move_tracked_player-method" class="method-detail ">
+          <a name="method-i-move_tracked_player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">move_tracked_player</span><span
+              class="method-args">(p1, p2, p3)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="move_tracked_player-source">
+<pre>
+static VALUE move_tracked_player(VALUE self, VALUE player, VALUE x, VALUE y) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+        GET_WC;
+
+        Player *sPlayer;
+        Data_Get_Struct(player, Player, sPlayer);
+
+        int rX = FIX2INT(x) / 2, rY = FIX2INT(y);
+
+        if (sPlayer-&gt;x == rX &amp;&amp; sPlayer-&gt;y == rY)
+                return;
+
+        int oldX = sPlayer-&gt;x, oldY = sPlayer-&gt;y;
+        if (oldX != -1) {
+                rb_hash_delete(wc-&gt;playersByPosition, PLAYER_KEY(oldX, oldY));
+        }
+
+        sPlayer-&gt;x = rX;
+        sPlayer-&gt;y = rY;
+
+        rb_hash_aset(wc-&gt;playersByPosition, PLAYER_KEY(rX, rY), player);
+
+        if (oldX == -1) {
+                oldX = 0;
+                oldY = 0;
+        }
+
+        VALUE info = rb_hash_new();
+        rb_hash_aset(info, ID2SYM(rb_intern(&quot;player&quot;)), player);
+        rb_hash_aset(info, ID2SYM(rb_intern(&quot;from_x&quot;)), INT2FIX(oldX*2));
+        rb_hash_aset(info, ID2SYM(rb_intern(&quot;from_y&quot;)), INT2FIX(oldY));
+        rb_hash_aset(info, ID2SYM(rb_intern(&quot;to_x&quot;)), INT2FIX(rX*2));
+        rb_hash_aset(info, ID2SYM(rb_intern(&quot;to_y&quot;)), INT2FIX(rY));
+
+        rb_funcall(wc-&gt;bot, rb_intern(&quot;dispatch_event&quot;), 2, ID2SYM(rb_intern(&quot;player_move&quot;)), info);
+
+        return Qnil;
+}</pre>
+            </div><!-- move_tracked_player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- move_tracked_player-method -->
+
+      
+        <div id="moved_from_x-method" class="method-detail ">
+          <a name="method-i-moved_from_x"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">moved_from_x</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>DS Trigger Parameter Access</p>
+            
+
+            
+            <div class="method-source-code" id="moved_from_x-source">
+<pre>
+static VALUE get_moved_from_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedFromX*2); }
+static VALUE get_moved_from_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedFromY); }
+static VALUE get_moved_to_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToX*2); }
+static VALUE get_moved_to_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToY); }
+static VALUE get_trigger_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerX*2); }
+static VALUE get_trigger_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerY); }
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- moved_from_x-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- moved_from_x-method -->
+
+      
+        <div id="moved_from_y-method" class="method-detail ">
+          <a name="method-i-moved_from_y"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">moved_from_y</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="moved_from_y-source">
+<pre>
+static VALUE get_moved_from_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedFromY); }
+static VALUE get_moved_to_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToX*2); }
+static VALUE get_moved_to_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToY); }
+static VALUE get_trigger_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerX*2); }
+static VALUE get_trigger_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerY); }
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- moved_from_y-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- moved_from_y-method -->
+
+      
+        <div id="moved_to_x-method" class="method-detail ">
+          <a name="method-i-moved_to_x"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">moved_to_x</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="moved_to_x-source">
+<pre>
+static VALUE get_moved_to_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToX*2); }
+static VALUE get_moved_to_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToY); }
+static VALUE get_trigger_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerX*2); }
+static VALUE get_trigger_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerY); }
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- moved_to_x-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- moved_to_x-method -->
+
+      
+        <div id="moved_to_y-method" class="method-detail ">
+          <a name="method-i-moved_to_y"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">moved_to_y</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="moved_to_y-source">
+<pre>
+static VALUE get_moved_to_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_movedToY); }
+static VALUE get_trigger_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerX*2); }
+static VALUE get_trigger_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerY); }
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- moved_to_y-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- moved_to_y-method -->
+
+      
+        <div id="number_said-method" class="method-detail ">
+          <a name="method-i-number_said"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">number_said</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="number_said-source">
+<pre>
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- number_said-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- number_said-method -->
+
+      
+        <div id="player-method" class="method-detail ">
+          <a name="method-i-player"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">player</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="player-source">
+<pre>
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- player-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- player-method -->
+
+      
+        <div id="player_cookies-method" class="method-detail ">
+          <a name="method-i-player_cookies"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">player_cookies</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="player_cookies-source">
+<pre>
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- player_cookies-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- player_cookies-method -->
+
+      
+        <div id="player_moved-3F-method" class="method-detail ">
+          <a name="method-i-player_moved-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">player_moved?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="player_moved-3F-source">
+<pre>
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- player_moved-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- player_moved-3F-method -->
+
+      
+        <div id="players_in_dream-method" class="method-detail ">
+          <a name="method-i-players_in_dream"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">players_in_dream</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="players_in_dream-source">
+<pre>
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- players_in_dream-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- players_in_dream-method -->
+
+      
+        <div id="process_line-method" class="method-detail ">
+          <a name="method-i-process_line"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">process_line</span><span
+              class="method-args">(p1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="process_line-source">
+<pre>
+static VALUE process_line(VALUE self, VALUE line) {
+        Check_Type(line, T_STRING);
+
+        GET_WC;
+
+        wc_process_line(wc, RSTRING_PTR(line), RSTRING_LEN(line));
+        
+        return Qtrue;
+}</pre>
+            </div><!-- process_line-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- process_line-method -->
+
+      
+        <div id="save_map-method" class="method-detail ">
+          <a name="method-i-save_map"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">save_map</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="save_map-source">
+<pre>
+static VALUE save_map(VALUE self) {
+        GET_WC;
+
+        VALUE string = rb_str_new(0, wc-&gt;mapWidth * wc-&gt;mapHeight * 2 * 3);
+        wc_save_map(wc, RSTRING_PTR(string));
+
+        return string;
+}</pre>
+            </div><!-- save_map-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- save_map-method -->
+
+      
+        <div id="set_floor-method" class="method-detail ">
+          <a name="method-i-set_floor"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_floor</span><span
+              class="method-args">(p1, p2, p3)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_floor-source">
+<pre>
+static VALUE set_floor(VALUE self, VALUE x, VALUE y, VALUE floor) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+        Check_Type(floor, T_FIXNUM);
+
+        GET_WC;
+
+        int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+        fail_if_out_of_bounds(wc, realX, realY);
+
+        wc-&gt;floors[realX][realY] = FIX2INT(floor);
+        return floor;
+}</pre>
+            </div><!-- set_floor-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_floor-method -->
+
+      
+        <div id="set_item-method" class="method-detail ">
+          <a name="method-i-set_item"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_item</span><span
+              class="method-args">(p1, p2, p3)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_item-source">
+<pre>
+static VALUE set_item(VALUE self, VALUE x, VALUE y, VALUE item) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+        Check_Type(item, T_FIXNUM);
+
+        GET_WC;
+
+        int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+        fail_if_out_of_bounds(wc, realX, realY);
+
+        wc-&gt;items[realX][realY] = FIX2INT(item);
+        return item;
+}</pre>
+            </div><!-- set_item-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_item-method -->
+
+      
+        <div id="set_variable-method" class="method-detail ">
+          <a name="method-i-set_variable"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_variable</span><span
+              class="method-args">(p1, p2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_variable-source">
+<pre>
+static VALUE set_variable(VALUE self, VALUE index, VALUE value) {
+        Check_Type(index, T_FIXNUM); Check_Type(value, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return Qnil;
+
+        wc-&gt;variables[rIndex] = FIX2INT(value);
+        return value;
+}</pre>
+            </div><!-- set_variable-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_variable-method -->
+
+      
+        <div id="set_wall-method" class="method-detail ">
+          <a name="method-i-set_wall"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_wall</span><span
+              class="method-args">(p1, p2, p3)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_wall-source">
+<pre>
+static VALUE set_wall(VALUE self, VALUE x, VALUE y, VALUE wall) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+        Check_Type(wall, T_FIXNUM);
+
+        GET_WC;
+
+        int realX = FIX2INT(x), realY = FIX2INT(y);
+        fail_if_out_of_bounds(wc, realX, realY);
+
+        wc-&gt;walls[realX][realY] = FIX2INT(wall);
+        return wall;
+}</pre>
+            </div><!-- set_wall-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_wall-method -->
+
+      
+        <div id="trigger_x-method" class="method-detail ">
+          <a name="method-i-trigger_x"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">trigger_x</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="trigger_x-source">
+<pre>
+static VALUE get_trigger_x(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerX*2); }
+static VALUE get_trigger_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerY); }
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- trigger_x-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- trigger_x-method -->
+
+      
+        <div id="trigger_y-method" class="method-detail ">
+          <a name="method-i-trigger_y"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">trigger_y</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="trigger_y-source">
+<pre>
+static VALUE get_trigger_y(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_triggerY); }
+static VALUE get_did_player_move(VALUE self) { GET_WC; return ((wc-&gt;i_didPlayerMove != 0) ? Qtrue : Qfalse); }
+static VALUE get_number_said(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_numberSaid); }
+static VALUE get_facing_direction(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_facingDirection); }
+static VALUE get_players_in_dream(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playersInDream); }
+static VALUE get_player(VALUE self) { GET_WC; return wc-&gt;i_playerValue; }
+static VALUE get_button_pressed(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dsButtonPressed); }
+static VALUE get_dream_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_dreamCookies); }
+static VALUE get_player_cookies(VALUE self) { GET_WC; return INT2FIX(wc-&gt;i_playerCookies); }
+
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- trigger_y-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- trigger_y-method -->
+
+      
+        <div id="variable-method" class="method-detail ">
+          <a name="method-i-variable"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">variable</span><span
+              class="method-args">(p1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="variable-source">
+<pre>
+static VALUE get_variable(VALUE self, VALUE index) {
+        Check_Type(index, T_FIXNUM);
+
+        GET_WC;
+
+        int rIndex = FIX2INT(index);
+        if (rIndex &lt; 0 || rIndex &gt;= MAX_VARIABLE)
+                return INT2FIX(0);
+
+        return INT2FIX(wc-&gt;variables[rIndex]);
+}</pre>
+            </div><!-- variable-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- variable-method -->
+
+      
+        <div id="wall-method" class="method-detail ">
+          <a name="method-i-wall"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">wall</span><span
+              class="method-args">(p1, p2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="wall-source">
+<pre>
+static VALUE get_wall(VALUE self, VALUE x, VALUE y) {
+        Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+        GET_WC;
+
+        int realX = FIX2INT(x), realY = FIX2INT(y);
+        fail_if_out_of_bounds(wc, realX, realY);
+
+        return INT2FIX(wc-&gt;walls[realX][realY]);
+}</pre>
+            </div><!-- wall-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- wall-method -->
+
+      
+        <div id="width-method" class="method-detail ">
+          <a name="method-i-width"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">width</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Map Data Access</p>
+            
+
+            
+            <div class="method-source-code" id="width-source">
+<pre>
+static VALUE get_width(VALUE self) {
+        GET_WC;
+        return INT2FIX(wc-&gt;mapWidth);
+}</pre>
+            </div><!-- width-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- width-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

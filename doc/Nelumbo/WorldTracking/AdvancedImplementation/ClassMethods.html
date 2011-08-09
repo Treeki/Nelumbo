@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</title>
+
+  <link rel="stylesheet" href="../../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../../index.html">Home</a>
+          <a href="../../../index.html#classes">Classes</a>
+          <a href="../../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../../lib/nelumbo/world_tracking_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/nelumbo/world_tracking.rb">lib/nelumbo/world_tracking.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-i-setup_world_tracking">#setup_world_tracking</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../../../Gemfile.html">Gemfile</a></li>
+        
+          <li class="file"><a href="../../../Rakefile.html">Rakefile</a></li>
+        
+          <li class="file"><a href="../../../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="../../../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../../Nelumbo.html">Nelumbo</a></li>
+        
+          <li><a href="../../../Nelumbo/BaseBot.html">Nelumbo::BaseBot</a></li>
+        
+          <li><a href="../../../Nelumbo/Bot.html">Nelumbo::Bot</a></li>
+        
+          <li><a href="../../../Nelumbo/CoreHooks.html">Nelumbo::CoreHooks</a></li>
+        
+          <li><a href="../../../Nelumbo/EventDSL.html">Nelumbo::EventDSL</a></li>
+        
+          <li><a href="../../../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
+        
+          <li><a href="../../../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../../../Nelumbo/Script.html">Nelumbo::Script</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/DragonSpeak.html">Nelumbo::Script::DragonSpeak</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/Language.html">Nelumbo::Script::Language</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/LanguageDSL.html">Nelumbo::Script::LanguageDSL</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/LanguageDSL/CategoryProxy.html">Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/LanguageDSL/LineProxy.html">Nelumbo::Script::LanguageDSL::LineProxy</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/LineParser.html">Nelumbo::Script::LineParser</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/Tokenizer.html">Nelumbo::Script::Tokenizer</a></li>
+        
+          <li><a href="../../../Nelumbo/Script/TreeParser.html">Nelumbo::Script::TreeParser</a></li>
+        
+          <li><a href="../../../Nelumbo/SelectCore.html">Nelumbo::SelectCore</a></li>
+        
+          <li><a href="../../../Nelumbo/SimpleCore.html">Nelumbo::SimpleCore</a></li>
+        
+          <li><a href="../../../Nelumbo/World.html">Nelumbo::World</a></li>
+        
+          <li><a href="../../../Nelumbo/World/Context.html">Nelumbo::World::Context</a></li>
+        
+          <li><a href="../../../Nelumbo/World/Player.html">Nelumbo::World::Player</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking.html">Nelumbo::WorldTracking</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking/AdvancedImplementation.html">Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking/AdvancedImplementation/ClassMethods.html">Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking/ClassMethods.html">Nelumbo::WorldTracking::ClassMethods</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking/SimpleImplementation.html">Nelumbo::WorldTracking::SimpleImplementation</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking/SimpleImplementation/ClassMethods.html">Nelumbo::WorldTracking::SimpleImplementation::ClassMethods</a></li>
+        
+          <li><a href="../../../Nelumbo/WorldTracking/SimpleImplementation/Player.html">Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
+        
+          <li><a href="../../../Array.html">Array</a></li>
+        
+          <li><a href="../../../Integer.html">Integer</a></li>
+        
+          <li><a href="../../../Numeric.html">Numeric</a></li>
+        
+          <li><a href="../../../Object.html">Object</a></li>
+        
+          <li><a href="../../../String.html">String</a></li>
+        
+          <li><a href="../../../TestBot.html">TestBot</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="setup_world_tracking-method" class="method-detail ">
+          <a name="method-i-setup_world_tracking"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">setup_world_tracking</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="setup_world_tracking-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 212</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup_world_tracking</span>
+        <span class="ruby-keyword">super</span>
+
+        <span class="ruby-identifier">set</span> <span class="ruby-identifier">do_not_send_vascodagama</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+
+        <span class="ruby-identifier">on_init_bot</span> <span class="ruby-keyword">do</span>
+                <span class="ruby-identifier">init_source_dream_list</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">on_message</span> <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-regexp">/^&lt;img src='fsh:\/\/system\.fsh:86' \/&gt; Lines of DragonSpeak/</span> <span class="ruby-keyword">do</span>
+                <span class="ruby-ivar">@world_ds_count</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:line</span>][<span class="ruby-regexp">/Speak: (\d+)/</span>,<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">on_raw</span> <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-regexp">/^\]C0/</span> <span class="ruby-keyword">do</span>
+                <span class="ruby-identifier">halt</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@world_waiting_for_url</span>
+
+                <span class="ruby-ivar">@world_waiting_for_url</span> = <span class="ruby-keyword">false</span>
+                <span class="ruby-identifier">init_world_engine</span>(<span class="ruby-identifier">data</span>[<span class="ruby-value">:line</span>].<span class="ruby-identifier">from</span>(<span class="ruby-value">3</span>), <span class="ruby-ivar">@world_ds_count</span>)
+                <span class="ruby-identifier">write_line</span> <span class="ruby-string">'vascodagama'</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">on_raw</span> <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-regexp">/^[&gt;0123678]/</span> <span class="ruby-keyword">do</span>
+                <span class="ruby-comment"># this bit is done in C code to save some time.</span>
+                <span class="ruby-comment"># every little helps, right?</span>
+                <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">process_line</span>(<span class="ruby-identifier">data</span>[<span class="ruby-value">:line</span>])
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- setup_world_tracking-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- setup_world_tracking-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

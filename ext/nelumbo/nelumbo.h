@@ -3,10 +3,14 @@
 
 #include <ruby.h>
 
+#include <nelumbo_world_player.h>
 #include <nelumbo_world_context.h>
 
 extern VALUE mNelumbo;
 extern VALUE mNelumboWorld;
+
+int decode_b95(const char *buffer, int length);
+int decode_b220(const char *buffer, int length);
 
 #endif
 

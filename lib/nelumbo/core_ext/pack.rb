@@ -1,9 +1,8 @@
 class String
 	# Unpacks a Furcadia protocol string. TODO: document this.
-	def furc_unpack(format)
+	def furc_unpack(format, offset=0)
 		output = []
 
-		offset = 0
 		format.each_char do |piece|
 			case piece
 			when 'x'
