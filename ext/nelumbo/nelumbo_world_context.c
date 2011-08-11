@@ -351,7 +351,7 @@ static char _intersect_line(int x1, int y1, int x2, int y2, int multiplier) {
 	int xDiff = x2 - x1;
 	int yDiff = (y2 - y1) * multiplier;
 
-	printf("Line: %d,%d %d,%d Diff %d,%d M %d A %d,%d\n", x1,y1,x2,y2,xDiff,yDiff,multiplier,(y1&1),(y2&2));
+	//printf("Line: %d,%d %d,%d Diff %d,%d M %d A %d,%d\n", x1,y1,x2,y2,xDiff,yDiff,multiplier,(y1&1),(y2&2));
 
 	if ((y1 & 1) == 0) {
 		if ((y2 & 1) == 0)
@@ -652,33 +652,30 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 
 			leftX = startX;
 			leftY = startY;
-			do {
+			while (!intersect_line_nwse(leftX, leftY, endX, endY)) {
 				wc_move_position_sw(wc, &leftX, &leftY, 1);
-				printf("Moved to %d, %d\n", leftX, leftY);
-			} while (!intersect_line_nwse(leftX, leftY, endX, endY));
-			printf("Left: %d, %d\n", leftX, leftY);
+			}
 
 			rightX = startX;
 			rightY = startY;
-			do {
+			while (!intersect_line_nesw(rightX, rightY, endX, endY)) {
 				wc_move_position_se(wc, &rightX, &rightY, 1);
-				printf("Moved to %d, %d\n", rightX, rightY);
-			} while (!intersect_line_nesw(rightX, rightY, endX, endY));
-			printf("Right: %d, %d\n", rightX, rightY);
+			}
 
 			x = leftX;
 			top = leftY;
 			bottom = leftY;
 
 			if (leftY & 1) {
-				top--;
-				bottom++;
+				if (top > startY)
+					top--;
+				if (bottom < endY)
+					bottom++;
 			}
 
 			while (x <= rightX) {
 				for (y = top; y <= bottom; y++) {
 					wc_execute_on_area_position(wc, line, x, y);
-					printf("Doing: %d, %d\n", x, y);
 				}
 
 				x += 1;
@@ -1152,6 +1149,12 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 	if (wc_position_is_valid(wc, x / 2, y) == 0) \
 	return;
 
+#define REQUIRE_PLAYER \
+	if (!wc->i_player) { \
+		printf("WARNING: DS executed for %d, but they weren't around!\n", wc->i_userID); \
+		return; \
+	}
+
 	if (!NIL_P(line->annotation)) {
 		ID an_type = SYM2ID(rb_hash_aref(line->annotation, ID2SYM(rb_intern("action"))));
 		if (an_type == rb_intern("event")) {
@@ -1212,6 +1215,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			// This code is closely paired with (5:16) and (5:17). If it is modified,
 			// please apply the changes to the other version as well.
 			//
+			REQUIRE_PLAYER;
 			targetX = PARAM_VALUE(0) / 2;
 			targetY = PARAM_VALUE(1);
 			if (wc_position_is_walkable(wc, targetX, targetY, wc->i_player)) {
@@ -1225,6 +1229,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			break;
 
 		case 76:
+			REQUIRE_PLAYER;
 			wc->i_player->heldObject = PARAM_VALUE(0);
 			wc->i_heldObject = wc->i_player->heldObject;
 
@@ -1311,11 +1316,11 @@ do_dice_roll:
 			break;
 
 		case 315:
-			//TODO: I must assign this to i_player as soon as it's obtained
 			PARAM_VAR(0) = wc->i_entryCode;
 			break;
 		case 316:
 			wc->i_entryCode = PARAM_VALUE(0);
+			REQUIRE_PLAYER;
 			wc->i_player->entryCode = wc->i_entryCode;
 			break;
 

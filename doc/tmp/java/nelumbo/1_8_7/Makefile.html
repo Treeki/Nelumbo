@@ -45,6 +45,8 @@
         
           <li class="file"><a href="../../../../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
         
+          <li class="file"><a href="../../../../tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
           <li class="file"><a href="../../../../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
         </ul>
@@ -79,6 +81,10 @@
           <li><a href="../../../../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="../../../../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../../../../Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="../../../../Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="../../../../Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -133,6 +139,8 @@
           <li><a href="../../../../String.html">String</a></li>
         
           <li><a href="../../../../TestBot.html">TestBot</a></li>
+        
+          <li><a href="../../../../TestPlugin.html">TestPlugin</a></li>
         
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -193,9 +201,10 @@ $(ruby) RM = rm -f MAKEDIRS = mkdir -p  INSTALL = install -c  INSTALL_PROG
 <p>CLEANFILES = mkmf.log DISTCLEANFILES =</p>
 
 <p>extout =  extout_prefix =  target_prefix = /nelumbo LOCAL_LIBS =  LIBS =   
-SRCS = nelumbo.c nelumbo_world_context.c rb_world_context.c OBJS =
-nelumbo.o nelumbo_world_context.o rb_world_context.o TARGET = nelumbo DLLIB
-= $(TARGET).so EXTSTATIC =  STATIC_LIB =</p>
+SRCS = nelumbo.c rb_world_player.c nelumbo_world_context.c
+rb_world_context.c OBJS = nelumbo.o rb_world_player.o
+nelumbo_world_context.o rb_world_context.o TARGET = nelumbo DLLIB =
+$(TARGET).so EXTSTATIC =  STATIC_LIB =</p>
 
 <p>BINDIR        = $(bindir) RUBYCOMMONDIR = $(sitedir)$(target_prefix)
 RUBYLIBDIR    = $(sitelibdir)$(target_prefix) RUBYARCHDIR   =

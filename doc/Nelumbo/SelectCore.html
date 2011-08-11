@@ -95,6 +95,8 @@
         
           <li class="file"><a href="../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
         
+          <li class="file"><a href="../tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
           <li class="file"><a href="../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
         </ul>
@@ -129,6 +131,10 @@
           <li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="../Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -183,6 +189,8 @@
           <li><a href="../String.html">String</a></li>
         
           <li><a href="../TestBot.html">TestBot</a></li>
+        
+          <li><a href="../TestPlugin.html">TestPlugin</a></li>
         
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -332,6 +340,8 @@ function.</p>
 
         <span class="ruby-ivar">@bot_lookup_by_socket</span>[<span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>]] = <span class="ruby-identifier">bot</span>
         <span class="ruby-ivar">@bot_lookup_by_object</span>[<span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>]] = <span class="ruby-identifier">bot</span>
+
+        <span class="ruby-identifier">bot_class</span>.<span class="ruby-identifier">bot_started</span>
 <span class="ruby-keyword">end</span></pre>
             </div><!-- add_bot-source -->
             
@@ -362,11 +372,9 @@ function.</p>
             
             <div class="method-source-code" id="remove_bot-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/select_core.rb, line 35</span>
+<span class="ruby-comment"># File lib/nelumbo/select_core.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_bot</span>(<span class="ruby-identifier">bot</span>)
-        <span class="ruby-comment"># TODO: figure out some other way to do this, calling dispatch_event</span>
-        <span class="ruby-comment"># from a Core is kinda weird</span>
-        <span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:disconnect</span>
+        <span class="ruby-identifier">bot</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">bot_ended</span>
         <span class="ruby-identifier">bot</span>[<span class="ruby-value">:socket</span>].<span class="ruby-identifier">close</span>
 
         <span class="ruby-ivar">@bots</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">bot</span>

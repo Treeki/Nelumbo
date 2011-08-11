@@ -99,6 +99,8 @@
         
           <li class="file"><a href="../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
         
+          <li class="file"><a href="../tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
           <li class="file"><a href="../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
         </ul>
@@ -133,6 +135,10 @@
           <li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="../Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -187,6 +193,8 @@
           <li><a href="../String.html">String</a></li>
         
           <li><a href="../TestBot.html">TestBot</a></li>
+        
+          <li><a href="../TestPlugin.html">TestPlugin</a></li>
         
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -281,12 +289,12 @@ use doubled positions.</p>
 <p><a href="WorldTracking.html">WorldTracking</a> will raise these events:</p>
 <dl class="rdoc-list"><dt>player_entered</dt>
 <dd>
-<p>A player entered the dream. Data: <tt>:player</tt>, <tt>:uid</tt>,
-<tt>:shortname</tt>, <tt>:flags</tt></p>
+<p>A player entered the dream. Data: <tt>:shortname</tt>, <tt>:player</tt>,
+<tt>:uid</tt>, <tt>:flags</tt></p>
 </dd><dt>player_left</dt>
 <dd>
-<p>A player left the dream. Data: <tt>:player</tt>, <tt>:uid</tt>,
-<tt>:shortname</tt></p>
+<p>A player left the dream. Data: <tt>:shortname</tt>, <tt>:player</tt>,
+<tt>:uid</tt></p>
 </dd><dt>player_move</dt>
 <dd>
 <p>A player moved. The bot will trigger this whenever it finds out about a
@@ -347,7 +355,7 @@ the DS engine is active:</p>
             
             <div class="method-source-code" id="included-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 524</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 533</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">klass</span>)
         <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">extend</span> <span class="ruby-constant">ClassMethods</span>
 
@@ -400,7 +408,7 @@ Pretty much just a convenience function.</p>
             
             <div class="method-source-code" id="find_player-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 498</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 507</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">find_player</span>(<span class="ruby-identifier">one</span>, <span class="ruby-identifier">two</span>=<span class="ruby-keyword">nil</span>)
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">find_player_at_position</span>(<span class="ruby-identifier">one</span>, <span class="ruby-identifier">two</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">two</span>.<span class="ruby-identifier">nil?</span>
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">find_player_by_name</span>(<span class="ruby-identifier">one</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">one</span>
@@ -437,7 +445,7 @@ the event if the user cannot be found.</p>
             
             <div class="method-source-code" id="find_player-21-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 506</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 515</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">find_player!</span>(<span class="ruby-identifier">one</span>, <span class="ruby-identifier">two</span>=<span class="ruby-keyword">nil</span>)
         <span class="ruby-identifier">p</span> = <span class="ruby-identifier">find_player</span>(<span class="ruby-identifier">one</span>, <span class="ruby-identifier">two</span>)
         <span class="ruby-identifier">halt</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">nil?</span>
@@ -473,7 +481,7 @@ bot, it requests the server to resend it and halts the current event.</p>
             
             <div class="method-source-code" id="request_player_by_uid-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 515</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 524</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">request_player_by_uid</span>(<span class="ruby-identifier">uid</span>)
         <span class="ruby-identifier">player</span> = <span class="ruby-identifier">find_player_by_uid</span>(<span class="ruby-identifier">uid</span>)
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">player</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">player</span>.<span class="ruby-identifier">nil?</span>

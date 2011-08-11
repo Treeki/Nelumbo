@@ -30,12 +30,12 @@ module Nelumbo
 
 			@bot_lookup_by_socket[bot[:socket]] = bot
 			@bot_lookup_by_object[bot[:object]] = bot
+
+			bot_class.bot_started
 		end
 
 		def remove_bot(bot)
-			# TODO: figure out some other way to do this, calling dispatch_event
-			# from a Core is kinda weird
-			bot[:object].dispatch_event :disconnect
+			bot[:object].bot_ended
 			bot[:socket].close
 
 			@bots.delete bot

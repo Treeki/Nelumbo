@@ -50,6 +50,16 @@
       
 
       
+      <!-- Namespace Contents -->
+      <div id="namespace-list-section" class="section">
+        <h3 class="section-header">Namespace</h3>
+        <ul class="link-list">
+          
+          <li><span class="type">MODULE</span> <a href="Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+          
+        </ul>
+      </div>
+      
 
       
       <!-- Method Quickref -->
@@ -57,13 +67,7 @@
         <h3 class="section-header">Methods</h3>
         <ul class="link-list">
           
-          <li><a href="#method-c-plugin_loaded">::plugin_loaded</a></li>
-          
-          <li><a href="#method-c-plugin_unloaded">::plugin_unloaded</a></li>
-          
-          <li><a href="#method-c-when_loaded">::when_loaded</a></li>
-          
-          <li><a href="#method-c-when_unloaded">::when_unloaded</a></li>
+          <li><a href="#method-c-included">::included</a></li>
           
         </ul>
       </div>
@@ -84,6 +88,8 @@
           <li class="file"><a href="../Rakefile.html">Rakefile</a></li>
         
           <li class="file"><a href="../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="../tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
           <li class="file"><a href="../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
@@ -119,6 +125,10 @@
           <li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="../Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -174,6 +184,8 @@
         
           <li><a href="../TestBot.html">TestBot</a></li>
         
+          <li><a href="../TestPlugin.html">TestPlugin</a></li>
+        
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
       </div>
@@ -187,6 +199,27 @@
 
     <div id="description" class="description">
       
+<p>This module can be included into any other module to turn it into a <a
+href="../Nelumbo.html">Nelumbo</a> plugin. Events can be defined as usual
+within the module.</p>
+
+<p>A specific bot’s plugin modules can be managed using <a
+href="BaseBot.html#method-i-add_plugin">BaseBot#add_plugin</a> and <a
+href="BaseBot.html#method-i-remove_plugin">BaseBot#remove_plugin</a>.</p>
+
+<p>The <tt>when_added</tt> and <tt>when_removed</tt> methods will execute a
+block when the plugin is added or removed to/from a bot.</p>
+
+<pre>when_added { puts &quot;The plugin was added to #{self}!&quot; }
+when_removed { puts &quot;The plugin was removed from #{self}!&quot; }</pre>
+
+<h2>Related</h2>
+
+<p>If you need to use it, the <a
+href="PluginLoader.html">Nelumbo::PluginLoader</a> singleton class will
+handle loading/unloading of plugins from Ruby code files, with a couple of
+caveats. See the class’s documentation for more.</p>
+
     </div><!-- description -->
 
     
@@ -205,13 +238,13 @@
         <h3 class="section-header">Public Class Methods</h3>
 
       
-        <div id="plugin_loaded-method" class="method-detail ">
-          <a name="method-c-plugin_loaded"></a>
+        <div id="included-method" class="method-detail ">
+          <a name="method-c-included"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">plugin_loaded</span><span
-              class="method-args">(bot)</span>
+            <span class="method-name">included</span><span
+              class="method-args">(mod)</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
@@ -222,119 +255,23 @@
             
 
             
-            <div class="method-source-code" id="plugin_loaded-source">
+            <div class="method-source-code" id="included-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 5</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">plugin_loaded</span>(<span class="ruby-identifier">bot</span>)
-        <span class="ruby-identifier">bot</span>.<span class="ruby-identifier">instance_exec</span>(<span class="ruby-ivar">@plugin_load_hook</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@plugin_load_hook</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">mod</span>)
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">extend</span> <span class="ruby-constant">ClassMethods</span>
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">extend</span> <span class="ruby-constant">Nelumbo</span><span class="ruby-operator">::</span><span class="ruby-constant">EventDSL</span>
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">setup_events</span>
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">setup_as_plugin</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- plugin_loaded-source -->
+            </div><!-- included-source -->
             
           </div>
 
           
 
           
-        </div><!-- plugin_loaded-method -->
-
-      
-        <div id="plugin_unloaded-method" class="method-detail ">
-          <a name="method-c-plugin_unloaded"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">plugin_unloaded</span><span
-              class="method-args">(bot)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="plugin_unloaded-source">
-<pre>
-<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 9</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">plugin_unloaded</span>(<span class="ruby-identifier">bot</span>)
-        <span class="ruby-identifier">bot</span>.<span class="ruby-identifier">instance_exec</span>(<span class="ruby-ivar">@plugin_unload_hook</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@plugin_unload_hook</span>.<span class="ruby-identifier">nil?</span>
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- plugin_unloaded-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- plugin_unloaded-method -->
-
-      
-        <div id="when_loaded-method" class="method-detail ">
-          <a name="method-c-when_loaded"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">when_loaded</span><span
-              class="method-args">(&block)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="when_loaded-source">
-<pre>
-<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 13</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">when_loaded</span>(&amp;<span class="ruby-identifier">block</span>)
-        <span class="ruby-ivar">@plugin_load_hook</span> = <span class="ruby-identifier">block</span>
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- when_loaded-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- when_loaded-method -->
-
-      
-        <div id="when_unloaded-method" class="method-detail ">
-          <a name="method-c-when_unloaded"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">when_unloaded</span><span
-              class="method-args">(&block)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="when_unloaded-source">
-<pre>
-<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 17</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">when_unloaded</span>(&amp;<span class="ruby-identifier">block</span>)
-        <span class="ruby-ivar">@plugin_unload_hook</span> = <span class="ruby-identifier">block</span>
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- when_unloaded-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- when_unloaded-method -->
+        </div><!-- included-method -->
 
       
       </div><!-- public-class-method-details -->

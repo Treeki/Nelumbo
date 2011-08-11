@@ -36,6 +36,8 @@
     
       <li class="file"><a href="tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
     
+      <li class="file"><a href="tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+    
       <li class="file"><a href="tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
     
   </ul>
@@ -57,6 +59,10 @@
     <li class="class"><a href="Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
     
     <li class="module"><a href="Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+    
+    <li class="module"><a href="Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+    
+    <li class="module"><a href="Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
     
     <li class="module"><a href="Nelumbo/Script.html">Nelumbo::Script</a></li>
     
@@ -112,6 +118,8 @@
     
     <li class="class"><a href="TestBot.html">TestBot</a></li>
     
+    <li class="module"><a href="TestPlugin.html">TestPlugin</a></li>
+    
   </ul>
 
   <h2 id="methods">Methods</h2>
@@ -123,33 +131,33 @@
     
       <li><a href="Nelumbo/WorldTracking.html#method-c-included">::included &mdash; Nelumbo::WorldTracking</a></li>
     
+      <li><a href="Nelumbo/Plugin.html#method-c-included">::included &mdash; Nelumbo::Plugin</a></li>
+    
       <li><a href="Nelumbo/Bot.html#method-c-inherited">::inherited &mdash; Nelumbo::Bot</a></li>
     
-      <li><a href="Nelumbo/Script/LineParser.html#method-c-new">::new &mdash; Nelumbo::Script::LineParser</a></li>
-    
-      <li><a href="Nelumbo/SelectCore.html#method-c-new">::new &mdash; Nelumbo::SelectCore</a></li>
-    
-      <li><a href="Nelumbo/Script/Tokenizer.html#method-c-new">::new &mdash; Nelumbo::Script::Tokenizer</a></li>
-    
-      <li><a href="Nelumbo/Bot.html#method-c-new">::new &mdash; Nelumbo::Bot</a></li>
-    
-      <li><a href="Nelumbo/Script/TreeParser.html#method-c-new">::new &mdash; Nelumbo::Script::TreeParser</a></li>
-    
-      <li><a href="Nelumbo/World/Player.html#method-c-new">::new &mdash; Nelumbo::World::Player</a></li>
-    
-      <li><a href="Nelumbo/WorldTracking/SimpleImplementation/Player.html#method-c-new">::new &mdash; Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
-    
-      <li><a href="Nelumbo/World/Context.html#method-c-new">::new &mdash; Nelumbo::World::Context</a></li>
-    
-      <li><a href="Nelumbo/Script/LanguageDSL/CategoryProxy.html#method-c-new">::new &mdash; Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
+      <li><a href="Nelumbo/PluginLoader.html#method-c-load">::load &mdash; Nelumbo::PluginLoader</a></li>
     
       <li><a href="Nelumbo/Script/LanguageDSL/LineProxy.html#method-c-new">::new &mdash; Nelumbo::Script::LanguageDSL::LineProxy</a></li>
     
+      <li><a href="Nelumbo/Script/LineParser.html#method-c-new">::new &mdash; Nelumbo::Script::LineParser</a></li>
+    
+      <li><a href="Nelumbo/Bot.html#method-c-new">::new &mdash; Nelumbo::Bot</a></li>
+    
+      <li><a href="Nelumbo/Script/Tokenizer.html#method-c-new">::new &mdash; Nelumbo::Script::Tokenizer</a></li>
+    
+      <li><a href="Nelumbo/World/Context.html#method-c-new">::new &mdash; Nelumbo::World::Context</a></li>
+    
+      <li><a href="Nelumbo/WorldTracking/SimpleImplementation/Player.html#method-c-new">::new &mdash; Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
+    
+      <li><a href="Nelumbo/SelectCore.html#method-c-new">::new &mdash; Nelumbo::SelectCore</a></li>
+    
+      <li><a href="Nelumbo/Script/TreeParser.html#method-c-new">::new &mdash; Nelumbo::Script::TreeParser</a></li>
+    
       <li><a href="Nelumbo/BaseBot.html#method-c-new">::new &mdash; Nelumbo::BaseBot</a></li>
     
-      <li><a href="Nelumbo/Plugin.html#method-c-plugin_loaded">::plugin_loaded &mdash; Nelumbo::Plugin</a></li>
+      <li><a href="Nelumbo/World/Player.html#method-c-new">::new &mdash; Nelumbo::World::Player</a></li>
     
-      <li><a href="Nelumbo/Plugin.html#method-c-plugin_unloaded">::plugin_unloaded &mdash; Nelumbo::Plugin</a></li>
+      <li><a href="Nelumbo/Script/LanguageDSL/CategoryProxy.html#method-c-new">::new &mdash; Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
     
       <li><a href="Nelumbo/Bot.html#method-c-set">::set &mdash; Nelumbo::Bot</a></li>
     
@@ -161,25 +169,25 @@
     
       <li><a href="Nelumbo/Script/Language.html#method-c-spec_for_line">::spec_for_line &mdash; Nelumbo::Script::Language</a></li>
     
-      <li><a href="Nelumbo/Plugin.html#method-c-when_loaded">::when_loaded &mdash; Nelumbo::Plugin</a></li>
-    
-      <li><a href="Nelumbo/Plugin.html#method-c-when_unloaded">::when_unloaded &mdash; Nelumbo::Plugin</a></li>
+      <li><a href="Nelumbo/PluginLoader.html#method-c-unload">::unload &mdash; Nelumbo::PluginLoader</a></li>
     
       <li><a href="Nelumbo/EventHandler.html#method-i-_check_event_condition">#_check_event_condition &mdash; Nelumbo::EventHandler</a></li>
     
       <li><a href="Nelumbo/EventHandler.html#method-i-_exec_event_list">#_exec_event_list &mdash; Nelumbo::EventHandler</a></li>
     
-      <li><a href="Nelumbo/Script/LanguageDSL/LineProxy.html#method-i-add">#add &mdash; Nelumbo::Script::LanguageDSL::LineProxy</a></li>
-    
       <li><a href="Nelumbo/Script/LanguageDSL/CategoryProxy.html#method-i-add">#add &mdash; Nelumbo::Script::LanguageDSL::CategoryProxy</a></li>
+    
+      <li><a href="Nelumbo/Script/LanguageDSL/LineProxy.html#method-i-add">#add &mdash; Nelumbo::Script::LanguageDSL::LineProxy</a></li>
     
       <li><a href="Nelumbo/SelectCore.html#method-i-add_bot">#add_bot &mdash; Nelumbo::SelectCore</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-add_ds_line">#add_ds_line &mdash; Nelumbo::World::Context</a></li>
     
-      <li><a href="Nelumbo/WorldTracking/SimpleImplementation/Player.html#method-i-afk-3F">#afk? &mdash; Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
+      <li><a href="Nelumbo/BaseBot.html#method-i-add_plugin">#add_plugin &mdash; Nelumbo::BaseBot</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-afk-3F">#afk? &mdash; Nelumbo::World::Player</a></li>
+    
+      <li><a href="Nelumbo/WorldTracking/SimpleImplementation/Player.html#method-i-afk-3F">#afk? &mdash; Nelumbo::WorldTracking::SimpleImplementation::Player</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-afk_length">#afk_length &mdash; Nelumbo::World::Player</a></li>
     
@@ -189,7 +197,15 @@
     
       <li><a href="Nelumbo/World/Player.html#method-i-afk_start_time-3D">#afk_start_time= &mdash; Nelumbo::World::Player</a></li>
     
+      <li><a href="Nelumbo/BaseBot.html#method-i-after">#after &mdash; Nelumbo::BaseBot</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-bot_ended">#bot_ended &mdash; Nelumbo::BaseBot</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-bot_started">#bot_started &mdash; Nelumbo::BaseBot</a></li>
+    
       <li><a href="Nelumbo/World/Context.html#method-i-button_pressed">#button_pressed &mdash; Nelumbo::World::Context</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-collect_recurring_timers">#collect_recurring_timers &mdash; Nelumbo::BaseBot</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-color_code">#color_code &mdash; Nelumbo::World::Player</a></li>
     
@@ -199,11 +215,11 @@
     
       <li><a href="Nelumbo/World/Player.html#method-i-cookies-3D">#cookies= &mdash; Nelumbo::World::Player</a></li>
     
-      <li><a href="Nelumbo/World/Context.html#method-i-create_and_add_player">#create_and_add_player &mdash; Nelumbo::World::Context</a></li>
+      <li><a href="Nelumbo/WorldTracking/SimpleImplementation.html#method-i-create_and_add_player">#create_and_add_player &mdash; Nelumbo::WorldTracking::SimpleImplementation</a></li>
     
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-create_and_add_player">#create_and_add_player &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
     
-      <li><a href="Nelumbo/WorldTracking/SimpleImplementation.html#method-i-create_and_add_player">#create_and_add_player &mdash; Nelumbo::WorldTracking::SimpleImplementation</a></li>
+      <li><a href="Nelumbo/World/Context.html#method-i-create_and_add_player">#create_and_add_player &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Nelumbo/EventHandler.html#method-i-data">#data &mdash; Nelumbo::EventHandler</a></li>
     
@@ -211,11 +227,11 @@
     
       <li><a href="String.html#method-i-decode_b95">#decode_b95 &mdash; String</a></li>
     
-      <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-delete_and_remove_player">#delete_and_remove_player &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
-    
       <li><a href="Nelumbo/World/Context.html#method-i-delete_and_remove_player">#delete_and_remove_player &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Nelumbo/WorldTracking/SimpleImplementation.html#method-i-delete_and_remove_player">#delete_and_remove_player &mdash; Nelumbo::WorldTracking::SimpleImplementation</a></li>
+    
+      <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-delete_and_remove_player">#delete_and_remove_player &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
     
       <li><a href="Nelumbo/CoreHooks.html#method-i-disconnect">#disconnect &mdash; Nelumbo::CoreHooks</a></li>
     
@@ -229,11 +245,13 @@
     
       <li><a href="Nelumbo/Script/LineParser.html#method-i-each_line">#each_line &mdash; Nelumbo::Script::LineParser</a></li>
     
-      <li><a href="Nelumbo/World/Context.html#method-i-each_player">#each_player &mdash; Nelumbo::World::Context</a></li>
-    
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-each_player">#each_player &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
     
+      <li><a href="Nelumbo/World/Context.html#method-i-each_player">#each_player &mdash; Nelumbo::World::Context</a></li>
+    
       <li><a href="Nelumbo/Script/Tokenizer.html#method-i-each_token">#each_token &mdash; Nelumbo::Script::Tokenizer</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-emote">#emote &mdash; Nelumbo::BaseBot</a></li>
     
       <li><a href="Numeric.html#method-i-encode_b220">#encode_b220 &mdash; Numeric</a></li>
     
@@ -242,6 +260,8 @@
       <li><a href="Nelumbo/World/Player.html#method-i-entry_code">#entry_code &mdash; Nelumbo::World::Player</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-entry_code-3D">#entry_code= &mdash; Nelumbo::World::Player</a></li>
+    
+      <li><a href="Nelumbo/EventDSL.html#method-i-every">#every &mdash; Nelumbo::EventDSL</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-facing_direction">#facing_direction &mdash; Nelumbo::World::Context</a></li>
     
@@ -273,15 +293,15 @@
     
       <li><a href="Nelumbo/World/Context.html#method-i-find_player_at_position">#find_player_at_position &mdash; Nelumbo::World::Context</a></li>
     
-      <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-find_player_at_position">#find_player_at_position &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
-    
       <li><a href="Nelumbo/WorldTracking/SimpleImplementation.html#method-i-find_player_at_position">#find_player_at_position &mdash; Nelumbo::WorldTracking::SimpleImplementation</a></li>
     
-      <li><a href="Nelumbo/World/Context.html#method-i-find_player_by_name">#find_player_by_name &mdash; Nelumbo::World::Context</a></li>
+      <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-find_player_at_position">#find_player_at_position &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
     
       <li><a href="Nelumbo/WorldTracking/SimpleImplementation.html#method-i-find_player_by_name">#find_player_by_name &mdash; Nelumbo::WorldTracking::SimpleImplementation</a></li>
     
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-find_player_by_name">#find_player_by_name &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+    
+      <li><a href="Nelumbo/World/Context.html#method-i-find_player_by_name">#find_player_by_name &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-find_player_by_uid">#find_player_by_uid &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
     
@@ -292,6 +312,8 @@
       <li><a href="Nelumbo/World/Context.html#method-i-floor">#floor &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Array.html#method-i-furc_pack">#furc_pack &mdash; Array</a></li>
+    
+      <li><a href="String.html#method-i-furc_strip">#furc_strip &mdash; String</a></li>
     
       <li><a href="String.html#method-i-furc_unpack">#furc_unpack &mdash; String</a></li>
     
@@ -304,8 +326,6 @@
       <li><a href="Nelumbo/World/Player.html#method-i-held_object">#held_object &mdash; Nelumbo::World::Player</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-held_object-3D">#held_object= &mdash; Nelumbo::World::Player</a></li>
-    
-      <li><a href="Nelumbo/EventDSL.html#method-i-included">#included &mdash; Nelumbo::EventDSL</a></li>
     
       <li><a href="Nelumbo/Script/TreeParser.html#method-i-index_of_string_variable">#index_of_string_variable &mdash; Nelumbo::Script::TreeParser</a></li>
     
@@ -331,15 +351,17 @@
     
       <li><a href="Nelumbo/World/Context.html#method-i-load_map">#load_map &mdash; Nelumbo::World::Context</a></li>
     
-      <li><a href="Nelumbo/BaseBot.html#method-i-load_plugin">#load_plugin &mdash; Nelumbo::BaseBot</a></li>
+      <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-map_directory">#map_directory &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+    
+      <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-map_path">#map_path &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
     
       <li><a href="Nelumbo/EventDSL.html#method-i-method_missing">#method_missing &mdash; Nelumbo::EventDSL</a></li>
-    
-      <li><a href="Nelumbo/World/Context.html#method-i-move_tracked_player">#move_tracked_player &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Nelumbo/WorldTracking/SimpleImplementation.html#method-i-move_tracked_player">#move_tracked_player &mdash; Nelumbo::WorldTracking::SimpleImplementation</a></li>
     
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-move_tracked_player">#move_tracked_player &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
+    
+      <li><a href="Nelumbo/World/Context.html#method-i-move_tracked_player">#move_tracked_player &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-moved_from_x">#moved_from_x &mdash; Nelumbo::World::Context</a></li>
     
@@ -363,6 +385,10 @@
     
       <li><a href="Nelumbo/Script/LanguageDSL/LineProxy.html#method-i-number_variable">#number_variable &mdash; Nelumbo::Script::LanguageDSL::LineProxy</a></li>
     
+      <li><a href="Nelumbo/EventHandler.html#method-i-param">#param &mdash; Nelumbo::EventHandler</a></li>
+    
+      <li><a href="Nelumbo/EventHandler.html#method-i-params">#params &mdash; Nelumbo::EventHandler</a></li>
+    
       <li><a href="Nelumbo/Script/TreeParser.html#method-i-parse">#parse &mdash; Nelumbo::Script::TreeParser</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-player">#player &mdash; Nelumbo::World::Context</a></li>
@@ -372,6 +398,12 @@
       <li><a href="Nelumbo/World/Context.html#method-i-player_moved-3F">#player_moved? &mdash; Nelumbo::World::Context</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-players_in_dream">#players_in_dream &mdash; Nelumbo::World::Context</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-plugin-3F">#plugin? &mdash; Nelumbo::BaseBot</a></li>
+    
+      <li><a href="Nelumbo/Plugin/ClassMethods.html#method-i-plugin_added">#plugin_added &mdash; Nelumbo::Plugin::ClassMethods</a></li>
+    
+      <li><a href="Nelumbo/Plugin/ClassMethods.html#method-i-plugin_removed">#plugin_removed &mdash; Nelumbo::Plugin::ClassMethods</a></li>
     
       <li><a href="Integer.html#method-i-pluralize">#pluralize &mdash; Integer</a></li>
     
@@ -393,6 +425,8 @@
     
       <li><a href="Nelumbo/SelectCore.html#method-i-remove_bot">#remove_bot &mdash; Nelumbo::SelectCore</a></li>
     
+      <li><a href="Nelumbo/BaseBot.html#method-i-remove_plugin">#remove_plugin &mdash; Nelumbo::BaseBot</a></li>
+    
       <li><a href="Nelumbo/WorldTracking.html#method-i-request_player_by_uid">#request_player_by_uid &mdash; Nelumbo::WorldTracking</a></li>
     
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation.html#method-i-reset_world_tracking">#reset_world_tracking &mdash; Nelumbo::WorldTracking::AdvancedImplementation</a></li>
@@ -401,9 +435,9 @@
     
       <li><a href="Nelumbo/SelectCore.html#method-i-run">#run &mdash; Nelumbo::SelectCore</a></li>
     
-      <li><a href="Nelumbo/BaseBot.html#method-i-run">#run &mdash; Nelumbo::BaseBot</a></li>
-    
       <li><a href="Nelumbo/SimpleCore.html#method-i-run">#run &mdash; Nelumbo::SimpleCore</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-run">#run &mdash; Nelumbo::BaseBot</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-save_map">#save_map &mdash; Nelumbo::World::Context</a></li>
     
@@ -429,19 +463,23 @@
     
       <li><a href="Nelumbo/Bot.html#method-i-setting-3F">#setting? &mdash; Nelumbo::Bot</a></li>
     
+      <li><a href="Nelumbo/Plugin/ClassMethods.html#method-i-setup_as_plugin">#setup_as_plugin &mdash; Nelumbo::Plugin::ClassMethods</a></li>
+    
       <li><a href="Nelumbo/EventDSL.html#method-i-setup_events">#setup_events &mdash; Nelumbo::EventDSL</a></li>
+    
+      <li><a href="Nelumbo/WorldTracking/ClassMethods.html#method-i-setup_world_tracking">#setup_world_tracking &mdash; Nelumbo::WorldTracking::ClassMethods</a></li>
     
       <li><a href="Nelumbo/WorldTracking/SimpleImplementation/ClassMethods.html#method-i-setup_world_tracking">#setup_world_tracking &mdash; Nelumbo::WorldTracking::SimpleImplementation::ClassMethods</a></li>
     
       <li><a href="Nelumbo/WorldTracking/AdvancedImplementation/ClassMethods.html#method-i-setup_world_tracking">#setup_world_tracking &mdash; Nelumbo::WorldTracking::AdvancedImplementation::ClassMethods</a></li>
-    
-      <li><a href="Nelumbo/WorldTracking/ClassMethods.html#method-i-setup_world_tracking">#setup_world_tracking &mdash; Nelumbo::WorldTracking::ClassMethods</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-shape">#shape &mdash; Nelumbo::World::Player</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-shape-3D">#shape= &mdash; Nelumbo::World::Player</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-shortname">#shortname &mdash; Nelumbo::World::Player</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-speak">#speak &mdash; Nelumbo::BaseBot</a></li>
     
       <li><a href="Nelumbo/Script/LanguageDSL/LineProxy.html#method-i-string_literal">#string_literal &mdash; Nelumbo::Script::LanguageDSL::LineProxy</a></li>
     
@@ -463,7 +501,7 @@
     
       <li><a href="Nelumbo/World/Player.html#method-i-uid">#uid &mdash; Nelumbo::World::Player</a></li>
     
-      <li><a href="Nelumbo/BaseBot.html#method-i-unload_plugin">#unload_plugin &mdash; Nelumbo::BaseBot</a></li>
+      <li><a href="Nelumbo/Plugin/ClassMethods.html#method-i-users">#users &mdash; Nelumbo::Plugin::ClassMethods</a></li>
     
       <li><a href="Nelumbo/World/Context.html#method-i-variable">#variable &mdash; Nelumbo::World::Context</a></li>
     
@@ -475,11 +513,21 @@
     
       <li><a href="Nelumbo/World/Context.html#method-i-wall">#wall &mdash; Nelumbo::World::Context</a></li>
     
+      <li><a href="Nelumbo/Plugin/ClassMethods.html#method-i-when_added">#when_added &mdash; Nelumbo::Plugin::ClassMethods</a></li>
+    
+      <li><a href="Nelumbo/Plugin/ClassMethods.html#method-i-when_removed">#when_removed &mdash; Nelumbo::Plugin::ClassMethods</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-whisper">#whisper &mdash; Nelumbo::BaseBot</a></li>
+    
+      <li><a href="Nelumbo/BaseBot.html#method-i-whisper_back">#whisper_back &mdash; Nelumbo::BaseBot</a></li>
+    
       <li><a href="Nelumbo/World/Context.html#method-i-width">#width &mdash; Nelumbo::World::Context</a></li>
     
-      <li><a href="Nelumbo/CoreHooks.html#method-i-write_line">#write_line &mdash; Nelumbo::CoreHooks</a></li>
+      <li><a href="Nelumbo/EventHandler.html#method-i-with_event_data">#with_event_data &mdash; Nelumbo::EventHandler</a></li>
     
       <li><a href="Nelumbo/SelectCore.html#method-i-write_line">#write_line &mdash; Nelumbo::SelectCore</a></li>
+    
+      <li><a href="Nelumbo/CoreHooks.html#method-i-write_line">#write_line &mdash; Nelumbo::CoreHooks</a></li>
     
       <li><a href="Nelumbo/World/Player.html#method-i-x">#x &mdash; Nelumbo::World::Player</a></li>
     

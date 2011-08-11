@@ -69,10 +69,10 @@ module Nelumbo
 	# WorldTracking will raise these events:
 	# [player_entered]
 	#   A player entered the dream.
-	#   Data: +:player+, +:uid+, +:shortname+, +:flags+
+	#   Data: +:shortname+, +:player+, +:uid+, +:flags+
 	# [player_left]
 	#   A player left the dream.
-	#   Data: +:player+, +:uid+, +:shortname+
+	#   Data: +:shortname+, +:player+, +:uid+
 	# [player_move]
 	#   A player moved. The bot will trigger this whenever it finds out about a
 	#   position change. (Sources include the avatar info lines, DS trigger
@@ -259,6 +259,14 @@ module Nelumbo
 				url.downcase.gsub(%r(/$), '')
 			end
 
+			def map_directory
+				@current_map_directory
+			end
+
+			def map_path
+				@current_map_path
+			end
+
 			def init_source_dream_list
 				@world_source_dreams = {}
 			end
@@ -275,6 +283,9 @@ module Nelumbo
 					puts "No source path is registered for this dream."
 					return
 				end
+
+				@current_map_path = dream_path
+				@current_map_directory = File.dirname(dream_path)
 
 				# TODO: Abstract this into a Map class
 				map_version, map_data = nil, nil
@@ -298,8 +309,6 @@ module Nelumbo
 				@context.load_map map_data, width, height
 
 				puts "Map data loaded (#{width}x#{height})"
-
-				load_ds_file(dream_path.sub(/\.map$/i, '.ds'))
 
 				puts "Dream initialised."
 			end
@@ -357,7 +366,7 @@ module Nelumbo
 						end
 					end
 
-					p category, type, params
+					#p category, type, params
 					
 					if annotation
 						split_an = annotation.split
@@ -432,8 +441,8 @@ module Nelumbo
 					is_new = ((flags & 4) != 0)
 
 					if is_new
-						dispatch_event :player_entered, player: player,
-							uid: uid, shortname: player.shortname, flags: flags
+						dispatch_event :player_entered, shortname: player.shortname,
+							player: player, uid: uid, flags: flags
 					end
 
 					if was_previously_afk and afk == 0
@@ -486,7 +495,7 @@ module Nelumbo
 
 					delete_and_remove_player(player)
 
-					dispatch_event :player_left, player: player, uid: uid, shortname: player.shortname
+					dispatch_event :player_left, shortname: player.shortname, player: player, uid: uid
 				end
 			end
 		end

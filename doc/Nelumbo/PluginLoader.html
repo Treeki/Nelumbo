@@ -5,7 +5,7 @@
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 
-  <title>Module: Nelumbo::EventDSL</title>
+  <title>Module: Nelumbo::PluginLoader</title>
 
   <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
 
@@ -34,8 +34,8 @@
         <div class="section-body">
           <ul>
           
-            <li><a href="../lib/nelumbo/event_dsl_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-              class="thickbox" title="lib/nelumbo/event_dsl.rb">lib/nelumbo/event_dsl.rb</a></li>
+            <li><a href="../lib/nelumbo/plugin_loader_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/nelumbo/plugin_loader.rb">lib/nelumbo/plugin_loader.rb</a></li>
           
           </ul>
         </div>
@@ -57,13 +57,9 @@
         <h3 class="section-header">Methods</h3>
         <ul class="link-list">
           
-          <li><a href="#method-i-every">#every</a></li>
+          <li><a href="#method-c-load">::load</a></li>
           
-          <li><a href="#method-i-inherited">#inherited</a></li>
-          
-          <li><a href="#method-i-method_missing">#method_missing</a></li>
-          
-          <li><a href="#method-i-setup_events">#setup_events</a></li>
+          <li><a href="#method-c-unload">::unload</a></li>
           
         </ul>
       </div>
@@ -191,14 +187,33 @@
   </div>
 
   <div id="documentation">
-    <h1 class="module">Nelumbo::EventDSL</h1>
+    <h1 class="module">Nelumbo::PluginLoader</h1>
 
     <div id="description" class="description">
       
-<p>Internal module relating to the event system. This is meant for extending a
-class/module, not being included.</p>
+<p>This is an optional module which can load and unload plugins dynamically
+from Ruby source files.</p>
 
-<p>If you don’t know what to do with it, you probably don’t need to touch it.</p>
+<h2>Setup and Usage</h2>
+
+<p>Assign <a href="PluginLoader.html#attribute-c-load_path">load_path</a> to
+specify a directory for plugin files. Some other properties may be changed.</p>
+
+<p>Call PluginLoader#load and PluginLoader#unload to do stuff.</p>
+
+<h2>Caveats</h2>
+<ul><li>
+<p>Plugins must be modules named using a capitalised version of the filename
+with ‘Plugin’ added on the end. For example, <tt>database_access.rb</tt>
+would contain <tt>DatabaseAccessPlugin</tt>.</p>
+</li><li>
+<p>Unloading a plugin will delete its module (and any modules that are defined
+under it) but will make no other changes. It’s not really feasible in Ruby
+to detect <b>everything</b> that a .rb file has touched.</p>
+</li><li>
+<p>Don’t load a plugin if another version with the same name is already
+loaded. No one stops you from doing that, but it’s confusing.</p>
+</li></ul>
 
     </div><!-- description -->
 
@@ -216,27 +231,14 @@ class/module, not being included.</p>
         <h3 class="section-header">Attributes</h3>
 
         
-        <div id="events-attribute-method" class="method-detail">
-          <a name="events"></a>
+        <div id="load_path-attribute-method" class="method-detail">
+          <a name="load_path"></a>
+          
+          <a name="load_path="></a>
           
           <div class="method-heading attribute-method-heading">
-            <span class="method-name">events</span><span
-              class="attribute-access-type">[R]</span>
-          </div>
-
-          <div class="method-description">
-          
-          
-          
-          </div>
-        </div>
-        
-        <div id="recurring_timers-attribute-method" class="method-detail">
-          <a name="recurring_timers"></a>
-          
-          <div class="method-heading attribute-method-heading">
-            <span class="method-name">recurring_timers</span><span
-              class="attribute-access-type">[R]</span>
+            <span class="method-name">load_path</span><span
+              class="attribute-access-type">[RW]</span>
           </div>
 
           <div class="method-description">
@@ -251,151 +253,105 @@ class/module, not being included.</p>
 
       <!-- Methods -->
       
-      <div id="public-instance-method-details" class="method-section section">
-        <h3 class="section-header">Public Instance Methods</h3>
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
 
       
-        <div id="every-method" class="method-detail ">
-          <a name="method-i-every"></a>
+        <div id="load-method" class="method-detail ">
+          <a name="method-c-load"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">every</span><span
-              class="method-args">(interval, &block)</span>
+            <span class="method-name">load</span><span
+              class="method-args">(name)</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
 
           <div class="method-description">
             
-            <p>Defines a new recurring timer.</p>
+            
             
 
             
-            <div class="method-source-code" id="every-source">
+            <div class="method-source-code" id="load-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/event_dsl.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">every</span>(<span class="ruby-identifier">interval</span>, &amp;<span class="ruby-identifier">block</span>)
-        <span class="ruby-ivar">@recurring_timers</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">interval</span><span class="ruby-operator">:</span> <span class="ruby-identifier">interval</span>, <span class="ruby-identifier">block</span><span class="ruby-operator">:</span> <span class="ruby-identifier">block</span>}
+<span class="ruby-comment"># File lib/nelumbo/plugin_loader.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load</span>(<span class="ruby-identifier">name</span>)
+        <span class="ruby-comment"># normalise it</span>
+        <span class="ruby-identifier">file_name</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{@load_path}&quot;</span>, <span class="ruby-node">&quot;#{name.underscore}.rb&quot;</span>)
+        <span class="ruby-identifier">module_name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">camelize</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;Plugin&quot;</span>
+
+        <span class="ruby-constant">Kernel</span>.<span class="ruby-identifier">load</span> <span class="ruby-identifier">file_name</span>
+
+        <span class="ruby-identifier">mod</span> = <span class="ruby-identifier">module_name</span>.<span class="ruby-identifier">constantize</span>
+        
+        <span class="ruby-ivar">@plugins</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">mod</span><span class="ruby-operator">:</span> <span class="ruby-identifier">mod</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">module_name</span>}
+        <span class="ruby-identifier">mod</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- every-source -->
+            </div><!-- load-source -->
             
           </div>
 
           
 
           
-        </div><!-- every-method -->
+        </div><!-- load-method -->
 
       
-        <div id="inherited-method" class="method-detail ">
-          <a name="method-i-inherited"></a>
+        <div id="unload-method" class="method-detail ">
+          <a name="method-c-unload"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">inherited</span><span
-              class="method-args">(cls)</span>
+            <span class="method-name">unload</span><span
+              class="method-args">(obj)</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
 
           <div class="method-description">
             
-            <p>Hook that calls <a
-href="EventDSL.html#method-i-setup_events">setup_events</a> on every
-subclass of a class that extends <a href="EventDSL.html">EventDSL</a>, so
-that each one can have its own @events hash and avoid conflicts.</p>
+            
             
 
             
-            <div class="method-source-code" id="inherited-source">
+            <div class="method-source-code" id="unload-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/event_dsl.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">cls</span>)
-        <span class="ruby-identifier">cls</span>.<span class="ruby-identifier">setup_events</span>
+<span class="ruby-comment"># File lib/nelumbo/plugin_loader.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unload</span>(<span class="ruby-identifier">obj</span>)
+        <span class="ruby-identifier">plugin</span> = <span class="ruby-keyword">nil</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+                <span class="ruby-identifier">camel_name</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">camelize</span>
+                <span class="ruby-identifier">plugin</span> = <span class="ruby-ivar">@plugins</span>.<span class="ruby-identifier">find</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>[<span class="ruby-value">:name</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">camel_name</span> }
+                <span class="ruby-identifier">camel_name</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;Plugin&quot;</span>
+                <span class="ruby-identifier">plugin</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@plugins</span>.<span class="ruby-identifier">find</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>[<span class="ruby-value">:name</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">camel_name</span> }
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Module</span>)
+                <span class="ruby-identifier">plugin</span> = <span class="ruby-ivar">@plugins</span>.<span class="ruby-identifier">find</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>[<span class="ruby-value">:mod</span>] = <span class="ruby-identifier">obj</span> }
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;cannot find the loaded plugin matching #{obj}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">plugin</span>.<span class="ruby-identifier">nil?</span>
+
+        <span class="ruby-ivar">@plugins</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">plugin</span>
+
+        <span class="ruby-identifier">mod</span> = <span class="ruby-identifier">plugin</span>[<span class="ruby-value">:mod</span>]
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">send</span> <span class="ruby-value">:remove_const</span>, <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>
+        <span class="ruby-identifier">mod</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- inherited-source -->
+            </div><!-- unload-source -->
             
           </div>
 
           
 
           
-        </div><!-- inherited-method -->
+        </div><!-- unload-method -->
 
       
-        <div id="method_missing-method" class="method-detail ">
-          <a name="method-i-method_missing"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">method_missing</span><span
-              class="method-args">(name, *args, &block)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>Hook that allows a subclass to define an event responder using
-on_event_name.</p>
-            
-
-            
-            <div class="method-source-code" id="method_missing-source">
-<pre>
-<span class="ruby-comment"># File lib/nelumbo/event_dsl.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">name</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
-        <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-keyword">unless</span> <span class="ruby-regexp">/^on_(?&lt;event_name&gt;.+)$/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>
-
-        <span class="ruby-identifier">create_event_responder</span> <span class="ruby-identifier">event_name</span>.<span class="ruby-identifier">to_sym</span>, <span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- method_missing-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- method_missing-method -->
-
-      
-        <div id="setup_events-method" class="method-detail ">
-          <a name="method-i-setup_events"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">setup_events</span><span
-              class="method-args">()</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>Initialise the events array for the class. Don’t call this method unless
-you know what you’re doing!</p>
-            
-
-            
-            <div class="method-source-code" id="setup_events-source">
-<pre>
-<span class="ruby-comment"># File lib/nelumbo/event_dsl.rb, line 14</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup_events</span>
-        <span class="ruby-ivar">@events</span> = {}
-        <span class="ruby-ivar">@recurring_timers</span> = []
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- setup_events-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- setup_events-method -->
-
-      
-      </div><!-- public-instance-method-details -->
+      </div><!-- public-class-method-details -->
     
     </div><!-- 5Buntitled-5D -->
   

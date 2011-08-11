@@ -32,12 +32,33 @@ module Nelumbo
 		setup_events
 		
 		# Return the data for the current event.
-		def data
+		def params
 			@current_event_data
+		end
+		alias :data :params
+
+		def param
+			@current_event_data.first[1]
+		end
+
+		# Temporarily override the event data while executing some code.
+		def with_event_data(event_data)
+			saved = @current_event_data
+			@current_event_data = event_data
+			yield
+			@current_event_data = saved
 		end
 
 		# Call the responders associated with an event.
 		# An optional data hash can be passed containing information about the event.
+		#
+		# The first element in the hash is assumed to be a "default" entry, and
+		# will be treated as such when checking conditions. For example, these two
+		# event definitions do the same thing when the following event is raised:
+		#   dispatch_event(:speech, text: 'asdf', name: 'Cat', shortname: 'cat')
+		#   on_speech('asdf') { puts "Event activated" }
+		#   on_speech(text: 'asdf') { puts "Event activated" }
+		#
 		def dispatch_event(name, event_data = nil)
 			# save the previous data so that events can be stacked
 			saved_event_data = @current_event_data
@@ -48,7 +69,19 @@ module Nelumbo
 				# AND subclasses. yay!
 				singleton_class.ancestors.reverse_each do |mod|
 					if mod != self.class and mod.respond_to?(:events)
-						_exec_event_list(mod.events[name])
+						begin
+							_exec_event_list(mod.events[name])
+						rescue Exception => error
+							# oops, something went wrong
+							# raise :plugin_error if it's in a plugin
+							# if not, then just throw the exception up the stack
+							if name != :plugin_error and mod.include?(Nelumbo::Plugin)
+								dispatch_event :plugin_error,
+									plugin: mod, error: error
+							else
+								raise error
+							end
+						end
 					end
 				end
 
@@ -77,7 +110,9 @@ module Nelumbo
 			return true if conditions.nil?
 			return false if event_data.nil?
 
-			conditions.all? { |k,v| v === event_data[k] }
+			default = conditions[:__default]
+			(conditions.all? { |k,v| k == :__default or v === event_data[k] } and
+			 (default.nil? or default === event_data.first[1]))
 		end
 
 

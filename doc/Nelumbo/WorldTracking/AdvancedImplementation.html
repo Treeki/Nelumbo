@@ -89,6 +89,10 @@
           
           <li><a href="#method-i-load_ds_file">#load_ds_file</a></li>
           
+          <li><a href="#method-i-map_directory">#map_directory</a></li>
+          
+          <li><a href="#method-i-map_path">#map_path</a></li>
+          
           <li><a href="#method-i-move_tracked_player">#move_tracked_player</a></li>
           
           <li><a href="#method-i-normalise_dream_url">#normalise_dream_url</a></li>
@@ -125,6 +129,8 @@
         
           <li class="file"><a href="../../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
         
+          <li class="file"><a href="../../tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
+        
           <li class="file"><a href="../../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
         </ul>
@@ -159,6 +165,10 @@
           <li><a href="../../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="../../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../../Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="../../Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="../../Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -213,6 +223,8 @@
           <li><a href="../../String.html">String</a></li>
         
           <li><a href="../../TestBot.html">TestBot</a></li>
+        
+          <li><a href="../../TestPlugin.html">TestPlugin</a></li>
         
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -352,7 +364,7 @@
             
             <div class="method-source-code" id="ds_var-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 396</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 405</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">ds_var</span>(<span class="ruby-identifier">name</span>)
         <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -385,7 +397,7 @@
             
             <div class="method-source-code" id="ds_var_y-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 400</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 409</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">ds_var_y</span>(<span class="ruby-identifier">name</span>)
         <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -542,7 +554,7 @@
             
             <div class="method-source-code" id="init_source_dream_list-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 262</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 270</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init_source_dream_list</span>
         <span class="ruby-ivar">@world_source_dreams</span> = {}
 <span class="ruby-keyword">end</span></pre>
@@ -575,7 +587,7 @@
             
             <div class="method-source-code" id="init_world_engine-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 270</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 278</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init_world_engine</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">line_count</span>)
         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Initialising World Tracking for #{url}.&quot;</span>
 
@@ -584,6 +596,9 @@
                 <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;No source path is registered for this dream.&quot;</span>
                 <span class="ruby-keyword">return</span>
         <span class="ruby-keyword">end</span>
+
+        <span class="ruby-ivar">@current_map_path</span> = <span class="ruby-identifier">dream_path</span>
+        <span class="ruby-ivar">@current_map_directory</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">dream_path</span>)
 
         <span class="ruby-comment"># TODO: Abstract this into a Map class</span>
         <span class="ruby-identifier">map_version</span>, <span class="ruby-identifier">map_data</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>
@@ -607,8 +622,6 @@
         <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">load_map</span> <span class="ruby-identifier">map_data</span>, <span class="ruby-identifier">width</span>, <span class="ruby-identifier">height</span>
 
         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Map data loaded (#{width}x#{height})&quot;</span>
-
-        <span class="ruby-identifier">load_ds_file</span>(<span class="ruby-identifier">dream_path</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp">/\.map$/</span>, <span class="ruby-string">'.ds'</span>))
 
         <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Dream initialised.&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -641,7 +654,7 @@
             
             <div class="method-source-code" id="load_ds_file-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 312</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 321</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">load_ds_file</span>(<span class="ruby-identifier">path</span>)
         <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Loading DS file...&quot;</span>
 
@@ -690,7 +703,7 @@
                         <span class="ruby-keyword">end</span>
                 <span class="ruby-keyword">end</span>
 
-                <span class="ruby-identifier">p</span> <span class="ruby-identifier">category</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">params</span>
+                <span class="ruby-comment">#p category, type, params</span>
                 
                 <span class="ruby-keyword">if</span> <span class="ruby-identifier">annotation</span>
                         <span class="ruby-identifier">split_an</span> = <span class="ruby-identifier">annotation</span>.<span class="ruby-identifier">split</span>
@@ -717,6 +730,72 @@
 
           
         </div><!-- load_ds_file-method -->
+
+      
+        <div id="map_directory-method" class="method-detail ">
+          <a name="method-i-map_directory"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">map_directory</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="map_directory-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 262</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">map_directory</span>
+        <span class="ruby-ivar">@current_map_directory</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- map_directory-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- map_directory-method -->
+
+      
+        <div id="map_path-method" class="method-detail ">
+          <a name="method-i-map_path"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">map_path</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="map_path-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 266</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">map_path</span>
+        <span class="ruby-ivar">@current_map_path</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- map_path-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- map_path-method -->
 
       
         <div id="move_tracked_player-method" class="method-detail ">
@@ -803,7 +882,7 @@
             
             <div class="method-source-code" id="preprocess_ds_token-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 380</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 389</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">preprocess_ds_token</span>(<span class="ruby-identifier">token</span>, <span class="ruby-identifier">spec_bit</span>, <span class="ruby-identifier">tree_parser</span>)
         <span class="ruby-keyword">case</span> <span class="ruby-identifier">token</span>[<span class="ruby-value">:type</span>]
         <span class="ruby-keyword">when</span> <span class="ruby-value">:number</span>
@@ -847,7 +926,7 @@
             
             <div class="method-source-code" id="produce_map-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 307</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 316</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">produce_map</span>
         <span class="ruby-comment"># TODO: Abstract this into a Map class</span>
         <span class="ruby-ivar">@current_map_version</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@current_map_header</span>.<span class="ruby-identifier">each_pair</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;#{k}=#{v}\n&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">''</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;BODY\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">save_map</span>
@@ -881,7 +960,7 @@
             
             <div class="method-source-code" id="register_source_dream-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 266</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 274</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">register_source_dream</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">path</span>)
         <span class="ruby-ivar">@world_source_dreams</span>[<span class="ruby-identifier">normalise_dream_url</span>(<span class="ruby-identifier">url</span>)] = <span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>
@@ -952,7 +1031,7 @@
             
             <div class="method-source-code" id="set_ds_var-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 404</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 413</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_ds_var</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>)
         <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">set_variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>], <span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -985,7 +1064,7 @@
             
             <div class="method-source-code" id="set_ds_var_y-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 408</span>
+<span class="ruby-comment"># File lib/nelumbo/world_tracking.rb, line 417</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_ds_var_y</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>)
         <span class="ruby-ivar">@context</span>.<span class="ruby-identifier">set_variable</span>(<span class="ruby-ivar">@ds_variables</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>

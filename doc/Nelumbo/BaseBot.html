@@ -67,17 +67,35 @@
           
           <li><a href="#method-c-new">::new</a></li>
           
+          <li><a href="#method-i-add_plugin">#add_plugin</a></li>
+          
+          <li><a href="#method-i-after">#after</a></li>
+          
+          <li><a href="#method-i-bot_ended">#bot_ended</a></li>
+          
+          <li><a href="#method-i-bot_started">#bot_started</a></li>
+          
+          <li><a href="#method-i-collect_recurring_timers">#collect_recurring_timers</a></li>
+          
+          <li><a href="#method-i-emote">#emote</a></li>
+          
           <li><a href="#method-i-line_received">#line_received</a></li>
           
-          <li><a href="#method-i-load_plugin">#load_plugin</a></li>
+          <li><a href="#method-i-plugin-3F">#plugin?</a></li>
+          
+          <li><a href="#method-i-remove_plugin">#remove_plugin</a></li>
           
           <li><a href="#method-i-run">#run</a></li>
           
           <li><a href="#method-i-say">#say</a></li>
           
+          <li><a href="#method-i-speak">#speak</a></li>
+          
           <li><a href="#method-i-timer_tick">#timer_tick</a></li>
           
-          <li><a href="#method-i-unload_plugin">#unload_plugin</a></li>
+          <li><a href="#method-i-whisper">#whisper</a></li>
+          
+          <li><a href="#method-i-whisper_back">#whisper_back</a></li>
           
         </ul>
       </div>
@@ -110,6 +128,8 @@
           <li class="file"><a href="../Rakefile.html">Rakefile</a></li>
         
           <li class="file"><a href="../tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="../tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
           <li class="file"><a href="../tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
@@ -145,6 +165,10 @@
           <li><a href="../Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="../Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="../Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="../Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="../Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -200,6 +224,8 @@
         
           <li><a href="../TestBot.html">TestBot</a></li>
         
+          <li><a href="../TestPlugin.html">TestPlugin</a></li>
+        
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
       </div>
@@ -246,12 +272,12 @@ niceties that are useful for most bots.</p>
 <p>A visible message is received from the server. Data: <tt>:line</tt></p>
 </dd><dt>speech</dt>
 <dd>
-<p>A player spoke within the bot’s range. Data: <tt>:name</tt>,
-<tt>:shortname</tt>, <tt>:text</tt></p>
+<p>A player spoke within the bot’s range. Data: <tt>:text</tt>,
+<tt>:name</tt>, <tt>:shortname</tt></p>
 </dd><dt>whisper</dt>
 <dd>
-<p>A player whispered the bot. Data: <tt>:name</tt>, <tt>:shortname</tt>,
-<tt>:text</tt></p>
+<p>A player whispered the bot. Data: <tt>:text</tt>, <tt>:name</tt>,
+<tt>:shortname</tt></p>
 </dd></dl>
 
     </div><!-- description -->
@@ -275,6 +301,21 @@ niceties that are useful for most bots.</p>
           
           <div class="method-heading attribute-method-heading">
             <span class="method-name">core</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="plugins-attribute-method" class="method-detail">
+          <a name="plugins"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">plugins</span><span
               class="attribute-access-type">[R]</span>
           </div>
 
@@ -332,6 +373,10 @@ niceties that are useful for most bots.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">core</span> = <span class="ruby-keyword">nil</span>)
         <span class="ruby-ivar">@core</span> = (<span class="ruby-identifier">core</span> <span class="ruby-operator">||</span> <span class="ruby-constant">SimpleCore</span>.<span class="ruby-identifier">new</span>)
         <span class="ruby-ivar">@state</span> = <span class="ruby-value">:inactive</span>
+        <span class="ruby-ivar">@plugins</span> = []
+        <span class="ruby-ivar">@timers</span> = []
+        <span class="ruby-ivar">@recurring_timers</span> = []
+        <span class="ruby-identifier">collect_recurring_timers</span>
 <span class="ruby-keyword">end</span></pre>
             </div><!-- new-source -->
             
@@ -347,6 +392,252 @@ niceties that are useful for most bots.</p>
     
       <div id="public-instance-method-details" class="method-section section">
         <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="add_plugin-method" class="method-detail ">
+          <a name="method-i-add_plugin"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_plugin</span><span
+              class="method-args">(mod)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_plugin-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 177</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_plugin</span>(<span class="ruby-identifier">mod</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">plugin?</span>(<span class="ruby-identifier">mod</span>)
+
+        <span class="ruby-identifier">mixin</span> <span class="ruby-identifier">mod</span>
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">plugin_added</span>(<span class="ruby-keyword">self</span>)
+        <span class="ruby-identifier">collect_recurring_timers</span>
+        <span class="ruby-ivar">@plugins</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mod</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_plugin-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_plugin-method -->
+
+      
+        <div id="after-method" class="method-detail ">
+          <a name="method-i-after"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">after</span><span
+              class="method-args">(duration, event=nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Set an action to occur once after a specific amount of time has passed.
+This method can trigger either an event or a block.</p>
+
+<pre>after(30, :event_name)
+after(30) { puts &quot;30 seconds passed&quot; }</pre>
+            
+
+            
+            <div class="method-source-code" id="after-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">after</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">event</span>=<span class="ruby-keyword">nil</span>)
+        <span class="ruby-identifier">info</span> = {<span class="ruby-identifier">trigger_at</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">duration</span>}
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">event</span>
+                <span class="ruby-identifier">info</span>[<span class="ruby-value">:event</span>] = <span class="ruby-identifier">event</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;block not passed to BaseBot#after&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_given?</span>
+                <span class="ruby-identifier">info</span>[<span class="ruby-value">:block</span>] = <span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span>
+                <span class="ruby-identifier">info</span>[<span class="ruby-value">:event_data</span>] = <span class="ruby-identifier">data</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-ivar">@timers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">info</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- after-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- after-method -->
+
+      
+        <div id="bot_ended-method" class="method-detail ">
+          <a name="method-i-bot_ended"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">bot_ended</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Hook called by the Core when the bot is done running.</p>
+            
+
+            
+            <div class="method-source-code" id="bot_ended-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 160</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bot_ended</span>
+        <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:disconnect</span>
+        <span class="ruby-ivar">@state</span> = <span class="ruby-value">:inactive</span>
+
+        <span class="ruby-identifier">plugins</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">plugin</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">remove_plugin</span> <span class="ruby-identifier">plugin</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- bot_ended-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- bot_ended-method -->
+
+      
+        <div id="bot_started-method" class="method-detail ">
+          <a name="method-i-bot_started"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">bot_started</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Hook called by the Core when the bot is about to start.</p>
+            
+
+            
+            <div class="method-source-code" id="bot_started-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 154</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bot_started</span>
+        <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:init_bot</span>
+        <span class="ruby-ivar">@state</span> = <span class="ruby-value">:login</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- bot_started-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- bot_started-method -->
+
+      
+        <div id="collect_recurring_timers-method" class="method-detail ">
+          <a name="method-i-collect_recurring_timers"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">collect_recurring_timers</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Grab every recurring timer from the class and module and store it into an
+instance variable. This method must be called if they are modified.
+(Adding/removing plugins will automatically call it. It is also called when
+the class is created.)</p>
+            
+
+            
+            <div class="method-source-code" id="collect_recurring_timers-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_recurring_timers</span>
+        <span class="ruby-comment"># there's a bit of a dilemma here: We have to regenerate the list,</span>
+        <span class="ruby-comment"># but we don't want to lose the existing time values.</span>
+        <span class="ruby-comment">#</span>
+        <span class="ruby-comment"># The hash containing the original info (held by the class/module)</span>
+        <span class="ruby-comment"># doesn't change, so we store it in info[:base]. This can be used</span>
+        <span class="ruby-comment"># to determine which ones stayed the same.</span>
+
+        <span class="ruby-identifier">to_keep</span> = {}
+        <span class="ruby-ivar">@recurring_timers</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">to_keep</span>[<span class="ruby-identifier">t</span>[<span class="ruby-value">:base</span>]] = <span class="ruby-identifier">t</span>[<span class="ruby-value">:trigger_at</span>] }
+
+        <span class="ruby-ivar">@recurring_timers</span> = []
+        <span class="ruby-identifier">singleton_class</span>.<span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">reverse_each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mod</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:recurring_timers</span>)
+                        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">recurring_timers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+                                <span class="ruby-comment"># create a timer and calculate the next trigger time</span>
+                                <span class="ruby-identifier">info</span> = {<span class="ruby-identifier">base</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">block</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>[<span class="ruby-value">:block</span>], <span class="ruby-identifier">interval</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>[<span class="ruby-value">:interval</span>]}
+                                <span class="ruby-identifier">info</span>[<span class="ruby-value">:trigger_at</span>] = <span class="ruby-identifier">to_keep</span>[<span class="ruby-identifier">t</span>] <span class="ruby-operator">||</span> (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">t</span>[<span class="ruby-value">:interval</span>])
+
+                                <span class="ruby-ivar">@recurring_timers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">info</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- collect_recurring_timers-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- collect_recurring_timers-method -->
+
+      
+        <div id="emote-method" class="method-detail ">
+          <a name="method-i-emote"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">emote</span><span
+              class="method-args">(line)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="emote-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">emote</span>(<span class="ruby-identifier">line</span>)
+        <span class="ruby-identifier">write_line</span> <span class="ruby-node">&quot;:#{line}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- emote-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- emote-method -->
 
       
         <div id="line_received-method" class="method-detail ">
@@ -368,22 +659,20 @@ niceties that are useful for most bots.</p>
             
             <div class="method-source-code" id="line_received-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 63</span>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 136</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">line_received</span>(<span class="ruby-identifier">line</span>)
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@state</span> <span class="ruby-operator">==</span> <span class="ruby-value">:login</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">try_parse_login</span>(<span class="ruby-identifier">line</span>)
 
-        <span class="ruby-identifier">p</span> <span class="ruby-identifier">line</span>
+        <span class="ruby-comment">#p line</span>
 
         <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:raw</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line</span>
 
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'('</span>
-                <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:message</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">from</span>(<span class="ruby-value">1</span>)
-
-                <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-value">((</span>)
+                <span class="ruby-identifier">try_parse_speech</span>(<span class="ruby-identifier">line</span>) <span class="ruby-keyword">or</span> <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:message</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">from</span>(<span class="ruby-value">1</span>)
                 <span class="ruby-keyword">return</span>
         <span class="ruby-keyword">end</span>
 
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">0</span>,<span class="ruby-value">2</span>] <span class="ruby-operator">==</span> <span class="ruby-string">']c'</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">']c'</span>)
                 <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:enter_dream</span>
         <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -397,12 +686,12 @@ niceties that are useful for most bots.</p>
         </div><!-- line_received-method -->
 
       
-        <div id="load_plugin-method" class="method-detail ">
-          <a name="method-i-load_plugin"></a>
+        <div id="plugin-3F-method" class="method-detail ">
+          <a name="method-i-plugin-3F"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">load_plugin</span><span
+            <span class="method-name">plugin?</span><span
               class="method-args">(mod)</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
@@ -414,21 +703,58 @@ niceties that are useful for most bots.</p>
             
 
             
-            <div class="method-source-code" id="load_plugin-source">
+            <div class="method-source-code" id="plugin-3F-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 83</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_plugin</span>(<span class="ruby-identifier">mod</span>)
-        <span class="ruby-identifier">mixin</span> <span class="ruby-identifier">mod</span>
-        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">plugin_loaded</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">plugin?</span>(<span class="ruby-identifier">mod</span>)
+        <span class="ruby-ivar">@plugins</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">mod</span>)
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- load_plugin-source -->
+            </div><!-- plugin-3F-source -->
             
           </div>
 
           
 
           
-        </div><!-- load_plugin-method -->
+        </div><!-- plugin-3F-method -->
+
+      
+        <div id="remove_plugin-method" class="method-detail ">
+          <a name="method-i-remove_plugin"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">remove_plugin</span><span
+              class="method-args">(mod)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="remove_plugin-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 186</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_plugin</span>(<span class="ruby-identifier">mod</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">plugin?</span>(<span class="ruby-identifier">mod</span>)
+
+        <span class="ruby-ivar">@plugins</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">mod</span>
+        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">plugin_removed</span>(<span class="ruby-keyword">self</span>)
+        <span class="ruby-identifier">unmix</span> <span class="ruby-identifier">mod</span>
+        <span class="ruby-identifier">collect_recurring_timers</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- remove_plugin-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- remove_plugin-method -->
 
       
         <div id="run-method" class="method-detail ">
@@ -453,10 +779,8 @@ specified), then this method may do nothing.</p>
             
             <div class="method-source-code" id="run-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 48</span>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
-        <span class="ruby-identifier">dispatch_event</span> <span class="ruby-value">:init_bot</span>
-        <span class="ruby-ivar">@state</span> = <span class="ruby-value">:login</span>
         <span class="ruby-ivar">@core</span>.<span class="ruby-identifier">run</span>(<span class="ruby-keyword">self</span>)
 <span class="ruby-keyword">end</span></pre>
             </div><!-- run-source -->
@@ -488,7 +812,7 @@ specified), then this method may do nothing.</p>
             
             <div class="method-source-code" id="say-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 94</span>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 196</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">say</span>(<span class="ruby-identifier">line</span>)
         <span class="ruby-identifier">write_line</span> <span class="ruby-node">&quot;\&quot;#{line}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -500,6 +824,42 @@ specified), then this method may do nothing.</p>
 
           
         </div><!-- say-method -->
+
+      
+        <div id="speak-method" class="method-detail ">
+          <a name="method-i-speak"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">speak</span><span
+              class="method-args">(line)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>This method says something but tries to avoid triggering any DS commands by
+using an emote starting with ::. Any user-controlled input should be passed
+through this method when spoken - you never know what may be lurking in
+that seemingly-innocuous string!</p>
+            
+
+            
+            <div class="method-source-code" id="speak-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 204</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">speak</span>(<span class="ruby-identifier">line</span>)
+        <span class="ruby-identifier">write_line</span> <span class="ruby-node">&quot;:: #{line}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- speak-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- speak-method -->
 
       
         <div id="timer_tick-method" class="method-detail ">
@@ -522,10 +882,34 @@ not fixed.</p>
             
             <div class="method-source-code" id="timer_tick-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 57</span>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">timer_tick</span>
-        <span class="ruby-comment"># TODO: handle this</span>
-        <span class="ruby-comment">#puts 'timer ticked'</span>
+        <span class="ruby-identifier">current_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+
+        <span class="ruby-identifier">complete</span> = <span class="ruby-keyword">nil</span>
+
+        <span class="ruby-ivar">@timers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">info</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:trigger_at</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_time</span>
+
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:block</span>]
+                        <span class="ruby-identifier">with_event_data</span>(<span class="ruby-identifier">info</span>[<span class="ruby-value">:event_data</span>]) <span class="ruby-keyword">do</span>
+                                <span class="ruby-identifier">instance_exec</span> &amp;<span class="ruby-identifier">info</span>[<span class="ruby-value">:block</span>]
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">dispatch_event</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:event</span>]
+                <span class="ruby-keyword">end</span>
+                (<span class="ruby-identifier">complete</span> <span class="ruby-operator">||=</span> []) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">info</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-ivar">@timers</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">complete</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">complete</span>
+
+        <span class="ruby-comment"># now process recurring timers</span>
+        <span class="ruby-ivar">@recurring_timers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">info</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:trigger_at</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_time</span>
+
+                <span class="ruby-identifier">instance_exec</span> &amp;<span class="ruby-identifier">info</span>[<span class="ruby-value">:block</span>]
+                <span class="ruby-identifier">info</span>[<span class="ruby-value">:trigger_at</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:interval</span>]
+        <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
             </div><!-- timer_tick-source -->
             
@@ -537,13 +921,13 @@ not fixed.</p>
         </div><!-- timer_tick-method -->
 
       
-        <div id="unload_plugin-method" class="method-detail ">
-          <a name="method-i-unload_plugin"></a>
+        <div id="whisper-method" class="method-detail ">
+          <a name="method-i-whisper"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">unload_plugin</span><span
-              class="method-args">(mod)</span>
+            <span class="method-name">whisper</span><span
+              class="method-args">(name, text)</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
@@ -554,21 +938,53 @@ not fixed.</p>
             
 
             
-            <div class="method-source-code" id="unload_plugin-source">
+            <div class="method-source-code" id="whisper-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 88</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">unload_plugin</span>(<span class="ruby-identifier">mod</span>)
-        <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">plugin_unloaded</span>(<span class="ruby-keyword">self</span>)
-        <span class="ruby-identifier">unmix</span> <span class="ruby-identifier">mod</span>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 212</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">whisper</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">text</span>)
+        <span class="ruby-identifier">write_line</span> <span class="ruby-node">&quot;wh #{name.gsub(' ', '|')} #{text}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- unload_plugin-source -->
+            </div><!-- whisper-source -->
             
           </div>
 
           
 
           
-        </div><!-- unload_plugin-method -->
+        </div><!-- whisper-method -->
+
+      
+        <div id="whisper_back-method" class="method-detail ">
+          <a name="method-i-whisper_back"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">whisper_back</span><span
+              class="method-args">(text)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="whisper_back-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/base_bot.rb, line 216</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">whisper_back</span>(<span class="ruby-identifier">text</span>)
+        <span class="ruby-identifier">write_line</span> <span class="ruby-node">&quot;wh #{data[:shortname]} #{text}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- whisper_back-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- whisper_back-method -->
 
       
       </div><!-- public-instance-method-details -->

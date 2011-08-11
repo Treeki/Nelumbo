@@ -40,6 +40,9 @@
             <li><a href="./lib/nelumbo/core_ext/pack_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
               class="thickbox" title="lib/nelumbo/core_ext/pack.rb">lib/nelumbo/core_ext/pack.rb</a></li>
           
+            <li><a href="./lib/nelumbo/core_ext/strip_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/nelumbo/core_ext/strip.rb">lib/nelumbo/core_ext/strip.rb</a></li>
+          
             <li><a href="./lib/nelumbo/core_ext/shortname_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
               class="thickbox" title="lib/nelumbo/core_ext/shortname.rb">lib/nelumbo/core_ext/shortname.rb</a></li>
           
@@ -75,6 +78,8 @@
           
           <li><a href="#method-i-decode_b95">#decode_b95</a></li>
           
+          <li><a href="#method-i-furc_strip">#furc_strip</a></li>
+          
           <li><a href="#method-i-furc_unpack">#furc_unpack</a></li>
           
           <li><a href="#method-i-to_shortname">#to_shortname</a></li>
@@ -98,6 +103,8 @@
           <li class="file"><a href="./Rakefile.html">Rakefile</a></li>
         
           <li class="file"><a href="./tmp/java/nelumbo/1_8_7/Makefile.html">Makefile</a></li>
+        
+          <li class="file"><a href="./tmp/java/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
           <li class="file"><a href="./tmp/x86_64-linux/nelumbo/1_9_2/Makefile.html">Makefile</a></li>
         
@@ -133,6 +140,10 @@
           <li><a href="./Nelumbo/EventHandler.html">Nelumbo::EventHandler</a></li>
         
           <li><a href="./Nelumbo/Plugin.html">Nelumbo::Plugin</a></li>
+        
+          <li><a href="./Nelumbo/Plugin/ClassMethods.html">Nelumbo::Plugin::ClassMethods</a></li>
+        
+          <li><a href="./Nelumbo/PluginLoader.html">Nelumbo::PluginLoader</a></li>
         
           <li><a href="./Nelumbo/Script.html">Nelumbo::Script</a></li>
         
@@ -187,6 +198,8 @@
           <li><a href="./String.html">String</a></li>
         
           <li><a href="./TestBot.html">TestBot</a></li>
+        
+          <li><a href="./TestPlugin.html">TestPlugin</a></li>
         
         </ul>
         <div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -293,6 +306,39 @@
 
           
         </div><!-- decode_b95-method -->
+
+      
+        <div id="furc_strip-method" class="method-detail ">
+          <a name="method-i-furc_strip"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">furc_strip</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="furc_strip-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/core_ext/strip.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">furc_strip</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/&lt;(\/)?(font|img|channel|desc|name|b|i|u|a)(.*?)&gt;/</span>, <span class="ruby-string">''</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- furc_strip-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- furc_strip-method -->
 
       
         <div id="furc_unpack-method" class="method-detail ">

@@ -32,8 +32,9 @@ plugin system. But I'm lazy.
 - Simple Sinatra-style DSL for handling and responding to events
 - Automatically includes ActiveSupport
 - Modular: sockets/timers are managed by a "Core" and can be swapped easily
-- Integrated (but optional) DS engine for full dream tracking
-- Clean plugin system using mixins
+- Integrated - but optional - DS engine for full dream tracking (Requires
+  an extension module)
+- Clean plugin system using mixins and the Mixology gem
 
 ## Planned Features
 - Daemon version that can run multiple bots

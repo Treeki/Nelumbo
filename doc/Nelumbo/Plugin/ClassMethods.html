@@ -5,7 +5,7 @@
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 
-  <title>Class: Nelumbo::Script::Language</title>
+  <title>Module: Nelumbo::Plugin::ClassMethods</title>
 
   <link rel="stylesheet" href="../../rdoc.css" type="text/css" media="screen" />
 
@@ -15,7 +15,7 @@
   <script src="../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
-<body id="top" class="class">
+<body id="top" class="module">
 
   <div id="metadata">
     <div id="home-metadata">
@@ -34,8 +34,8 @@
         <div class="section-body">
           <ul>
           
-            <li><a href="../../lib/nelumbo/script/language_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-              class="thickbox" title="lib/nelumbo/script/language.rb">lib/nelumbo/script/language.rb</a></li>
+            <li><a href="../../lib/nelumbo/plugin_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/nelumbo/plugin.rb">lib/nelumbo/plugin.rb</a></li>
           
           </ul>
         </div>
@@ -45,14 +45,6 @@
     </div>
 
     <div id="class-metadata">
-      
-      <!-- Parent Class -->
-      <div id="parent-class-section" class="section">
-        <h3 class="section-header">Parent</h3>
-        
-        <p class="link"><a href="../../Object.html">Object</a></p>
-        
-      </div>
       
 
       
@@ -65,11 +57,17 @@
         <h3 class="section-header">Methods</h3>
         <ul class="link-list">
           
-          <li><a href="#method-c-categories">::categories</a></li>
+          <li><a href="#method-i-plugin_added">#plugin_added</a></li>
           
-          <li><a href="#method-c-define_category">::define_category</a></li>
+          <li><a href="#method-i-plugin_removed">#plugin_removed</a></li>
           
-          <li><a href="#method-c-spec_for_line">::spec_for_line</a></li>
+          <li><a href="#method-i-setup_as_plugin">#setup_as_plugin</a></li>
+          
+          <li><a href="#method-i-users">#users</a></li>
+          
+          <li><a href="#method-i-when_added">#when_added</a></li>
+          
+          <li><a href="#method-i-when_removed">#when_removed</a></li>
           
         </ul>
       </div>
@@ -197,7 +195,7 @@
   </div>
 
   <div id="documentation">
-    <h1 class="class">Nelumbo::Script::Language</h1>
+    <h1 class="module">Nelumbo::Plugin::ClassMethods</h1>
 
     <div id="description" class="description">
       
@@ -215,16 +213,84 @@
 
       <!-- Methods -->
       
-      <div id="public-class-method-details" class="method-section section">
-        <h3 class="section-header">Public Class Methods</h3>
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
 
       
-        <div id="categories-method" class="method-detail ">
-          <a name="method-c-categories"></a>
+        <div id="plugin_added-method" class="method-detail ">
+          <a name="method-i-plugin_added"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">categories</span><span
+            <span class="method-name">plugin_added</span><span
+              class="method-args">(bot)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="plugin_added-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">plugin_added</span>(<span class="ruby-identifier">bot</span>)
+        <span class="ruby-ivar">@plugin_instances</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">bot</span>
+        <span class="ruby-identifier">bot</span>.<span class="ruby-identifier">instance_exec</span>(&amp;<span class="ruby-ivar">@plugin_add_hook</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@plugin_add_hook</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- plugin_added-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- plugin_added-method -->
+
+      
+        <div id="plugin_removed-method" class="method-detail ">
+          <a name="method-i-plugin_removed"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">plugin_removed</span><span
+              class="method-args">(bot)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="plugin_removed-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">plugin_removed</span>(<span class="ruby-identifier">bot</span>)
+        <span class="ruby-ivar">@plugin_instances</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">bot</span>
+        <span class="ruby-identifier">bot</span>.<span class="ruby-identifier">instance_exec</span>(&amp;<span class="ruby-ivar">@plugin_remove_hook</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@plugin_remove_hook</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- plugin_removed-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- plugin_removed-method -->
+
+      
+        <div id="setup_as_plugin-method" class="method-detail ">
+          <a name="method-i-setup_as_plugin"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">setup_as_plugin</span><span
               class="method-args">()</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
@@ -236,29 +302,29 @@
             
 
             
-            <div class="method-source-code" id="categories-source">
+            <div class="method-source-code" id="setup_as_plugin-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/script/language.rb, line 77</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">categories</span>
-        <span class="ruby-ivar">@categories</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup_as_plugin</span>
+        <span class="ruby-ivar">@plugin_instances</span> = []
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- categories-source -->
+            </div><!-- setup_as_plugin-source -->
             
           </div>
 
           
 
           
-        </div><!-- categories-method -->
+        </div><!-- setup_as_plugin-method -->
 
       
-        <div id="define_category-method" class="method-detail ">
-          <a name="method-c-define_category"></a>
+        <div id="users-method" class="method-detail ">
+          <a name="method-i-users"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">define_category</span><span
-              class="method-args">(category, &block)</span>
+            <span class="method-name">users</span><span
+              class="method-args">()</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
@@ -269,37 +335,29 @@
             
 
             
-            <div class="method-source-code" id="define_category-source">
+            <div class="method-source-code" id="users-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/script/language.rb, line 65</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">define_category</span>(<span class="ruby-identifier">category</span>, &amp;<span class="ruby-identifier">block</span>)
-        <span class="ruby-identifier">proxy</span> = <span class="ruby-constant">LanguageDSL</span><span class="ruby-operator">::</span><span class="ruby-constant">CategoryProxy</span>.<span class="ruby-identifier">new</span>
-        <span class="ruby-identifier">proxy</span>.<span class="ruby-identifier">instance_exec</span> &amp;<span class="ruby-identifier">block</span>
-
-        <span class="ruby-ivar">@categories</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>
-        <span class="ruby-ivar">@categories</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">category</span>
-
-        <span class="ruby-ivar">@line_spec</span> <span class="ruby-operator">||=</span> {}
-        <span class="ruby-ivar">@line_spec</span>[<span class="ruby-identifier">category</span>] <span class="ruby-operator">||=</span> {}
-        <span class="ruby-ivar">@line_spec</span>[<span class="ruby-identifier">category</span>].<span class="ruby-identifier">update</span>(<span class="ruby-identifier">proxy</span>.<span class="ruby-identifier">lines</span>)
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">users</span>
+        <span class="ruby-ivar">@plugin_instances</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- define_category-source -->
+            </div><!-- users-source -->
             
           </div>
 
           
 
           
-        </div><!-- define_category-method -->
+        </div><!-- users-method -->
 
       
-        <div id="spec_for_line-method" class="method-detail ">
-          <a name="method-c-spec_for_line"></a>
+        <div id="when_added-method" class="method-detail ">
+          <a name="method-i-when_added"></a>
 
           
           <div class="method-heading">
-            <span class="method-name">spec_for_line</span><span
-              class="method-args">(category, type)</span>
+            <span class="method-name">when_added</span><span
+              class="method-args">(&block)</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
@@ -310,23 +368,56 @@
             
 
             
-            <div class="method-source-code" id="spec_for_line-source">
+            <div class="method-source-code" id="when_added-source">
 <pre>
-<span class="ruby-comment"># File lib/nelumbo/script/language.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">spec_for_line</span>(<span class="ruby-identifier">category</span>, <span class="ruby-identifier">type</span>)
-        <span class="ruby-ivar">@line_spec</span>[<span class="ruby-identifier">category</span>][<span class="ruby-identifier">type</span>]
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">when_added</span>(&amp;<span class="ruby-identifier">block</span>)
+        <span class="ruby-ivar">@plugin_add_hook</span> = <span class="ruby-identifier">block</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- spec_for_line-source -->
+            </div><!-- when_added-source -->
             
           </div>
 
           
 
           
-        </div><!-- spec_for_line-method -->
+        </div><!-- when_added-method -->
 
       
-      </div><!-- public-class-method-details -->
+        <div id="when_removed-method" class="method-detail ">
+          <a name="method-i-when_removed"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">when_removed</span><span
+              class="method-args">(&block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="when_removed-source">
+<pre>
+<span class="ruby-comment"># File lib/nelumbo/plugin.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">when_removed</span>(&amp;<span class="ruby-identifier">block</span>)
+        <span class="ruby-ivar">@plugin_remove_hook</span> = <span class="ruby-identifier">block</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- when_removed-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- when_removed-method -->
+
+      
+      </div><!-- public-instance-method-details -->
     
     </div><!-- 5Buntitled-5D -->
   
