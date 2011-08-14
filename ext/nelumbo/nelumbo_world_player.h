@@ -15,6 +15,9 @@ typedef struct _player {
 
 	/* transient info that may or may not be up to date */
 	int entryCode, shape, heldObject, cookies;
+
+	/* bot-specific data */
+	VALUE data;
 } Player;
 
 #endif

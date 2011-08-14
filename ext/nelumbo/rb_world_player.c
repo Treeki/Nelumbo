@@ -46,6 +46,9 @@ VALUE set_held_object(VALUE self, VALUE num) { Check_Type(num, T_FIXNUM); GET_PL
 VALUE get_cookies(VALUE self) { GET_PL; return INT2FIX(pl->cookies); }
 VALUE set_cookies(VALUE self, VALUE num) { Check_Type(num, T_FIXNUM); GET_PL; pl->cookies = FIX2INT(num); return num; }
 
+VALUE get_data(VALUE self) { GET_PL; return pl->data; }
+VALUE set_data(VALUE self, VALUE obj) { GET_PL; pl->data = obj; return obj; }
+
 /*******************************************************************************
  * Ruby Housekeeping
  ******************************************************************************/
@@ -61,6 +64,8 @@ static VALUE initialize(VALUE self, VALUE uid, VALUE name) {
 
 	pl->afkStartTime = Qnil;
 
+	pl->data = Qnil;
+
 	return self;
 }
 
@@ -69,6 +74,7 @@ static void mark(Player *pl) {
 	rb_gc_mark(pl->shortname);
 	rb_gc_mark(pl->afkStartTime);
 	rb_gc_mark(pl->colourCode);
+	rb_gc_mark(pl->data);
 }
 
 static VALUE allocate(VALUE klass) {
@@ -115,6 +121,9 @@ void Init_nelumbo_world_player() {
 
 	rb_define_method(cNelumboWorldPlayer, "cookies", get_cookies, 0);
 	rb_define_method(cNelumboWorldPlayer, "cookies=", set_cookies, 1);
+
+	rb_define_method(cNelumboWorldPlayer, "data", get_data, 0);
+	rb_define_method(cNelumboWorldPlayer, "data=", set_data, 1);
 
 }
 
