@@ -292,6 +292,34 @@ void wc_save_map(WorldContext *wc, char *buf) {
 }
 
 
+void wc_setup_change_buffer(WorldContext *wc, ChangeBuffer *cb, char insnID) {
+	cb->insnID = insnID;
+	cb->end = 0;
+}
+
+void wc_append_to_change_buffer(WorldContext *wc, ChangeBuffer *cb, int x, int y, int number) {
+	if (cb->end >= CHANGE_BUFFER_SIZE) {
+		wc_flush_change_buffer(wc, cb);
+	}
+
+	encode_b220(x, &cb->buffer[cb->end], 2);
+	encode_b220(y, &cb->buffer[cb->end+2], 2);
+	encode_b220(number, &cb->buffer[cb->end+4], 2);
+	cb->end += 6;
+}
+
+void wc_flush_change_buffer(WorldContext *wc, ChangeBuffer *cb) {
+	if (cb->end == 0)
+		return;
+
+	VALUE str = rb_sprintf("edit %c", cb->insnID);
+	rb_str_cat(str, cb->buffer, cb->end);
+	rb_funcall(wc->bot, rb_intern("write_line"), 1, str);
+
+	cb->end = 0;
+}
+
+
 char wc_position_is_walkable(WorldContext *wc, int x, int y, Player *player) {
 	if (x <= 3 || y <= 8 || x >= (wc->mapWidth - 6) || y >= (wc->mapHeight - 8))
 		return 0;

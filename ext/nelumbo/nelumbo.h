@@ -12,5 +12,8 @@ extern VALUE mNelumboWorld;
 int decode_b95(const char *buffer, int length);
 int decode_b220(const char *buffer, int length);
 
+void encode_b95(int value, char *buffer, int length);
+void encode_b220(int value, char *buffer, int length);
+
 #endif
 

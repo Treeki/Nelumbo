@@ -159,10 +159,14 @@ static VALUE set_item(VALUE self, VALUE x, VALUE y, VALUE item) {
 
 	GET_WC;
 
-	int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realItem = FIX2INT(item);
 	fail_if_out_of_bounds(wc, realX, realY);
 
-	wc->items[realX][realY] = FIX2INT(item);
+	wc->items[realX][realY] = realItem;
+
+	if (wc->isLoggingMapChanges)
+		wc_append_to_change_buffer(wc, &wc->itemChangeBuffer, realX, realY, realItem);
+
 	return item;
 }
 
@@ -183,10 +187,14 @@ static VALUE set_floor(VALUE self, VALUE x, VALUE y, VALUE floor) {
 
 	GET_WC;
 
-	int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realFloor = FIX2INT(floor);
 	fail_if_out_of_bounds(wc, realX, realY);
 
-	wc->floors[realX][realY] = FIX2INT(floor);
+	wc->floors[realX][realY] = realFloor;
+
+	if (wc->isLoggingMapChanges)
+		wc_append_to_change_buffer(wc, &wc->floorChangeBuffer, realX, realY, realFloor);
+
 	return floor;
 }
 
@@ -207,10 +215,14 @@ static VALUE set_wall(VALUE self, VALUE x, VALUE y, VALUE wall) {
 
 	GET_WC;
 
-	int realX = FIX2INT(x), realY = FIX2INT(y);
+	int realX = FIX2INT(x), realY = FIX2INT(y), realWall = FIX2INT(wall);
 	fail_if_out_of_bounds(wc, realX, realY);
 
-	wc->walls[realX][realY] = FIX2INT(wall);
+	wc->walls[realX][realY] = realWall;
+
+	if (wc->isLoggingMapChanges)
+		wc_append_to_change_buffer(wc, &wc->wallChangeBuffer, realX, realY, realWall);
+
 	return wall;
 }
 
@@ -327,6 +339,36 @@ static VALUE add_ds_line(VALUE self, VALUE category, VALUE type, VALUE params, V
 	return Qnil;
 }
 
+static VALUE begin_map_change_logging(VALUE self) {
+	GET_WC;
+
+	if (wc->isLoggingMapChanges)
+		rb_raise(rb_eRuntimeError, "map change logging is already on");
+
+	wc->isLoggingMapChanges = 1;
+
+	wc_setup_change_buffer(wc, &wc->itemChangeBuffer, '>');
+	wc_setup_change_buffer(wc, &wc->floorChangeBuffer, '1');
+	wc_setup_change_buffer(wc, &wc->wallChangeBuffer, '2');
+
+	return Qtrue;
+}
+
+static VALUE end_map_change_logging(VALUE self) {
+	GET_WC;
+
+	if (!wc->isLoggingMapChanges)
+		rb_raise(rb_eRuntimeError, "map change logging is already off");
+
+	wc->isLoggingMapChanges = 0;
+
+	wc_flush_change_buffer(wc, &wc->itemChangeBuffer);
+	wc_flush_change_buffer(wc, &wc->floorChangeBuffer);
+	wc_flush_change_buffer(wc, &wc->wallChangeBuffer);
+
+	return Qtrue;
+}
+
 /*******************************************************************************
  * Ruby Housekeeping
  ******************************************************************************/
@@ -416,5 +458,8 @@ void Init_nelumbo_world_context() {
 	
 	rb_define_method(cNelumboWorldContext, "variable", get_variable, 1);
 	rb_define_method(cNelumboWorldContext, "set_variable", set_variable, 2);
+
+	rb_define_method(cNelumboWorldContext, "begin_map_change_logging", begin_map_change_logging, 0);
+	rb_define_method(cNelumboWorldContext, "end_map_change_logging", end_map_change_logging, 0);
 }
 

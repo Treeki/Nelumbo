@@ -34,4 +34,23 @@ int decode_b220(const char *buffer, int length) {
 	return value;
 }
 
+void encode_b95(int value, char *buffer, int length) {
+	int i;
+	unsigned char *buf = (unsigned char *)buffer;
+
+	for (i = 0; i < length; i++) {
+		buf[length - i - 1] = ((value % 95) + 32);
+		value /= 95;
+	}
+}
+
+void encode_b220(int value, char *buffer, int length) {
+	int i;
+	unsigned char *buf = (unsigned char *)buffer;
+
+	for (i = 0; i < length; i++) {
+		buf[i] = ((value % 220) + 35);
+		value /= 220;
+	}
+}
 

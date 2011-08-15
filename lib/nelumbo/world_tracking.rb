@@ -414,12 +414,11 @@ module Nelumbo
 				@context.variable(@ds_variables[name] + 1)
 			end
 
-			def set_ds_var(name, value)
-				@context.set_variable(@ds_variables[name], value)
-			end
 
-			def set_ds_var_y(name, value)
-				@context.set_variable(@ds_variables[name] + 1, value)
+			def change_map
+				@context.begin_map_change_logging
+				yield
+				@context.end_map_change_logging
 			end
 		end
 

@@ -24,6 +24,10 @@ end
 class TestBot < Nelumbo::Bot
 	include Nelumbo::WorldTracking
 
+	on_speech 'q' do
+		change_map { context.set_item 10, 11, rand(20) }
+	end
+
 	on_init_bot do
 		register_source_dream 'furc://cypresshomes', '/home/me/Furcadia/Dreams/Spring2011_Final/CHInitialUpload.map'
 		register_source_dream 'furc://cypress', '/home/me/Furcadia/Dreams/eep.map'
@@ -33,9 +37,9 @@ class TestBot < Nelumbo::Bot
 	set description: 'Just testing.'
 
 	#on_raw line: /^[^~=>0123678<ABCD]/ do
-	#on_raw do
-	#	puts data[:line].inspect
-	#end
+	on_raw do
+		puts data[:line].inspect
+	end
 	
 	on_speech('pry') { require 'pry'; binding.pry }
 	on_speech('load') { add_plugin TestPlugin; say "Loaded plugins: #{plugins}" }

@@ -13,6 +13,10 @@ void Init_nelumbo_world_context();
 #define MAX_DS 12000
 #define MAX_FILTERS 50
 
+#define CHANGE_BUFFER_COUNT 100
+#define CHANGE_BUFFER_ELEMENT_SIZE 6
+#define CHANGE_BUFFER_SIZE (CHANGE_BUFFER_COUNT*CHANGE_BUFFER_ELEMENT_SIZE)
+
 #define ITEM_VALID(number) (((number) >= 0) && ((number) < MAX_ITEM))
 #define FLOOR_VALID(number) (((number) >= 0) && ((number) < MAX_FLOOR))
 
@@ -35,6 +39,12 @@ typedef struct _dsrandom {
 
 void dsr_seed(DSRandom *dsr, uint32_t seed);
 uint32_t dsr_generate(DSRandom *dsr, uint32_t max);
+
+typedef struct _changebuffer {
+	char buffer[CHANGE_BUFFER_SIZE];
+	char insnID;
+	int end;
+} ChangeBuffer;
 
 
 typedef struct _worldcontext {
@@ -87,6 +97,13 @@ typedef struct _worldcontext {
 
 	DSRandom i_randomGenerator;
 
+	/* Map Change Queue */
+	char isLoggingMapChanges;
+
+	ChangeBuffer itemChangeBuffer;
+	ChangeBuffer floorChangeBuffer;
+	ChangeBuffer wallChangeBuffer;
+
 	/* Interop
 	 * NOTE: We don't mark this for the GC as the Bot is supposed to hold
 	 * a reference to WorldContext, not the other way round. Reference cycles
@@ -99,6 +116,10 @@ void wc_load_map(WorldContext *wc, char *buf, int width, int height);
 void wc_save_map(WorldContext *wc, char *buf);
 
 void wc_process_line(WorldContext *wc, char *buf, int length);
+
+void wc_setup_change_buffer(WorldContext *wc, ChangeBuffer *cb, char insnID);
+void wc_append_to_change_buffer(WorldContext *wc, ChangeBuffer *cb, int x, int y, int number);
+void wc_flush_change_buffer(WorldContext *wc, ChangeBuffer *cb);
 
 char wc_position_is_walkable(WorldContext *wc, int x, int y, Player *player);
 char wc_position_is_valid(WorldContext *wc, int x, int y);
