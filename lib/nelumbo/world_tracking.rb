@@ -73,6 +73,10 @@ module Nelumbo
 	# [player_left]
 	#   A player left the dream.
 	#   Data: +:shortname+, +:player+, +:uid+
+	# [player_seen]
+	#   A player was seen. This occurs when the "spawn avatar" instruction is
+	#   received, but that player is already in the dream.
+	#   Data: +:shortname+, +:player+, +:uid+, +:flags+
 	# [player_move]
 	#   A player moved. The bot will trigger this whenever it finds out about a
 	#   position change. (Sources include the avatar info lines, DS trigger
@@ -442,6 +446,9 @@ module Nelumbo
 
 					if is_new
 						dispatch_event :player_entered, shortname: player.shortname,
+							player: player, uid: uid, flags: flags
+					else
+						dispatch_event :player_seen, shortname: player.shortname,
 							player: player, uid: uid, flags: flags
 					end
 
