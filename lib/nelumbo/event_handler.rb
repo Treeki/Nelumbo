@@ -125,5 +125,24 @@ module Nelumbo
 		def halt_all
 			throw :halt_all_responders
 		end
+
+
+		# Hook that allows event data/params to be accessed using the
+		# event_argname method (for example, event_name returns params[:name]).
+		#
+		# After the first usage of a method, it is created to avoid the
+		# method_missing overhead.
+		#
+		def method_missing(name, *args, &block)
+			return super unless /^event_(?<param_name>.+)$/ =~ name
+
+			self.class_eval <<-END
+				def event_#{param_name}
+					params[:#{param_name}]
+				end
+			END
+
+			params[param_name.to_sym]
+		end
 	end
 end
