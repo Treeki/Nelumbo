@@ -44,7 +44,12 @@ module Nelumbo
 		end
 
 		def write_line(bot, line)
-			bot[:socket].write "#{line}\n"
+			line = line + "\n"
+			offset = 0
+			
+			while offset < line.length
+				offset += bot[:socket].write((offset == 0) ? line : line.from(offset))
+			end
 		end
 
 		def run
