@@ -7,19 +7,23 @@ require 'nelumbo'
 require 'pry'
 
 #t = Nelumbo::Script::Tokenizer.new(File.open('/home/me/Furcadia/Dreams/Spring2011_Final/final version with clearing.ds', 'r'))
-t = Nelumbo::Script::Tokenizer.new(File.open('../ch.ds', 'r'))
+#t = Nelumbo::Script::Tokenizer.new(File.open('../ch.ds', 'r'))
+t = Nelumbo::Script::Tokenizer.new(File.open('/home/me/Furcadia/Dreams/CH_G3/G3.ds', 'r'))
 puts 'Tokenising...'
 tokens = t.each_token.to_a
-#File.open('tokens.txt', 'w') { |f| tokens.each { |tok| f.puts tok.inspect } }
+File.open('tokens.txt', 'w') { |f| tokens.each { |tok| f.puts tok.inspect } }
 
 p = Nelumbo::Script::LineParser.new(Nelumbo::Script::DragonSpeak, tokens)
 puts 'Parsing...'
 lines = p.lines.to_a
-#File.open('lines.txt', 'w') { |f| lines.each { |line| f.puts line.inspect } }
+File.open('lines.txt', 'w') { |f| lines.each { |line| f.puts line.inspect } }
 
 t = Nelumbo::Script::TreeParser.new(Nelumbo::Script::DragonSpeak)
 puts 'Running syntax analysis...'
 t.parse(lines)
+File.open('lines2.txt', 'w') { |f| lines.each { |line| f.puts line.inspect } }
+
+exit
 
 cg = Nelumbo::Script::CodeGenerator.new(Nelumbo::Script::DragonSpeak)
 count = 0

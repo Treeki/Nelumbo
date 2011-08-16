@@ -136,7 +136,7 @@ module Nelumbo
 		def method_missing(name, *args, &block)
 			return super unless /^event_(?<param_name>.+)$/ =~ name
 
-			self.class_eval <<-END
+			EventHandler.class_eval <<-END
 				def event_#{param_name}
 					params[:#{param_name}]
 				end

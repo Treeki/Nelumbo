@@ -7,6 +7,7 @@ module Nelumbo
 		end
 
 		def write_line(line)
+			p line if @debug_sent_lines
 			@core_hook_write_line.call(line)
 		end
 
