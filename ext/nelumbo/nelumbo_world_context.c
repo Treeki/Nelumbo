@@ -521,7 +521,7 @@ uint32_t wc_random_number(WorldContext *wc, uint32_t max) {
 
 
 void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf) {
-	//printf("Executing %d at %d,%d\n", number, x, y);
+	printf("Executing %d at %d,%d\n", number, x, y);
 
 	wc->i_triggerX = x;
 	wc->i_triggerY = y;
@@ -744,6 +744,9 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 		case 5:
 			wc_execute_on_area_position(wc, line, wc->i_movedFromX, wc->i_movedFromY);
 			break;
+
+		default:
+			printf("unknown area: %d\n", line->type);
 	}
 }
 
@@ -1187,10 +1190,13 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		ID an_type = SYM2ID(rb_hash_aref(line->annotation, ID2SYM(rb_intern("action"))));
 		if (an_type == rb_intern("event")) {
 			VALUE event_name = rb_hash_aref(line->annotation, ID2SYM(rb_intern("name")));
-			VALUE info = rb_hash_new();
+			//VALUE info = rb_hash_new();
+			VALUE info = Qnil;
 
-			rb_hash_aset(info, ID2SYM(rb_intern("name")), event_name);
-			rb_funcall(wc->bot, rb_intern("dispatch_event"), 2, ID2SYM(rb_intern("ds_event")), info);
+			printf("Going to dispatch event [ %s ]\n", RSTRING_PTR(event_name));
+			VALUE event_sym = ID2SYM(rb_intern2(RSTRING_PTR(event_name), RSTRING_LEN(event_name)));
+
+			rb_funcall(wc->bot, rb_intern("dispatch_event"), 2, event_sym, info);
 		}
 	}
 
@@ -1509,6 +1515,9 @@ generate_random_position_checked:
 				}
 			}
 			break;
+
+		default:
+			printf("unknown effect: %d\n", line->type);
 	}
 }
 

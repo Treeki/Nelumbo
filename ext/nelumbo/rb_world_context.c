@@ -100,7 +100,7 @@ static VALUE move_tracked_player(VALUE self, VALUE player, VALUE x, VALUE y) {
 	int rX = FIX2INT(x) / 2, rY = FIX2INT(y);
 
 	if (sPlayer->x == rX && sPlayer->y == rY)
-		return;
+		return Qnil;
 
 	int oldX = sPlayer->x, oldY = sPlayer->y;
 	if (oldX != -1) {
