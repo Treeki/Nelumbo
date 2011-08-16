@@ -49,9 +49,9 @@ module Nelumbo
 	# All others are ignored.
 	#
 	# [event _name_]
-	#   Raises +:ds_event+ and passes the specified event name when the
+	#   Raises the event matching the symbolified version of _name_ when the
 	#   associated line is executed. It currently only works with effects:
-	#   this restriction will be lifted later.
+	#   this restriction will be lifted later. No data is passed.
 	#
 	# === Note about X Positions
 	# Furcadia internally stores X positions halved - for example, a 300x300
@@ -88,6 +88,13 @@ module Nelumbo
 	# [player_unafk]
 	#   A player came back from being AFK.
 	#   Data: +:player+, +:duration+ (in seconds)
+	#
+	# WorldTracking will raise these events if the advanced implementation is
+	# used:
+	# [entered_known_dream]
+	#   The current dream was entered, and the URL is known.
+	#   This event is raised right before vascodagama is sent.
+	#   Data: +:url+ (the dream URL)
 	#
 	# WorldTracking will raise these events if the DS engine is active:
 	# [ds_event]
@@ -262,6 +269,8 @@ module Nelumbo
 				# TODO: make this better
 				url.downcase.gsub(%r(/$), '')
 			end
+			
+			attr_reader :current_dream_url
 
 			def map_directory
 				@current_map_directory
@@ -281,6 +290,9 @@ module Nelumbo
 
 			def init_world_engine(url, line_count)
 				puts "Initialising World Tracking for #{url}."
+
+				@current_dream_url = url
+				dispatch_event :entered_known_dream, url: url
 
 				dream_path = @world_source_dreams[normalise_dream_url(url)]
 				if dream_path.nil?
@@ -313,6 +325,8 @@ module Nelumbo
 				@context.load_map map_data, width, height
 
 				puts "Map data loaded (#{width}x#{height})"
+
+				load_ds_file(dream_path.sub(/\.map$/, '.ds'))
 
 				puts "Dream initialised."
 			end
@@ -418,6 +432,7 @@ module Nelumbo
 			def change_map
 				@context.begin_map_change_logging
 				yield
+			ensure
 				@context.end_map_change_logging
 			end
 		end
