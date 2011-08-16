@@ -31,6 +31,14 @@ module Nelumbo
 	# [whisper]
 	#   A player whispered the bot.
 	#   Data: +:text+, +:name+, +:shortname+
+	# [ds_emit]
+	#   A DragonSpeak emit was received, and it did not trigger the below
+	#   event.
+	#   Data: +:text+
+	# [_unspecified_]
+	#   A DragonSpeak emit was received that triggered an event. The emit must
+	#   be formatted like this: +evt event_name optional arguments+
+	#   Data: +:args+ (string containing everything after the event name)
 	#
 	class BaseBot < EventHandler
 		include CoreHooks
@@ -174,22 +182,61 @@ module Nelumbo
 
 		attr_reader :plugins
 
+		# Adds a plugin module to the current bot.
+		#
+		# Returns false if that module is already in this bot.
+		# If it was successfully added, the module is returned.
+		#
 		def add_plugin(mod)
-			return if plugin?(mod)
+			return false if plugin?(mod)
 
 			mixin mod
 			mod.plugin_added(self)
 			collect_recurring_timers
 			@plugins << mod
+			mod
 		end
 
+		# Removes a plugin module from the current bot.
+		#
+		# Returns false if that module is not in this bot.
+		# If it was successfully removed, the module is returned.
+		#
 		def remove_plugin(mod)
-			return unless plugin?(mod)
+			return false unless plugin?(mod)
 
 			@plugins.delete mod
 			mod.plugin_removed(self)
 			unmix mod
 			collect_recurring_timers
+			mod
+		end
+
+		# Loads and adds a plugin to this bot using Nelumbo::PluginLoader.
+		#
+		# Returns false if PluginLoader already has this plugin loaded.
+		# Otherwise, the return value is the same as add_plugin.
+		#
+		def load_plugin(name)
+			return false if PluginLoader.known?(name)
+
+			mod = PluginLoader.load(name)
+			add_plugin mod
+		end
+
+		# Removes a plugin from this bot and unloads it using
+		# Nelumbo::PluginLoader.
+		#
+		# Returns false if PluginLoader does not know about this plugin.
+		# Otherwise, the return value is the same as remove_plugin.
+		#
+		def unload_plugin(name)
+			return false unless PluginLoader.known?(name)
+
+			mod = PluginLoader.module_for(name)
+			remove_plugin mod
+			PluginLoader.unload(mod)
+			mod
 		end
 
 
@@ -235,8 +282,19 @@ module Nelumbo
 		def try_parse_speech(line)
 			if /^\(<name shortname='(?<shortname>[^']+)'>(?<name>[^<]+)<\/name>: (?<message>.+)$/ =~ line
 				dispatch_event :speech, text: message, name: name, shortname: shortname
+
 			elsif /^\(<font color='whisper'>\[ <name shortname='(?<shortname>[^']+)' src='whisper-from'>(?<name>[^<]+)<\/name> whispers, "(?<message>.+)" to you. \]<\/font>$/ =~ line
 				dispatch_event :whisper, text: message, name: name, shortname: shortname
+
+			elsif /^\(<font color='dragonspeak'><img src='fsh:\/\/system\.fsh:91' alt='@emit' \/><channel name='@emit' \/> (?<message>.+)<\/font>$/ =~ line
+				# DragonSpeak emit
+				if message.start_with?('evt ')
+					cmd, event, args = message.split(' ', 3)
+					dispatch_event event.to_sym, args: args
+				else
+					dispatch_event :ds_emit, text: message
+				end
+
 			else
 				return false
 			end
