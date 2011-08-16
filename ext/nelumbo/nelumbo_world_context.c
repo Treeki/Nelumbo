@@ -515,6 +515,11 @@ short wc_ds_value_y(WorldContext *wc, int value) {
 }
 
 
+int wc_read_special(WorldContext *wc) {
+	return wc->i_special[wc->i_specialIndex++];
+}
+
+
 uint32_t wc_random_number(WorldContext *wc, uint32_t max) {
 	return dsr_generate(&wc->i_randomGenerator, max);
 }
@@ -1514,6 +1519,25 @@ generate_random_position_checked:
 					index++;
 				}
 			}
+			break;
+
+		case 610:
+		case 612:
+			index = PARAM(1);
+			goto rememberPSValue;
+		case 611:
+			index = PARAM(2);
+rememberPSValue:
+			WC_VAR_SAFE(index) = wc_read_special(wc);
+			if ((index & 1) == 0)
+				WC_VAR_SAFE(index+1) = wc_read_special(wc);
+			break;
+
+		case 704:
+			PARAM_VAR(0) = wc->i_dreamCookies;
+			break;
+		case 705:
+			PARAM_VAR(0) = wc->i_playerCookies;
 			break;
 
 		default:

@@ -142,6 +142,8 @@ void wc_move_position_nw_clamped(WorldContext *wc, short *x, short *y, int dista
 short wc_ds_value(WorldContext *wc, int value);
 short wc_ds_value_y(WorldContext *wc, int value);
 
+int wc_read_special(WorldContext *wc);
+
 void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf);
 // Internal
 void wc_set_area(WorldContext *wc, DSLine *line);
