@@ -345,11 +345,13 @@ static VALUE begin_map_change_logging(VALUE self) {
 	if (wc->isLoggingMapChanges)
 		rb_raise(rb_eRuntimeError, "map change logging is already on");
 
-	wc->isLoggingMapChanges = 1;
+	wc->isLoggingMapChanges++;
 
-	wc_setup_change_buffer(wc, &wc->itemChangeBuffer, '>');
-	wc_setup_change_buffer(wc, &wc->floorChangeBuffer, '1');
-	wc_setup_change_buffer(wc, &wc->wallChangeBuffer, '2');
+	if (wc->isLoggingMapChanges == 1) {
+		wc_setup_change_buffer(wc, &wc->itemChangeBuffer, '>');
+		wc_setup_change_buffer(wc, &wc->floorChangeBuffer, '1');
+		wc_setup_change_buffer(wc, &wc->wallChangeBuffer, '2');
+	}
 
 	return Qtrue;
 }
@@ -360,11 +362,13 @@ static VALUE end_map_change_logging(VALUE self) {
 	if (!wc->isLoggingMapChanges)
 		rb_raise(rb_eRuntimeError, "map change logging is already off");
 
-	wc->isLoggingMapChanges = 0;
+	wc->isLoggingMapChanges--;
 
-	wc_flush_change_buffer(wc, &wc->itemChangeBuffer);
-	wc_flush_change_buffer(wc, &wc->floorChangeBuffer);
-	wc_flush_change_buffer(wc, &wc->wallChangeBuffer);
+	if (!wc->isLoggingMapChanges) {
+		wc_flush_change_buffer(wc, &wc->itemChangeBuffer);
+		wc_flush_change_buffer(wc, &wc->floorChangeBuffer);
+		wc_flush_change_buffer(wc, &wc->wallChangeBuffer);
+	}
 
 	return Qtrue;
 }

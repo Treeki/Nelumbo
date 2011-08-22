@@ -98,7 +98,7 @@ typedef struct _worldcontext {
 	DSRandom i_randomGenerator;
 
 	/* Map Change Queue */
-	char isLoggingMapChanges;
+	int isLoggingMapChanges;
 
 	ChangeBuffer itemChangeBuffer;
 	ChangeBuffer floorChangeBuffer;
