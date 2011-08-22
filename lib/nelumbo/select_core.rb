@@ -5,13 +5,14 @@ module Nelumbo
 	# The running bots can be changed on-the-fly.
 	#
 	class SelectCore
-		TIMER_GRANULARITY = 0.5
+		TIMER_GRANULARITY = 0.1
 
 		def initialize
 			@bots = []
 			@bot_lookup_by_socket = {}
 			@bot_lookup_by_object = {}
 			@running = false
+			@write_interval = 0.1
 		end
 
 		attr_reader :running
@@ -25,6 +26,8 @@ module Nelumbo
 			bot_class.set_core_hooks(h_write_line, h_disconnect)
 
 			bot[:read_buffer] = ''
+			bot[:lines_to_write] = []
+			bot[:can_write_at] = Time.now
 			# TODO: make this configurable
 			bot[:socket] = TCPSocket.new('lightbringer.furcadia.com', 6500)
 
@@ -43,13 +46,18 @@ module Nelumbo
 			@bot_lookup_by_object.delete bot[:object]
 		end
 
-		def write_line(bot, line)
+		def really_write_line(bot, line)
 			line = line + "\n"
 			offset = 0
 			
+			puts "[[ #{Time.now.to_f} SENT #{line.inspect} ]]"
 			while offset < line.length
 				offset += bot[:socket].write((offset == 0) ? line : line.from(offset))
 			end
+		end
+
+		def write_line(bot, line)
+			bot[:lines_to_write] << line
 		end
 
 		def run
@@ -70,10 +78,12 @@ module Nelumbo
 
 				# do the actual processing
 				read_sockets = @bots.map { |b| b[:socket] }
-				arrays = IO.select(read_sockets, nil, nil, (target_time - Time.now).to_f.abs)
+				arrays = IO.select(read_sockets, read_sockets, nil, (target_time - Time.now).to_f.abs)
+				read, write = arrays
 
 				next if arrays.nil?
-				arrays.first.each do |socket|
+
+				read.each do |socket|
 					bot = @bot_lookup_by_socket[socket]
 
 					# this one had some stuff
@@ -95,6 +105,17 @@ module Nelumbo
 
 					packet.each do |line|
 						bot[:object].line_received(line) unless line.empty?
+					end
+				end
+
+				write.each do |socket|
+					bot = @bot_lookup_by_socket[socket]
+					next if bot.nil?
+
+					write_buffer = bot[:lines_to_write]
+					if !write_buffer.empty? and bot[:can_write_at] <= Time.now
+						really_write_line(bot, write_buffer.shift)
+						bot[:can_write_at] = Time.now + @write_interval
 					end
 				end
 			end
