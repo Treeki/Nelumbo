@@ -146,6 +146,7 @@ int wc_read_special(WorldContext *wc);
 
 void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf);
 // Internal
+void wc_handle_annotation(WorldContext *wc, DSLine *line);
 void wc_set_area(WorldContext *wc, DSLine *line);
 void wc_execute_on_area(WorldContext *wc, DSLine *line);
 void wc_add_filter(WorldContext *wc, DSLine *line);

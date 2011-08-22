@@ -77,7 +77,7 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 					wc->variables[varID] = varValue;
 					varID++;
 				} else {
-					count = decode_b95(&buf[offset], 3);
+					count = decode_b95(&buf[offset], 3) + 1;
 					varValue = (short)(decode_b95(&buf[offset+3], 3) & 0xFFFF);
 					offset += 6;
 
@@ -547,6 +547,8 @@ void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf)
 
 	DSLine *currentLine = &wc->ds[number];
 
+	wc_handle_annotation(wc, currentLine);
+
 #define LOOKING_FOR_EFFECT_BLOCK 0
 #define INSIDE_EFFECT_BLOCK 1
 	int stage = LOOKING_FOR_EFFECT_BLOCK;
@@ -590,6 +592,23 @@ void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf)
 		}
 
 		currentLine++;
+	}
+}
+
+
+void wc_handle_annotation(WorldContext *wc, DSLine *line) {
+	if (!NIL_P(line->annotation)) {
+		ID an_type = SYM2ID(rb_hash_aref(line->annotation, ID2SYM(rb_intern("action"))));
+		if (an_type == rb_intern("event")) {
+			VALUE event_name = rb_hash_aref(line->annotation, ID2SYM(rb_intern("name")));
+			//VALUE info = rb_hash_new();
+			VALUE info = Qnil;
+
+			printf("Going to dispatch event [ %s ]\n", RSTRING_PTR(event_name));
+			VALUE event_sym = ID2SYM(rb_intern2(RSTRING_PTR(event_name), RSTRING_LEN(event_name)));
+
+			rb_funcall(wc->bot, rb_intern("dispatch_event"), 2, event_sym, info);
+		}
 	}
 }
 
@@ -1191,19 +1210,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		return; \
 	}
 
-	if (!NIL_P(line->annotation)) {
-		ID an_type = SYM2ID(rb_hash_aref(line->annotation, ID2SYM(rb_intern("action"))));
-		if (an_type == rb_intern("event")) {
-			VALUE event_name = rb_hash_aref(line->annotation, ID2SYM(rb_intern("name")));
-			//VALUE info = rb_hash_new();
-			VALUE info = Qnil;
-
-			printf("Going to dispatch event [ %s ]\n", RSTRING_PTR(event_name));
-			VALUE event_sym = ID2SYM(rb_intern2(RSTRING_PTR(event_name), RSTRING_LEN(event_name)));
-
-			rb_funcall(wc->bot, rb_intern("dispatch_event"), 2, event_sym, info);
-		}
-	}
+	wc_handle_annotation(wc, line);
 
 	// error: a label can only be part of a statement and a declaration is not a statement
 	// gotta love C!
