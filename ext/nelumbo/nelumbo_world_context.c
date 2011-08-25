@@ -1274,10 +1274,22 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 				rb_warn("unsupported DS line (5:15) used");
 			break;
 
+		case 40:
+			targetX = PARAM_VALUE(1) / 2;
+			targetY = PARAM_VALUE(2) / 2;
+			wc->floors[targetX][targetY] = PARAM_VALUE(0);
+			break;
+		case 41:
+			targetX = PARAM_VALUE(1) / 2;
+			targetY = PARAM_VALUE(2) / 2;
+			wc->items[targetX][targetY] = PARAM_VALUE(0);
+			break;
+
 		case 76:
 			REQUIRE_PLAYER;
 			wc->i_player->heldObject = PARAM_VALUE(0);
 			wc->i_heldObject = wc->i_player->heldObject;
+			break;
 
 		case 300:
 			PARAM_VAR(0) = PARAM_VALUE(1);
@@ -1431,7 +1443,7 @@ do_dice_roll:
 			break;
 
 		case 390:
-			index = PARAM(2) + (PARAM_VALUE(0) * 2);
+			index = PARAM(2) + PARAM_VALUE(0);
 			count = PARAM_VALUE(1);
 			value = PARAM_VALUE(3);
 			for (i = 0; i < count; i++)

@@ -204,7 +204,7 @@ static VALUE get_wall(VALUE self, VALUE x, VALUE y) {
 	GET_WC;
 
 	int realX = FIX2INT(x), realY = FIX2INT(y);
-	fail_if_out_of_bounds(wc, realX, realY);
+	fail_if_out_of_bounds(wc, realX / 2, realY);
 
 	return INT2FIX(wc->walls[realX][realY]);
 }
@@ -216,7 +216,7 @@ static VALUE set_wall(VALUE self, VALUE x, VALUE y, VALUE wall) {
 	GET_WC;
 
 	int realX = FIX2INT(x), realY = FIX2INT(y), realWall = FIX2INT(wall);
-	fail_if_out_of_bounds(wc, realX, realY);
+	fail_if_out_of_bounds(wc, realX / 2, realY);
 
 	wc->walls[realX][realY] = realWall;
 
