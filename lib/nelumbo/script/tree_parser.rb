@@ -121,17 +121,24 @@ module Nelumbo
 
 			def process_line(line)
 				line.values.each do |v|
-					next unless Hash === v
-
-					case v[:type]
-					when :variable
-						add_variable(v)
-					when :string_variable
-						add_string_variable(v)
-					end
+					process_value(v)
 				end
 
 				line[:number] = assign_line_number
+			end
+
+			def process_value(value)
+				if Array === value
+					value.each { |v| process_value(v) }
+
+				elsif Hash === value
+					case value[:type]
+					when :variable
+						add_variable(value)
+					when :string_variable
+						add_string_variable(value)
+					end
+				end
 			end
 
 			def new_block?
