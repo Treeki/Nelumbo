@@ -1039,11 +1039,28 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			break;
 
 		case 19: case 719:
-			// Awesome, another line we can't implement due to missing info.
+			// Awesome, another line we can't implement properly due to missing info.
+			GET_AFFECTED_PLAYER;
 			distance = PARAM_VALUE(0);
 
-			if (distance > 0)
-				rb_warn("unsupported DS line (5:19) or (5:719) used");
+			if (distance > 0) {
+				if (sAffectedPlayer == wc->i_player) {
+					moveX = x;
+					moveY = y;
+					if (wc->i_facingDirection == 0)
+						wc_move_position_sw_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
+					else if (wc->i_facingDirection == 1)
+						wc_move_position_se_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
+					else if (wc->i_facingDirection == 2)
+						wc_move_position_nw_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
+					else if (wc->i_facingDirection == 3)
+						wc_move_position_ne_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
+
+					rb_funcall(wc->bot, rb_intern("move_tracked_player"), 3, affectedPlayer, INT2FIX(moveX*2), INT2FIX(moveY));
+				} else {
+					rb_warn("unsupported DS line (5:19) or (5:719) used on someone who is not the triggering furre");
+				}
+			}
 			break;
 
 		case 20:
