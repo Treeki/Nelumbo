@@ -61,14 +61,17 @@ module Nelumbo
 		end
 
 		def run
+			# a very weird optimisation, but it actually works! I hope.
+			tgran = TIMER_GRANULARITY.to_r
+
 			# this is where all the fun happens
 			@running = true
-			target_time = Time.now + TIMER_GRANULARITY
+			target_time = Time.now + tgran
 
 			while @running
 				current_time = Time.now
 				while current_time >= target_time
-					target_time += TIMER_GRANULARITY
+					target_time += tgran
 
 					@bots.each do |b|
 						# TODO: store the last tick in the Bot object
