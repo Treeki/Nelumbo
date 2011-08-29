@@ -54,6 +54,10 @@ typedef struct _worldcontext {
 	VALUE playersByUserID;
 	VALUE playersByPosition;
 
+	/* a bit of a hack because Furc fires 0:10 after the player is deleted */
+	VALUE lastDeletedPlayer;
+	unsigned int lastDeletedPlayerUID;
+
 	char hasDream;
 
 	/* Map Data */

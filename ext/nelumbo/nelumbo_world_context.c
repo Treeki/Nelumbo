@@ -198,17 +198,15 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 
 				printf("Nobody is executing some DS!\n");
 			} else {
-				wc->i_playerValue = rb_hash_aref(wc->playersByUserID, INT2NUM(wc->i_userID));
+				if (wc->i_userID == wc->lastDeletedPlayerUID)
+					wc->i_playerValue = wc->lastDeletedPlayer;
+				else
+					wc->i_playerValue = rb_hash_aref(wc->playersByUserID, INT2NUM(wc->i_userID));
 
 				if (wc->i_playerValue == Qnil) {
-					// this happens when someone leaves the dream and triggers DS:
-					// a non-zero user ID is sent, but Nelumbo has already deleted the
-					// Player class and removed it from the records
-					//
-					// must fix somehow .. caching the last removed user and ID, maybe?
 					wc->i_player = 0;
 
-					printf("[%d]Unknown is executing some DS!\n", wc->i_userID);
+					printf("[%d]Unknown is executing some DS! What?!\n", wc->i_userID);
 				} else {
 					Data_Get_Struct(wc->i_playerValue, Player, wc->i_player);
 

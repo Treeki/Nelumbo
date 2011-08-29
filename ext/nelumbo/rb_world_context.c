@@ -48,6 +48,9 @@ static VALUE delete_and_remove_player(VALUE self, VALUE player) {
 	rb_hash_delete(wc->playersByUserID, INT2NUM(sPlayer->uid));
 	rb_hash_delete(wc->playersByPosition, PLAYER_KEY(sPlayer->x, sPlayer->y));
 
+	wc->lastDeletedPlayer = player;
+	wc->lastDeletedPlayerUID = sPlayer->uid;
+
 	return player;
 }
 
@@ -390,6 +393,8 @@ static VALUE initialize(VALUE self, VALUE bot) {
 	wc->playersByUserID = rb_hash_new();
 	wc->playersByPosition = rb_hash_new();
 
+	wc->lastDeletedPlayer = Qnil;
+
 	return self;
 }
 
@@ -398,6 +403,7 @@ static void mark(WorldContext *wc) {
 	rb_gc_mark(wc->playersByShortname);
 	rb_gc_mark(wc->playersByUserID);
 	rb_gc_mark(wc->playersByPosition);
+	rb_gc_mark(wc->lastDeletedPlayer);
 
 	int i;
 	for (i = 0; i < wc->dsLineCount; i++) {
