@@ -165,10 +165,12 @@ static VALUE set_item(VALUE self, VALUE x, VALUE y, VALUE item) {
 	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realItem = FIX2INT(item);
 	fail_if_out_of_bounds(wc, realX, realY);
 
-	wc->items[realX][realY] = realItem;
+	if (wc->items[realX][realY] != realItem) {
+		wc->items[realX][realY] = realItem;
 
-	if (wc->isLoggingMapChanges)
-		wc_append_to_change_buffer(wc, &wc->itemChangeBuffer, realX, realY, realItem);
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->itemChangeBuffer, realX, realY, realItem);
+	}
 
 	return item;
 }
@@ -193,10 +195,12 @@ static VALUE set_floor(VALUE self, VALUE x, VALUE y, VALUE floor) {
 	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realFloor = FIX2INT(floor);
 	fail_if_out_of_bounds(wc, realX, realY);
 
-	wc->floors[realX][realY] = realFloor;
+	if (wc->floors[realX][realY] != realFloor) {
+		wc->floors[realX][realY] = realFloor;
 
-	if (wc->isLoggingMapChanges)
-		wc_append_to_change_buffer(wc, &wc->floorChangeBuffer, realX, realY, realFloor);
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->floorChangeBuffer, realX, realY, realFloor);
+	}
 
 	return floor;
 }
@@ -221,10 +225,12 @@ static VALUE set_wall(VALUE self, VALUE x, VALUE y, VALUE wall) {
 	int realX = FIX2INT(x), realY = FIX2INT(y), realWall = FIX2INT(wall);
 	fail_if_out_of_bounds(wc, realX / 2, realY);
 
-	wc->walls[realX][realY] = realWall;
+	if (wc->walls[realX][realY] != realWall) {
+		wc->walls[realX][realY] = realWall;
 
-	if (wc->isLoggingMapChanges)
-		wc_append_to_change_buffer(wc, &wc->wallChangeBuffer, realX, realY, realWall);
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->wallChangeBuffer, realX, realY, realWall);
+	}
 
 	return wall;
 }
