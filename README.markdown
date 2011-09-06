@@ -2,12 +2,12 @@ Nelumbo by Treeki
 =================
 
 Nelumbo is a framework for creating Furcadia bots, written in the powerful and
-flexible Ruby programming language.
+flexible Ruby programming language. It uses EventMachine for networking.
 
 ## Current Progress
-Basic bots are functional. Timers still need to be added, as does handling for
-most of the Furcadia protocol (both for sending commands and acting on events).
-Documentation is also needed for various classes and methods.
+Basic bots are functional. Handling for most of the Furcadia protocol (both for
+sending commands and acting on events) needs to be added. Documentation is also
+needed for various classes and methods.
 
 One little quirk of the system right now is that for the advanced bot manager
 features to work properly, your bot code should **all** be located in a module
@@ -15,9 +15,6 @@ named after the bot's .rb file. Also, the class should be named Bot.
 For example, if the file is named test\_bot.rb, the bot class should be
 TestBot::Bot. Putting everything into that module will make reloading work
 properly!
-
-I need to add a way for the Core to be controlled, so I can write the
-web interface, since integrating it into SelectCore seems clumsy.
 
 Eventually, I'll probably also need to make the Cores and the Bot/BaseBot
 classes thread-safe. That can come later though.
@@ -31,7 +28,7 @@ plugin system. But I'm lazy.
 ## Key Features
 - Simple Sinatra-style DSL for handling and responding to events
 - Automatically includes ActiveSupport
-- Modular: sockets/timers are managed by a "Core" and can be swapped easily
+- EventMachine used for connection handling
 - Integrated - but optional - DS engine for full dream tracking (Requires
   an extension module)
 - Clean plugin system using mixins and the Mixology gem
@@ -61,5 +58,5 @@ plugin system. But I'm lazy.
     end
 
     SimpleBot.set username: ARGV.first, password: ARGV.last
-    SimpleBot.new.run
+    Nelumbo::run_simply SimpleBot
 

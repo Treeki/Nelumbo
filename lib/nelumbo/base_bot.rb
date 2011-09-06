@@ -3,11 +3,10 @@ module Nelumbo
 	# with Furcadia, handle events using Nelumbo::EventHandler and have
 	# plugins loaded.
 	#
-	# Socket and timer handling is done using a Core, which can be passed to
-	# BaseBot#new. If none is specified, a new instance of Nelumbo::SimpleCore
-	# will be used.
+	# Do not instantiate this class directly. See Nelumbo::EventHandler's docs
+	# for details. To instantiate a bot, use Nelumbo::start.
 	#
-	# Usage of this class directly is not recommended. Nelumbo::Bot implements
+	# Subclassing this class directly is not recommended. Nelumbo::Bot implements
 	# login and various other niceties that are useful for most bots.
 	#
 	# BaseBot will raise these events:
@@ -40,25 +39,26 @@ module Nelumbo
 	#   be formatted like this: +evt event_name optional arguments+
 	#   Data: +:args+ (string containing everything after the event name)
 	#
-	class BaseBot < EventHandler
-		include CoreHooks
+	class BaseBot < EM::Connection
+		include EventHandler
+		extend EventDSL
+		setup_events
 
-		attr_reader :core, :state
+		attr_reader :state
 
-		def initialize(core = nil)
-			@core = (core || SimpleCore.new)
+		def initialize
+			super
+
 			@state = :inactive
 			@plugins = []
-			@timers = []
-			@recurring_timers = []
-			collect_recurring_timers
-		end
 
-		# Connect and run the bot. This method will block until the bot disconnects.
-		# Note: If you are not using Nelumbo::SimpleCore (the default when no
-		# core is specified), then this method may do nothing.
-		def run
-			@core.run(self)
+			# Timers!
+			@timers = []
+			@recurring_timers = {}
+			collect_initial_recurring_timers
+
+			# Networking fun stuff
+			@receive_buffer = ''
 		end
 
 		# Set an action to occur once after a specific amount of time has passed.
@@ -67,81 +67,86 @@ module Nelumbo
 		#   after(30) { puts "30 seconds passed" }
 		#
 		def after(duration, event=nil)
-			info = {trigger_at: Time.now + duration}
 			if event
-				info[:event] = event
+				run = proc { dispatch_event :event }
 			else
 				raise "block not passed to BaseBot#after" unless block_given?
-				info[:block] = Proc.new
-				info[:event_data] = data
+
+				saved_data = data
+				block = Proc.new
+				run = proc {
+					with_event_data(saved_data, &block)
+				}
 			end
 
-			@timers << info
+			@timers << EM::add_timer(duration, run)
 		end
 
-		# Hook called by the Core at a specific interval.
-		# The time between ticks is not fixed.
-		def timer_tick
-			current_time = Time.now
-
-			complete = nil
-
-			@timers.each do |info|
-				next if info[:trigger_at] > current_time
-
-				if info[:block]
-					with_event_data(info[:event_data]) do
-						instance_exec &info[:block]
-					end
-				else
-					dispatch_event info[:event]
-				end
-				(complete ||= []) << info
-			end
-
-			@timers -= complete if complete
-
-			# now process recurring timers
-			@recurring_timers.each do |info|
-				next if info[:trigger_at] > current_time
-
-				instance_exec &info[:block]
-				info[:trigger_at] += info[:interval]
-			end
-		end
-
-		# Grab every recurring timer from the class and module and store it
-		# into an instance variable. This method must be called if they are
-		# modified. (Adding/removing plugins will automatically call it. It is
-		# also called when the class is created.)
+		# @private
+		# Grab every recurring timer from the class and its ancestors (but
+		# NOT from dynamically loaded modules) and keep track of them.
 		#
-		def collect_recurring_timers
-			# there's a bit of a dilemma here: We have to regenerate the list,
-			# but we don't want to lose the existing time values.
-			#
-			# The hash containing the original info (held by the class/module)
-			# doesn't change, so we store it in info[:base]. This can be used
-			# to determine which ones stayed the same.
-
-			to_keep = {}
-			@recurring_timers.each{ |t| to_keep[t[:base]] = t[:trigger_at] }
-
-			@recurring_timers = []
+		def collect_initial_recurring_timers
+			@recurring_timers = {}
 			singleton_class.ancestors.reverse_each do |mod|
 				if mod.respond_to?(:recurring_timers)
-					mod.recurring_timers.each do |t|
-						# create a timer and calculate the next trigger time
-						info = {base: t, block: t[:block], interval: t[:interval]}
-						info[:trigger_at] = to_keep[t] || (Time.now + t[:interval])
+					list = @recurring_timers[mod] = []
 
-						@recurring_timers << info
+					mod.recurring_timers.each do |t|
+						list << EM::add_periodic_timer(t[:interval], &t[:block])
 					end
 				end
 			end
 		end
 
-		# Hook called by the Core when a line is received from the server.
+		# @private
+		# Remove every timer known to the bot right now.
+		#
+		def remove_all_recurring_timers
+			@recurring_timers.each_value do |list|
+				list.each { |timer| EM::cancel_timer(timer) }
+			end
+		end
+
+		# @private
+		# Add every recurring timer contained within a module.
+		#
+		def add_timers_for(mod)
+			list = @recurring_timers[mod] = []
+
+			mod.recurring_timers.each do |t|
+				list << EM::add_periodic_timer(t[:interval], &t[:block])
+			end
+		end
+
+		# @private
+		# Remove and cancel every recurring timer for a module.
+		#
+		def remove_timers_for(mod)
+			list = @recurring_timers.delete(mod)
+			list.each { |timer| EM::cancel_timer(timer) }
+		end
+
+		# Hook called by EventMachine. Do not call this function directly.
+		def receive_data(data)
+			packet = (@receive_buffer + data).split("\n")
+
+			if data.end_with?("\n")
+				@receive_buffer = ''
+			else
+				@receive_buffer = packet.pop
+			end
+
+			for line in packet
+				line_received(line)
+			end
+		end
+
+		# @private
+		# Process a line.
+		#
 		def line_received(line)
+			return if line.empty?
 			return if @state == :login and try_parse_login(line)
 
 			#p line
@@ -158,20 +163,43 @@ module Nelumbo
 			end
 		end
 
-		# Hook called by the Core when the bot is about to start.
-		def bot_started
+		# Hook called by EventMachine when the bot has connected.
+		def connection_completed
 			dispatch_event :init_bot
 			@state = :login
 		end
 
-		# Hook called by the Core when the bot is done running.
-		def bot_ended
+		# Hook called by EventMachine when the bot is done.
+		def unbind
 			dispatch_event :disconnect
 			@state = :inactive
 
 			plugins.each do |plugin|
 				remove_plugin plugin
 			end
+
+			remove_all_recurring_timers
+
+			@bot_disconnected_hook.call if @bot_disconnected_hook
+		end
+
+		# Sets a block that will be called when the bot disconnects.
+		# Currently used by Nelumbo::run_simply.
+		#
+		def when_disconnected(&block)
+			@bot_disconnected_hook = block
+		end
+
+
+
+		# Write a line to the bot. Line terminators are not required.
+		def write_line(line)
+			send_data "#{line}\n"
+		end
+
+		# Finish up! Disconnects the bot.
+		def disconnect
+			close_connection
 		end
 
 
@@ -192,7 +220,7 @@ module Nelumbo
 
 			mixin mod
 			mod.plugin_added(self)
-			collect_recurring_timers
+			add_timers_for(mod)
 			@plugins << mod
 			mod
 		end
@@ -208,7 +236,7 @@ module Nelumbo
 			@plugins.delete mod
 			mod.plugin_removed(self)
 			unmix mod
-			collect_recurring_timers
+			remove_timers_for(mod)
 			mod
 		end
 

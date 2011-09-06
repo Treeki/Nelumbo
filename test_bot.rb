@@ -1,6 +1,3 @@
-# this is a big, big hack
-
-#$LOAD_PATH.unshift File.join(File.dirname($0), 'lib')
 require 'nelumbo'
 
 #GC.stress = true
@@ -133,5 +130,5 @@ class TestBot < Nelumbo::Bot
 end
 
 TestBot.set username: ARGV.first, password: ARGV.last
-TestBot.new.run
+Nelumbo::run_simply TestBot
 

@@ -1,10 +1,16 @@
 module Nelumbo
-	# The Nelumbo::EventHandler class provides a system for handling events using
-	# a simple Sinatra-style DSL.
+	# The Nelumbo::EventHandler module provides a system for handling events
+	# using a simple Sinatra-style DSL.
 	#
-	# EventHandler allows subclasses (and modules that extend EventDSL) to add
+	# This system comes in two parts:
+	# - EventHandler is included into the final bot class and allows events to
+	#   be dispatched.
+	# - Every class/module which may respond to events will extend EventDSL.
+	#
+	# EventHandler allows modules that extend EventDSL to add
 	# event responders using class methods, like this:
 	#   class BaconBot < SomeBot
+	#     # SomeBot includes EventHandler and extends EventDSL
 	#     on_connect { puts "We connected!" }
 	#     on_message { puts "A message was received!" }
 	#     on_message(text: /chunky bacon/i) { puts "Someone seems hungry..." }
@@ -27,10 +33,7 @@ module Nelumbo
 	# Mixology appear in the ancestors list before the top class for some
 	# reason.)
 	#
-	class EventHandler
-		extend Nelumbo::EventDSL
-		setup_events
-		
+	module EventHandler
 		# Return the data for the current event.
 		def params
 			@current_event_data
@@ -136,7 +139,7 @@ module Nelumbo
 		def method_missing(name, *args, &block)
 			return super unless /^event_(?<param_name>.+)$/ =~ name
 
-			EventHandler.class_eval <<-END
+			EventHandler.module_eval <<-END
 				def event_#{param_name}
 					params[:#{param_name}]
 				end

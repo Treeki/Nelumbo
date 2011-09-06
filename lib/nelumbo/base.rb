@@ -1,3 +1,6 @@
+$eventmachine_library = :pure_ruby
+require 'eventmachine'
+
 require 'mixology'
 
 require 'singleton'
@@ -29,9 +32,6 @@ require 'nelumbo/event_dsl'
 require 'nelumbo/event_handler'
 require 'nelumbo/plugin'
 require 'nelumbo/plugin_loader'
-require 'nelumbo/core_hooks'
-require 'nelumbo/select_core'
-require 'nelumbo/simple_core'
 require 'nelumbo/base_bot'
 require 'nelumbo/bot'
 require 'nelumbo/world_tracking'
@@ -40,4 +40,19 @@ require 'nelumbo/world_tracking'
 # and short code, written by Treeki. See the README for more information.
 module Nelumbo
 	VERSION = '0.0.1'
+
+
+	# Start an instance of a specified bot.
+	def self.begin_bot(klass)
+		EM::connect('lightbringer.furcadia.com', 6500, klass)
+	end
+
+	# Start an instance of this bot and run it in an EventMachine event loop.
+	# The loop will automatically be terminated when this bot stops.
+	def self.run_simply(klass)
+		EventMachine::run {
+			bot = begin_bot(klass)
+			bot.when_disconnected { EM::stop_event_loop }
+		}
+	end
 end
