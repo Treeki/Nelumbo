@@ -1306,6 +1306,10 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			wc->i_heldObject = wc->i_player->heldObject;
 			break;
 
+		case 184:
+			PARAM_VAR(0) = wc->i_dsButtonPressed;
+			break;
+
 		case 300:
 			PARAM_VAR(0) = PARAM_VALUE(1);
 			break;
