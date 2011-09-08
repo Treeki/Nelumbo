@@ -8,7 +8,8 @@ require 'pry'
 
 #t = Nelumbo::Script::Tokenizer.new(File.open('/home/me/Furcadia/Dreams/Spring2011_Final/final version with clearing.ds', 'r'))
 #t = Nelumbo::Script::Tokenizer.new(File.open('../ch.ds', 'r'))
-t = Nelumbo::Script::Tokenizer.new(File.open('/home/me/Furcadia/Dreams/CH_G3/G3.ds', 'r'))
+#t = Nelumbo::Script::Tokenizer.new(File.open('/home/me/Furcadia/Dreams/CH_G3/G3.ds', 'r'))
+t = Nelumbo::Script::Tokenizer.new(File.open(ARGV.first, 'r'))
 puts 'Tokenising...'
 tokens = t.each_token.to_a
 File.open('tokens.txt', 'w') { |f| tokens.each { |tok| f.puts tok.inspect } }
