@@ -59,6 +59,8 @@ module Nelumbo
 
 			# Networking fun stuff
 			@receive_buffer = ''
+			@output_buffer = []
+			@output_timer = EM::add_periodic_timer(0.1, method(:write_line_from_buffer))
 		end
 
 		# Set an action to occur once after a specific amount of time has passed.
@@ -68,7 +70,7 @@ module Nelumbo
 		#
 		def after(duration, event=nil)
 			if event
-				run = proc { dispatch_event :event }
+				run = proc { dispatch_event event }
 			else
 				raise "block not passed to BaseBot#after" unless block_given?
 
@@ -180,6 +182,8 @@ module Nelumbo
 
 			remove_all_recurring_timers
 
+			@output_timer.cancel
+
 			@bot_disconnected_hook.call if @bot_disconnected_hook
 		end
 
@@ -194,7 +198,15 @@ module Nelumbo
 
 		# Write a line to the bot. Line terminators are not required.
 		def write_line(line)
-			send_data "#{line}\n"
+			@output_buffer << line
+		end
+
+		# @private
+		def write_line_from_buffer
+			if (line = @output_buffer.shift)
+				puts "Sending:", line.inspect
+				send_data "#{line}\n"
+			end
 		end
 
 		# Finish up! Disconnects the bot.
