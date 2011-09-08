@@ -106,7 +106,7 @@ module Nelumbo
 			end
 
 			def fetch_nvariable
-				fetch_token_restricted([:variable, :variable_pointer], :nvariable)
+				fetch_token_restricted([:number, :variable, :variable_pointer], :nvariable)
 			end
 
 			def fetch_sliteral
