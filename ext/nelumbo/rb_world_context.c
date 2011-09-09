@@ -385,6 +385,12 @@ static VALUE end_map_change_logging(VALUE self) {
 /*******************************************************************************
  * Ruby Housekeeping
  ******************************************************************************/
+static VALUE get_bot(VALUE self) {
+	GET_WC;
+
+	return wc->bot;
+}
+
 static VALUE initialize(VALUE self, VALUE bot) {
 	GET_WC;
 
@@ -435,6 +441,8 @@ void Init_nelumbo_world_context() {
 
 	rb_define_method(cNelumboWorldContext, "load_map", load_map, 3);
 	rb_define_method(cNelumboWorldContext, "save_map", save_map, 0);
+
+	rb_define_method(cNelumboWorldContext, "bot", get_bot, 0);
 
 	rb_define_method(cNelumboWorldContext, "item", get_item, 2);
 	rb_define_method(cNelumboWorldContext, "set_item", set_item, 3);
