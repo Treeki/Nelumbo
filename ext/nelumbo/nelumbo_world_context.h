@@ -101,6 +101,13 @@ typedef struct _worldcontext {
 
 	DSRandom i_randomGenerator;
 
+	/* Callbacks */
+	VALUE cb_itemChanged;
+	VALUE cb_floorChanged;
+	VALUE cb_wallChanged;
+
+	VALUE cb_heldObjectChanged;
+
 	/* Map Change Queue */
 	int isLoggingMapChanges;
 

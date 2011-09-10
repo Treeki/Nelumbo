@@ -329,6 +329,8 @@ module Nelumbo
 				load_ds_file(dream_path.sub(/\.map$/, '.ds'))
 
 				puts "Dream initialised."
+
+				dispatch_event :init_context
 			end
 
 			def produce_map

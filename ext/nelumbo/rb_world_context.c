@@ -391,6 +391,26 @@ static VALUE get_bot(VALUE self) {
 	return wc->bot;
 }
 
+static VALUE set_callback(VALUE self, VALUE type) {
+	GET_WC;
+
+	rb_need_block();
+
+	if (type == rb_intern("item_changed")) {
+		wc->cb_itemChanged = rb_block_proc();
+	} else if (type == rb_intern("floor_changed")) {
+		wc->cb_floorChanged = rb_block_proc();
+	} else if (type == rb_intern("wall_changed")) {
+		wc->cb_wallChanged = rb_block_proc();
+	} else if (type == rb_intern("held_object_changed")) {
+		wc->cb_heldObjectChanged = rb_block_proc();
+	} else {
+		return Qfalse;
+	}
+
+	return type;
+}
+
 static VALUE initialize(VALUE self, VALUE bot) {
 	GET_WC;
 
@@ -406,6 +426,11 @@ static VALUE initialize(VALUE self, VALUE bot) {
 	wc->playersByPosition = rb_hash_new();
 
 	wc->lastDeletedPlayer = Qnil;
+
+	wc->cb_itemChanged = Qnil;
+	wc->cb_floorChanged = Qnil;
+	wc->cb_wallChanged = Qnil;
+	wc->cb_heldObjectChanged = Qnil;
 
 	return self;
 }
@@ -485,5 +510,7 @@ void Init_nelumbo_world_context() {
 
 	rb_define_method(cNelumboWorldContext, "begin_map_change_logging", begin_map_change_logging, 0);
 	rb_define_method(cNelumboWorldContext, "end_map_change_logging", end_map_change_logging, 0);
+
+	rb_define_method(cNelumboWorldContext, "set_callback", set_callback, 1);
 }
 

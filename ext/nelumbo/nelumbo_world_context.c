@@ -611,6 +611,35 @@ void wc_handle_annotation(WorldContext *wc, DSLine *line) {
 }
 
 
+static void item_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_itemChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->items[x][y])};
+		rb_proc_call_with_block(wc->cb_itemChanged, 3, args, Qnil);
+	}
+}
+
+static void floor_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_floorChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->floors[x][y])};
+		rb_proc_call_with_block(wc->cb_floorChanged, 3, args, Qnil);
+	}
+}
+
+static void wall_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_wallChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->walls[x][y])};
+		rb_proc_call_with_block(wc->cb_wallChanged, 3, args, Qnil);
+	}
+}
+
+static void held_object_changed(WorldContext *wc, VALUE player, int oldObj, int newObj) {
+	if (!NIL_P(wc->cb_itemChanged)) {
+		VALUE args[3] = {player, INT2FIX(oldObj), INT2FIX(newObj)};
+		rb_proc_call_with_block(wc->cb_heldObjectChanged, 3, args, Qnil);
+	}
+}
+
+
 // NOTE: WC_VAR_SAFE is defined in the .h file
 #define PARAM(id) (line->params[(id)])
 #define PARAM_VALUE(id) (wc_ds_value(wc, line->params[(id)]))
@@ -623,10 +652,24 @@ void wc_handle_annotation(WorldContext *wc, DSLine *line) {
 	if (var < 0) var = 0; \
 	if (var >= wc->mapWidth) var = wc->mapWidth - 1;
 
+#define GET_AND_CLAMP_WALL_X(var, id) \
+	var = PARAM_VALUE(id); \
+	if (var < 0) var = 0; \
+	if (var >= wc->mapWidth) var = wc->mapWidth - 1;
+
 #define GET_AND_CLAMP_Y(var, id) \
 	var = PARAM_VALUE(id); \
 	if (var < 0) var = 0; \
 	if (var >= wc->mapHeight) var = wc->mapHeight - 1;
+
+#define GET_TARGET_POSITION(xID, yID) \
+	GET_AND_CLAMP_X(targetX, (xID)); \
+	GET_AND_CLAMP_Y(targetY, (yID));
+
+#define GET_WALL_TARGET_POSITION(xID, yID) \
+	GET_AND_CLAMP_WALL_X(targetX, (xID)); \
+	GET_AND_CLAMP_Y(targetY, (yID));
+
 
 
 void wc_set_area(WorldContext *wc, DSLine *line) {
@@ -811,6 +854,7 @@ void wc_execute_on_wall(WorldContext *wc, DSLine *line, int x, int y) {
 			texture = PARAM_VALUE(1);
 write_wall:
 			wc->walls[x][y] = (texture * 12) + shape;
+			wall_changed(wc, x, y);
 			break;
 
 		case 45:
@@ -818,10 +862,13 @@ write_wall:
 			two = PARAM_VALUE(1);
 			shape = wc->walls[x][y] % 12;
 
-			if (shape == one)
+			if (shape == one) {
 				wc->walls[x][y] = (wc->walls[x][y] - one) + two;
-			else if (shape == two)
+				wall_changed(wc, x, y);
+			} else if (shape == two) {
 				wc->walls[x][y] = (wc->walls[x][y] - two) + one;
+				wall_changed(wc, x, y);
+			}
 			break;
 
 		case 46:
@@ -829,28 +876,36 @@ write_wall:
 			two = PARAM_VALUE(1);
 			texture = wc->walls[x][y] / 12;
 
-			if (texture == one)
+			if (texture == one) {
 				wc->walls[x][y] = (wc->walls[x][y] - (one * 12)) + (two * 12);
-			else if (texture == two)
+				wall_changed(wc, x, y);
+			} else if (texture == two) {
 				wc->walls[x][y] = (wc->walls[x][y] - (two * 12)) + (one * 12);
+				wall_changed(wc, x, y);
+			}
 			break;
 
 		case 47:
 			one = (PARAM_VALUE(1) * 12) + PARAM_VALUE(0);
 			two = (PARAM_VALUE(3) * 12) + PARAM_VALUE(2);
 
-			if (wc->walls[x][y] == one)
+			if (wc->walls[x][y] == one) {
 				wc->walls[x][y] = two;
-			else if (wc->walls[x][y] == two)
+				wall_changed(wc, x, y);
+			} else if (wc->walls[x][y] == two) {
 				wc->walls[x][y] = one;
+				wall_changed(wc, x, y);
+			}
 			break;
 
 		case 60:
 			one = PARAM_VALUE(0);
 			two = PARAM_VALUE(1);
 
-			if ((wc->walls[x][y] % 12) == one)
+			if ((wc->walls[x][y] % 12) == one) {
 				wc->walls[x][y] = (wc->walls[x][y] - one) + two;
+				wall_changed(wc, x, y);
+			}
 			break;
 
 		case 61:
@@ -858,31 +913,40 @@ write_wall:
 			two = PARAM_VALUE(1);
 			texture = wc->walls[x][y] / 12;
 
-			if (texture == one)
+			if (texture == one) {
 				wc->walls[x][y] = (wc->walls[x][y] - (one * 12)) + (two * 12);
+				wall_changed(wc, x, y);
+			}
 			break;
 
 		case 62:
 			one = (PARAM_VALUE(1) * 12) + PARAM_VALUE(0);
 			two = (PARAM_VALUE(3) * 12) + PARAM_VALUE(2);
 
-			if (wc->walls[x][y] == one)
+			if (wc->walls[x][y] == one) {
 				wc->walls[x][y] = two;
+				wall_changed(wc, x, y);
+			}
 			break;
 
 		case 66:
-			wc->walls[PARAM_VALUE(0)][PARAM_VALUE(1)] = wc->walls[x][y];
+			GET_WALL_TARGET_POSITION(0, 1);
+			wc->walls[targetX][targetY] = wc->walls[x][y];
 			wc->walls[x][y] = 0;
+			wall_changed(wc, targetX, targetY);
 			break;
 		case 67:
-			wc->walls[PARAM_VALUE(0)][PARAM_VALUE(1)] = wc->walls[x][y];
+			GET_WALL_TARGET_POSITION(0, 1);
+			wc->walls[targetX][targetY] = wc->walls[x][y];
+			wall_changed(wc, targetX, targetY);
 			break;
 		case 68:
-			targetX = PARAM_VALUE(0);
-			targetY = PARAM_VALUE(0);
+			GET_WALL_TARGET_POSITION(0, 1);
 			swap = wc->walls[x][y];
 			wc->walls[x][y] = wc->walls[targetX][targetY];
 			wc->walls[targetX][targetY] = swap;
+			wall_changed(wc, x, y);
+			wall_changed(wc, targetX, targetY);
 			break;
 
 	}
@@ -949,11 +1013,11 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 					return;
 				break;
 			case 14:
-				if (!position_is_visible_from(x, y, filter->params[0], filter->params[1]))
+				if (!position_is_visible_from(x, y, filter->params[0]/2, filter->params[1]))
 					return;
 				break;
 			case 15:
-				if (position_is_visible_from(x, y, filter->params[0], filter->params[1]))
+				if (position_is_visible_from(x, y, filter->params[0]/2, filter->params[1]))
 					return;
 				break;
 
@@ -962,7 +1026,7 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 
 
 	int one, two, cycle[5], cycleCount, i;
-	int distance, targetX, targetY, swap, shape, texture;
+	int distance, targetX, targetY, swap, shape, texture, value, old;
 	short moveX, moveY;
 	VALUE affectedPlayer;
 	Player *sAffectedPlayer;
@@ -984,34 +1048,46 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 
 		case 1:
 			wc->floors[x][y] = PARAM_VALUE(0);
+			floor_changed(wc, x, y);
 			break;
 		case 2:
-			if (wc->floors[x][y] == PARAM_VALUE(0))
+			if (wc->floors[x][y] == PARAM_VALUE(0)) {
 				wc->floors[x][y] = PARAM_VALUE(1);
+				floor_changed(wc, x, y);
+			}
 			break;
 		case 3:
 			one = PARAM_VALUE(0);
 			two = PARAM_VALUE(1);
-			if (wc->floors[x][y] == one)
+			if (wc->floors[x][y] == one) {
 				wc->floors[x][y] = two;
-			else if (wc->floors[x][y] == two)
+				floor_changed(wc, x, y);
+			} else if (wc->floors[x][y] == two) {
 				wc->floors[x][y] = one;
+				floor_changed(wc, x, y);
+			}
 			break;
 
 		case 4:
 			wc->items[x][y] = PARAM_VALUE(0);
+			item_changed(wc, x, y);
 			break;
 		case 5:
-			if (wc->items[x][y] == PARAM_VALUE(0))
+			if (wc->items[x][y] == PARAM_VALUE(0)) {
 				wc->items[x][y] = PARAM_VALUE(1);
+				item_changed(wc, x, y);
+			}
 			break;
 		case 6:
 			one = PARAM_VALUE(0);
 			two = PARAM_VALUE(1);
-			if (wc->items[x][y] == one)
+			if (wc->items[x][y] == one) {
 				wc->items[x][y] = two;
-			else if (wc->items[x][y] == two)
+				item_changed(wc, x, y);
+			} else if (wc->items[x][y] == two) {
 				wc->items[x][y] = one;
+				item_changed(wc, x, y);
+			}
 			break;
 
 		case 16: case 17: case 716: case 717:
@@ -1022,8 +1098,7 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			//
 			GET_AFFECTED_PLAYER;
 
-			targetX = PARAM_VALUE(0) / 2;
-			targetY = PARAM_VALUE(1);
+			GET_TARGET_POSITION(0, 1);
 			if (wc_position_is_walkable(wc, targetX, targetY, sAffectedPlayer)) {
 				// TODO: make this into a direct C call?
 				rb_funcall(wc->bot, rb_intern("move_tracked_player"), 3, affectedPlayer, INT2FIX(targetX*2), INT2FIX(targetY));
@@ -1075,51 +1150,70 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 
 			wc->items[moveX][moveY] = wc->items[x][y];
 			wc->items[x][y] = 0;
+			item_changed(wc, x, y);
+			item_changed(wc, moveX, moveY);
 			break;
 
 		case 21:
-			wc->items[PARAM_VALUE(0)][PARAM_VALUE(1)] = wc->items[x][y];
+			GET_TARGET_POSITION(0, 1);
+			wc->items[targetX][targetY] = wc->items[x][y];
 			wc->items[x][y] = 0;
+			item_changed(wc, x, y);
+			item_changed(wc, targetX, targetY);
 			break;
 		case 22:
-			wc->items[PARAM_VALUE(0)][PARAM_VALUE(1)] = wc->items[x][y];
+			GET_TARGET_POSITION(0, 1);
+			wc->items[targetX][targetY] = wc->items[x][y];
+			item_changed(wc, targetX, targetY);
 			break;
 		case 23:
-			targetX = PARAM_VALUE(0) / 2;
-			targetY = PARAM_VALUE(1);
+			GET_TARGET_POSITION(0, 1);
 			swap = wc->items[x][y];
 			wc->items[x][y] = wc->items[targetX][targetY];
 			wc->items[targetX][targetY] = swap;
+			item_changed(wc, x, y);
+			item_changed(wc, targetX, targetY);
 			break;
 
 		case 24:
-			wc->floors[PARAM_VALUE(0)][PARAM_VALUE(1)] = wc->floors[x][y];
+			GET_TARGET_POSITION(0, 1);
+			wc->floors[targetX][targetY] = wc->floors[x][y];
+			floor_changed(wc, x, y);
 			break;
 		case 25:
-			targetX = PARAM_VALUE(0) / 2;
-			targetY = PARAM_VALUE(1);
+			GET_TARGET_POSITION(0, 1);
 			swap = wc->floors[x][y];
 			wc->floors[x][y] = wc->floors[targetX][targetY];
 			wc->floors[targetX][targetY] = swap;
+			floor_changed(wc, x, y);
+			floor_changed(wc, targetX, targetY);
 			break;
 
 		case 26:
 			wc->items[x][y] += PARAM_VALUE(0);
+			item_changed(wc, x, y);
 			break;
 		case 27:
 			wc->items[x][y] -= PARAM_VALUE(0);
+			item_changed(wc, x, y);
 			break;
 		case 28:
 			wc->floors[x][y] += PARAM_VALUE(0);
+			floor_changed(wc, x, y);
 			break;
 		case 29:
 			wc->floors[x][y] -= PARAM_VALUE(0);
+			floor_changed(wc, x, y);
 			break;
 
 		case 77:
 			GET_AFFECTED_PLAYER;
 
-			sAffectedPlayer->heldObject = PARAM_VALUE(0);
+			value = PARAM_VALUE(0);
+			old = sAffectedPlayer->heldObject;
+
+			sAffectedPlayer->heldObject = value;
+			held_object_changed(wc, affectedPlayer, old, value);
 
 			if (sAffectedPlayer == wc->i_player) {
 				wc->i_heldObject = sAffectedPlayer->heldObject;
@@ -1180,22 +1274,28 @@ do_cycle:
 				for (i = 1; i < cycleCount; i++) {
 					if (wc->floors[x][y] == cycle[i - 1]) {
 						wc->floors[x][y] = cycle[i];
+						floor_changed(wc, x, y);
 						return;
 					}
 				}
 
-				if (wc->floors[x][y] == cycle[0])
+				if (wc->floors[x][y] == cycle[0]) {
 					wc->floors[x][y] = cycle[cycleCount - 1];
+					floor_changed(wc, x, y);
+				}
 			} else {
 				for (i = 1; i < cycleCount; i++) {
 					if (wc->items[x][y] == cycle[i - 1]) {
 						wc->items[x][y] = cycle[i];
+						item_changed(wc, x, y);
 						return;
 					}
 				}
 
-				if (wc->items[x][y] == cycle[0])
+				if (wc->items[x][y] == cycle[0]) {
 					wc->items[x][y] = cycle[cycleCount - 1];
+					item_changed(wc, x, y);
+				}
 			}
 
 			break;
@@ -1230,7 +1330,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 	// error: a label can only be part of a statement and a declaration is not a statement
 	// gotta love C!
 	int i, x, y, targetX, targetY, divisor, dividend, index, total, count, max, modifier;
-	int x1, x2, y1, y2, width, height, totalArea, check, type, value, random;
+	int x1, x2, y1, y2, width, height, totalArea, check, type, value, random, old;
 
 	switch (line->type) {
 		/* Those commented out are not relevant to us. */
@@ -1256,6 +1356,58 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			wc_execute_on_area(wc, line);
 			break;
 
+			/* Stuff we don't need in our DS engine. */
+			/* Sounds / Music: */
+		case 8: case 9: case 10: case 11: case 12:
+		case 30: case 31: case 32: case 33: case 34:
+			/* Countdown Timers (Purely Server Side): */
+		case 50:
+			/* Dream Control (Purely Server Side): */
+		case 52: case 53: case 54: case 55:
+		case 78: case 102: case 103:
+		case 104: case 105:
+		case 106: case 107: case 108: case 109: case 110: case 111:
+		case 112: case 113:
+			/* Poses (Ignored Right Now): */
+		case 70: case 71: case 72: case 73: case 74: case 75:
+		case 88: case 89: case 90: case 91: case 92: case 93:
+		case 94: case 95: case 96: case 97: case 98: case 99:
+			/* Classic Mode: */
+		case 100: case 101: case 1000:
+			/* DS Buttons: */
+		case 180: case 181: case 182: case 183:
+		case 190: case 191: case 192: case 193:
+			/* Emits / Speech: */
+		case 200: case 201: case 202: case 203: case 204: case 205:
+		case 210: case 212: case 213: case 214: case 215:
+			/* String Variables: */
+		case 250: case 251: case 252: case 253: case 254: case 255:
+		case 256: case 257: case 258:
+		case 270: case 271: case 272: case 273: case 274:
+		case 275: case 276: case 277: case 278:
+			/* Map Shaking: */
+		case 420: case 421: case 422: case 423:
+			/* KitterSpeak: */
+		case 430: case 431: case 432: case 433:
+		case 434: case 435: case 436: case 437:
+		case 438: case 439: case 440: case 441:
+		case 442: case 443: case 444:
+			/* PS Memorise: */
+		case 600: case 601: case 602: case 603: case 604: case 605:
+			/* PS Strings: */
+		case 613: case 614: case 615:
+			/* PS Forget and Control: */
+		case 630: case 631: case 632: case 633: case 634: case 635:
+		case 650: case 651: case 880:
+			/* Cookies: */
+		case 700: case 701: case 702: case 703:
+		case 706: case 707: case 708: case 709: case 714:
+			/* Localspecies: */
+		case 1200: case 1201: case 1202: case 1203:
+			/* Crash the Tribble: */
+		case 2000:
+			break;
+
 		case 14: case 15:
 			// Here's a fun little quirk: Thanks to 5:15, it's practically impossible to
 			// accurately track a player around the dream using the DS and Triggers.
@@ -1277,8 +1429,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			// please apply the changes to the other version as well.
 			//
 			REQUIRE_PLAYER;
-			targetX = PARAM_VALUE(0) / 2;
-			targetY = PARAM_VALUE(1);
+			GET_TARGET_POSITION(0, 1);
 			if (wc_position_is_walkable(wc, targetX, targetY, wc->i_player)) {
 				// TODO: make this into a direct C call?
 				rb_funcall(wc->bot, rb_intern("move_tracked_player"), 3, wc->i_playerValue, INT2FIX(targetX*2), INT2FIX(targetY));
@@ -1290,23 +1441,27 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			break;
 
 		case 40:
-			targetX = PARAM_VALUE(1) / 2;
-			targetY = PARAM_VALUE(2) / 2;
+			GET_TARGET_POSITION(1, 2);
 			wc->floors[targetX][targetY] = PARAM_VALUE(0);
+			floor_changed(wc, targetX, targetY);
 			break;
 		case 41:
-			targetX = PARAM_VALUE(1) / 2;
-			targetY = PARAM_VALUE(2) / 2;
+			GET_TARGET_POSITION(1, 2);
 			wc->items[targetX][targetY] = PARAM_VALUE(0);
+			item_changed(wc, targetX, targetY);
 			break;
 
 		case 76:
 			REQUIRE_PLAYER;
-			wc->i_player->heldObject = PARAM_VALUE(0);
+			value = PARAM_VALUE(0);
+			old = wc->i_player->heldObject;
+			wc->i_player->heldObject = value;
 			wc->i_heldObject = wc->i_player->heldObject;
+			held_object_changed(wc, wc->i_playerValue, old, value);
 			break;
 
 		case 184:
+			// Bugged in Furc currently!
 			PARAM_VAR(0) = wc->i_dsButtonPressed;
 			break;
 

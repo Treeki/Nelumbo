@@ -95,7 +95,10 @@ module Nelumbo
 					list = @recurring_timers[mod] = []
 
 					mod.recurring_timers.each do |t|
-						list << EM::add_periodic_timer(t[:interval], &t[:block])
+						block = t[:block]
+						list << EM::add_periodic_timer(t[:interval]) do
+							instance_exec &block
+						end
 					end
 				end
 			end
