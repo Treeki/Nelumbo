@@ -671,6 +671,26 @@ static void held_object_changed(WorldContext *wc, VALUE player, int oldObj, int 
 	GET_AND_CLAMP_Y(targetY, (yID));
 
 
+static int direction_behind[4] = {
+	/* DIR_SW => */ DIR_NE,
+	/* DIR_SE => */ DIR_NW,
+	/* DIR_NW => */ DIR_SE,
+	/* DIR_NE => */ DIR_SW,
+};
+
+static int direction_left[4] = {
+	/* DIR_SW => */ DIR_SE,
+	/* DIR_SE => */ DIR_NE,
+	/* DIR_NW => */ DIR_SW,
+	/* DIR_NE => */ DIR_NW,
+};
+
+static int direction_right[4] = {
+	/* DIR_SW => */ DIR_NW,
+	/* DIR_SE => */ DIR_SW,
+	/* DIR_NW => */ DIR_NE,
+	/* DIR_NE => */ DIR_SE,
+};
 
 void wc_set_area(WorldContext *wc, DSLine *line) {
 	DSLine *bakedLine = &wc->currentArea;
@@ -714,8 +734,8 @@ void wc_set_area(WorldContext *wc, DSLine *line) {
 
 void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 	int x, y;
-	short startX, startY, endX, endY, leftX, leftY, rightX, rightY;
-	int top, bottom;
+	short startX, startY, endX, endY, leftX, leftY, rightX, rightY, moveX, moveY;
+	int top, bottom, steps, direction;
 
 	/* Note: Area params are "baked in" when assigned */
 	switch (wc->currentArea.type) {
@@ -808,6 +828,131 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 
 		case 5:
 			wc_execute_on_area_position(wc, line, wc->i_movedFromX, wc->i_movedFromY);
+			break;
+		case 6:
+			wc_execute_on_area_position(wc, line, wc->i_movedToX, wc->i_movedToY);
+			break;
+		case 7:
+			if (wc->i_didPlayerMove)
+				wc_execute_on_area_position(wc, line, wc->i_movedToX, wc->i_movedToY);
+			else
+				wc_execute_on_area_position(wc, line, wc->i_movedFromX, wc->i_movedFromY);
+			break;
+
+		case 10:
+			steps = 1;
+			direction = wc->i_facingDirection;
+			goto stepsInDirectionMovedTo;
+		case 11:
+			direction = wc->i_facingDirection;
+			goto stepsInDirectionMovedTo_Param0;
+
+		case 12:
+			steps = 1;
+			direction = direction_behind[wc->i_facingDirection];
+			goto stepsInDirectionMovedTo;
+		case 13:
+			direction = direction_behind[wc->i_facingDirection];
+			goto stepsInDirectionMovedTo_Param0;
+
+		case 20:
+			steps = 1;
+			direction = direction_left[wc->i_facingDirection];
+			goto stepsInDirectionMovedTo;
+		case 21:
+			direction = direction_left[wc->i_facingDirection];
+			goto stepsInDirectionMovedTo_Param0;
+
+		case 22:
+			steps = 1;
+			direction = direction_right[wc->i_facingDirection];
+			goto stepsInDirectionMovedTo;
+		case 23:
+			direction = direction_right[wc->i_facingDirection];
+			goto stepsInDirectionMovedTo_Param0;
+
+		case 50:
+			direction = DIR_NE;
+			goto stepsInDirectionMovedFrom_Param0;
+		case 51:
+			direction = DIR_SE;
+			goto stepsInDirectionMovedFrom_Param0;
+		case 52:
+			direction = DIR_SW;
+			goto stepsInDirectionMovedFrom_Param0;
+		case 53:
+			direction = DIR_NW;
+			goto stepsInDirectionMovedFrom_Param0;
+
+		case 54:
+			direction = DIR_NE;
+			goto stepsInDirectionMovedTo_Param0;
+		case 55:
+			direction = DIR_SE;
+			goto stepsInDirectionMovedTo_Param0;
+		case 56:
+			direction = DIR_SW;
+			goto stepsInDirectionMovedTo_Param0;
+		case 57:
+			direction = DIR_NW;
+			goto stepsInDirectionMovedTo_Param0;
+
+stepsInDirectionMovedFrom_Param0:
+			steps = wc->currentArea.params[0];
+			goto stepsInDirectionMovedFrom;
+stepsInDirectionMovedTo_Param0:
+			steps = wc->currentArea.params[0];
+			goto stepsInDirectionMovedTo;
+
+stepsInDirectionMovedFrom:
+			moveX = wc->i_movedFromX;
+			moveY = wc->i_movedFromY;
+			goto stepsInDirection;
+stepsInDirectionMovedTo:
+			moveX = wc->i_movedToX;
+			moveY = wc->i_movedToY;
+stepsInDirection:
+			if (direction == DIR_SW)
+				wc_move_position_sw_clamped(wc, &moveX, &moveY, steps);
+			else if (direction == DIR_SE)
+				wc_move_position_se_clamped(wc, &moveX, &moveY, steps);
+			else if (direction == DIR_NW)
+				wc_move_position_nw_clamped(wc, &moveX, &moveY, steps);
+			else if (direction == DIR_NE)
+				wc_move_position_ne_clamped(wc, &moveX, &moveY, steps);
+
+			wc_execute_on_area_position(wc, line, moveX, moveY);
+			break;
+
+		case 60: case 61: case 62: case 63:
+			moveX = wc->i_movedFromX;
+			moveY = wc->i_movedFromY;
+			goto doMoveTwoDirs;
+		case 64: case 65: case 66: case 67:
+			moveX = wc->i_movedToX;
+			moveY = wc->i_movedToY;
+
+doMoveTwoDirs:
+			switch ((wc->currentArea.type - 60) % 4) {
+				case 0:
+					wc_move_position_ne_clamped(wc, &moveX, &moveY, wc->currentArea.params[0]);
+					wc_move_position_nw_clamped(wc, &moveX, &moveY, wc->currentArea.params[1]);
+					break;
+				case 1:
+					wc_move_position_ne_clamped(wc, &moveX, &moveY, wc->currentArea.params[0]);
+					wc_move_position_se_clamped(wc, &moveX, &moveY, wc->currentArea.params[1]);
+					break;
+				case 2:
+					wc_move_position_sw_clamped(wc, &moveX, &moveY, wc->currentArea.params[0]);
+					wc_move_position_se_clamped(wc, &moveX, &moveY, wc->currentArea.params[1]);
+					break;
+				case 3:
+					wc_move_position_sw_clamped(wc, &moveX, &moveY, wc->currentArea.params[0]);
+					wc_move_position_nw_clamped(wc, &moveX, &moveY, wc->currentArea.params[1]);
+					break;
+			}
+
+			wc_execute_on_area_position(wc, line, moveX, moveY);
 			break;
 
 		default:
@@ -1120,13 +1265,13 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 				if (sAffectedPlayer == wc->i_player) {
 					moveX = x;
 					moveY = y;
-					if (wc->i_facingDirection == 0)
+					if (wc->i_facingDirection == DIR_SW)
 						wc_move_position_sw_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
-					else if (wc->i_facingDirection == 1)
+					else if (wc->i_facingDirection == DIR_SE)
 						wc_move_position_se_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
-					else if (wc->i_facingDirection == 2)
+					else if (wc->i_facingDirection == DIR_NW)
 						wc_move_position_nw_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
-					else if (wc->i_facingDirection == 3)
+					else if (wc->i_facingDirection == DIR_NE)
 						wc_move_position_ne_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
 
 					rb_funcall(wc->bot, rb_intern("move_tracked_player"), 3, affectedPlayer, INT2FIX(moveX*2), INT2FIX(moveY));
@@ -1139,13 +1284,13 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 		case 20:
 			moveX = x;
 			moveY = y;
-			if (wc->i_facingDirection == 0)
+			if (wc->i_facingDirection == DIR_SW)
 				wc_move_position_sw_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
-			else if (wc->i_facingDirection == 1)
+			else if (wc->i_facingDirection == DIR_SE)
 				wc_move_position_se_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
-			else if (wc->i_facingDirection == 2)
+			else if (wc->i_facingDirection == DIR_NW)
 				wc_move_position_nw_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
-			else if (wc->i_facingDirection == 3)
+			else if (wc->i_facingDirection == DIR_NE)
 				wc_move_position_ne_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
 
 			wc->items[moveX][moveY] = wc->items[x][y];

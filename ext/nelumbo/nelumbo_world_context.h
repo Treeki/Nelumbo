@@ -13,6 +13,11 @@ void Init_nelumbo_world_context();
 #define MAX_DS 12000
 #define MAX_FILTERS 50
 
+#define DIR_SW 0
+#define DIR_SE 1
+#define DIR_NW 2
+#define DIR_NE 3
+
 #define CHANGE_BUFFER_COUNT 100
 #define CHANGE_BUFFER_ELEMENT_SIZE 6
 #define CHANGE_BUFFER_SIZE (CHANGE_BUFFER_COUNT*CHANGE_BUFFER_ELEMENT_SIZE)
