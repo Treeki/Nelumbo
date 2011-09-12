@@ -137,8 +137,21 @@ module Nelumbo
 						add_variable(value)
 					when :string_variable
 						add_string_variable(value)
+					when :string
+						parse_string(value)
 					end
 				end
+			end
+
+			def parse_string(value)
+				# TODO: Make this better.
+
+				string = value[:string]
+				variables = string.scan(/%(?<name>[^ ()\[\].,%]+)(\[(?<array_count>\d+)\])?(\.(?<part>[xyXY]))?/)
+				svariables = string.scan(/~(?<name>[a-zA-Z0-9]+)(\[(?<array_count>\d+)\])?/)
+
+				variables.each { |v| add_variable({name: v[0], array_count: (v[1] || '1').to_i}) }
+				svariables.each { |v| add_string_variable({name: v[0], array_count: (v[1] || '1').to_i}) }
 			end
 
 			def new_block?
