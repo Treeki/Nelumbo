@@ -351,9 +351,6 @@ static VALUE add_ds_line(VALUE self, VALUE category, VALUE type, VALUE params, V
 static VALUE begin_map_change_logging(VALUE self) {
 	GET_WC;
 
-	if (wc->isLoggingMapChanges)
-		rb_raise(rb_eRuntimeError, "map change logging is already on");
-
 	wc->isLoggingMapChanges++;
 
 	if (wc->isLoggingMapChanges == 1) {
