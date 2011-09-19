@@ -196,7 +196,7 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 				wc->i_playerValue = Qnil;
 				wc->i_player = 0;
 
-				printf("Nobody is executing some DS!\n");
+				printf("\nDS: Nobody              ");
 			} else {
 				if (wc->i_userID == wc->lastDeletedPlayerUID)
 					wc->i_playerValue = wc->lastDeletedPlayer;
@@ -206,11 +206,11 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 				if (wc->i_playerValue == Qnil) {
 					wc->i_player = 0;
 
-					printf("[%d]Unknown is executing some DS! What?!\n", wc->i_userID);
+					printf("\nDS: Unknown %08d    ", wc->i_userID);
 				} else {
 					Data_Get_Struct(wc->i_playerValue, Player, wc->i_player);
 
-					printf("[%d]%s is executing some DS!\n", wc->i_userID, RSTRING_PTR(wc->i_player->name));
+					printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
 				}
 			}
 			
@@ -524,7 +524,7 @@ uint32_t wc_random_number(WorldContext *wc, uint32_t max) {
 
 
 void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf) {
-	printf("Executing %d at %d,%d\n", number, x, y);
+	printf(" [%4d @ %3d,%3d]", number, x, y);
 
 	wc->i_triggerX = x;
 	wc->i_triggerY = y;
@@ -819,8 +819,13 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 			break;
 			
 		case 4:
-			for (x = wc->currentArea.params[0]; x <= wc->currentArea.params[2]; x++) {
-				for (y = wc->currentArea.params[1]; y <= wc->currentArea.params[3]; y++) {
+			startX = wc->currentArea.params[0] / 2;
+			startY = wc->currentArea.params[1];
+			endX = wc->currentArea.params[2] / 2;
+			endY = wc->currentArea.params[3];
+
+			for (x = startX; x <= endX; x++) {
+				for (y = startY; y <= endY; y++) {
 					wc_execute_on_area_position(wc, line, x, y);
 				}
 			}
