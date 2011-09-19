@@ -34,6 +34,10 @@ static VALUE create_and_add_player(VALUE self, VALUE uid, VALUE name) {
 	rb_hash_aset(wc->playersByShortname, sPlayer->shortname, player);
 	rb_hash_aset(wc->playersByUserID, INT2NUM(sPlayer->uid), player);
 
+	if (sPlayer->uid == wc->lastDeletedPlayerUID) {
+		wc->lastDeletedPlayer = player;
+	}
+
 	return player;
 }
 
