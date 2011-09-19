@@ -196,7 +196,7 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 				wc->i_playerValue = Qnil;
 				wc->i_player = 0;
 
-				printf("\nDS: Nobody              ");
+				//printf("\nDS: Nobody              ");
 			} else {
 				if (wc->i_userID == wc->lastDeletedPlayerUID)
 					wc->i_playerValue = wc->lastDeletedPlayer;
@@ -206,11 +206,11 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 				if (wc->i_playerValue == Qnil) {
 					wc->i_player = 0;
 
-					printf("\nDS: Unknown %08d    ", wc->i_userID);
+					//printf("\nDS: Unknown %08d    ", wc->i_userID);
 				} else {
 					Data_Get_Struct(wc->i_playerValue, Player, wc->i_player);
 
-					printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
+					//printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
 				}
 			}
 			
@@ -524,7 +524,7 @@ uint32_t wc_random_number(WorldContext *wc, uint32_t max) {
 
 
 void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf) {
-	printf(" [%4d @ %3d,%3d]", number, x, y);
+	//printf(" [%4d @ %3d,%3d]", number, x, y);
 
 	wc->i_triggerX = x;
 	wc->i_triggerY = y;
@@ -633,7 +633,7 @@ static void wall_changed(WorldContext *wc, int x, int y) {
 }
 
 static void held_object_changed(WorldContext *wc, VALUE player, int oldObj, int newObj) {
-	if (!NIL_P(wc->cb_itemChanged)) {
+	if (!NIL_P(wc->cb_heldObjectChanged)) {
 		VALUE args[3] = {player, INT2FIX(oldObj), INT2FIX(newObj)};
 		rb_proc_call_with_block(wc->cb_heldObjectChanged, 3, args, Qnil);
 	}
