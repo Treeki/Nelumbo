@@ -397,13 +397,15 @@ static VALUE set_callback(VALUE self, VALUE type) {
 
 	rb_need_block();
 
-	if (type == rb_intern("item_changed")) {
+	ID typeID = SYM2ID(type);
+
+	if (typeID == rb_intern("item_changed")) {
 		wc->cb_itemChanged = rb_block_proc();
-	} else if (type == rb_intern("floor_changed")) {
+	} else if (typeID == rb_intern("floor_changed")) {
 		wc->cb_floorChanged = rb_block_proc();
-	} else if (type == rb_intern("wall_changed")) {
+	} else if (typeID == rb_intern("wall_changed")) {
 		wc->cb_wallChanged = rb_block_proc();
-	} else if (type == rb_intern("held_object_changed")) {
+	} else if (typeID == rb_intern("held_object_changed")) {
 		wc->cb_heldObjectChanged = rb_block_proc();
 	} else {
 		return Qfalse;
