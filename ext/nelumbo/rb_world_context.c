@@ -449,6 +449,11 @@ static void mark(WorldContext *wc) {
 	for (i = 0; i < wc->dsLineCount; i++) {
 		rb_gc_mark(wc->ds[i].annotation);
 	}
+
+	rb_gc_mark(wc->cb_itemChanged);
+	rb_gc_mark(wc->cb_floorChanged);
+	rb_gc_mark(wc->cb_wallChanged);
+	rb_gc_mark(wc->cb_heldObjectChanged);
 }
 
 static VALUE allocate(VALUE klass) {
