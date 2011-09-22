@@ -242,6 +242,14 @@ static VALUE set_wall(VALUE self, VALUE x, VALUE y, VALUE wall) {
 /*******************************************************************************
  * DS Trigger Parameter Access
  ******************************************************************************/
+static VALUE get_ds_debug(VALUE self) { GET_WC; return (wc->dsDebug) ? Qtrue : Qfalse; }
+static VALUE set_ds_debug(VALUE self, VALUE newval) {
+	GET_WC;
+
+	wc->dsDebug = (newval == Qtrue) ? 1 : 0;
+	return newval;
+}
+
 static VALUE get_moved_from_x(VALUE self) { GET_WC; return INT2FIX(wc->i_movedFromX*2); }
 static VALUE get_moved_from_y(VALUE self) { GET_WC; return INT2FIX(wc->i_movedFromY); }
 static VALUE get_moved_to_x(VALUE self) { GET_WC; return INT2FIX(wc->i_movedToX*2); }
@@ -497,6 +505,9 @@ void Init_nelumbo_world_context() {
 	rb_define_method(cNelumboWorldContext, "move_tracked_player", move_tracked_player, 3);
 
 	rb_define_method(cNelumboWorldContext, "add_ds_line", add_ds_line, 4);
+
+	rb_define_method(cNelumboWorldContext, "ds_debug", get_ds_debug, 0);
+	rb_define_method(cNelumboWorldContext, "ds_debug=", set_ds_debug, 1);
 
 	rb_define_method(cNelumboWorldContext, "moved_from_x", get_moved_from_x, 0);
 	rb_define_method(cNelumboWorldContext, "moved_from_y", get_moved_from_y, 0);

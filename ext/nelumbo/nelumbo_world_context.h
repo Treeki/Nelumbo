@@ -76,6 +76,8 @@ typedef struct _worldcontext {
 	char floorWalkable[MAX_FLOOR];
 
 	/* DS Engine */
+	char dsDebug;
+
 	DSLine ds[MAX_DS];
 	int dsLineCount;
 	short variables[MAX_VARIABLE];

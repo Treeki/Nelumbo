@@ -196,7 +196,8 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 				wc->i_playerValue = Qnil;
 				wc->i_player = 0;
 
-				//printf("\nDS: Nobody              ");
+				if (wc->dsDebug)
+					printf("\nDS: Nobody              ");
 			} else {
 				if (wc->i_userID == wc->lastDeletedPlayerUID)
 					wc->i_playerValue = wc->lastDeletedPlayer;
@@ -206,11 +207,13 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 				if (wc->i_playerValue == Qnil) {
 					wc->i_player = 0;
 
-					//printf("\nDS: Unknown %08d    ", wc->i_userID);
+					if (wc->dsDebug)
+						printf("\nDS: Unknown %08d    ", wc->i_userID);
 				} else {
 					Data_Get_Struct(wc->i_playerValue, Player, wc->i_player);
 
-					//printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
+					if (wc->dsDebug)
+						printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
 				}
 			}
 			
@@ -524,7 +527,8 @@ uint32_t wc_random_number(WorldContext *wc, uint32_t max) {
 
 
 void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf) {
-	//printf(" [%4d @ %3d,%3d]", number, x, y);
+	if (wc->dsDebug)
+		printf(" [%4d @ %3d,%3d]", number, x, y);
 
 	wc->i_triggerX = x;
 	wc->i_triggerY = y;
@@ -1771,7 +1775,7 @@ do_dice_roll:
 			count = PARAM_VALUE(1);
 			value = PARAM_VALUE(3);
 			for (i = 0; i < count; i++)
-				WC_VAR_SAFE(index+i) = value;
+				WC_VAR_SAFE(index+(i*2)) = value;
 			break;
 
 		case 399:
