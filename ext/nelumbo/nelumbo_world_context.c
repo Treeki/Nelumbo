@@ -139,6 +139,13 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 			if (!wc->hasDream)
 				return;
 
+			// Gather the info we can
+			if (wc->i_player) {
+				wc->i_player->entryCode = wc->i_entryCode;
+				wc->i_player->heldObject = wc->i_heldObject;
+				wc->i_player->cookies = wc->i_playerCookies;
+			}
+
 			fromX = decode_b95(&buf[1], 2);
 			fromY = decode_b95(&buf[3], 2);
 			toX = decode_b95(&buf[5], 2);
@@ -178,14 +185,14 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 			if (!wc->hasDream)
 				return;
 
-			wc->i_didPlayerMove = decode_b95(&buf[1], 1);
+			wc->i_didPlayerMove = wc->i_origDidPlayerMove = decode_b95(&buf[1], 1);
 			wc->i_randomSeed = decode_b95(&buf[2], 5);
 			wc->i_numberSaid = decode_b95(&buf[7], 3);
 			wc->i_facingDirection = decode_b95(&buf[10], 1);
-			wc->i_entryCode = decode_b95(&buf[11], 3);
-			wc->i_heldObject = decode_b95(&buf[14], 3);
+			wc->i_entryCode = wc->i_origEntryCode = decode_b95(&buf[11], 3);
+			wc->i_heldObject = wc->i_origHeldObject = decode_b95(&buf[14], 3);
 			wc->i_playersInDream = decode_b95(&buf[17], 2);
-			wc->i_userID = decode_b95(&buf[19], 6);
+			wc->i_userID = wc->i_originalUserID = decode_b95(&buf[19], 6);
 			wc->i_dsButtonPressed = decode_b95(&buf[25], 2);
 			wc->i_dreamCookies = decode_b95(&buf[27], 3);
 			wc->i_playerCookies = decode_b95(&buf[30], 2);
@@ -193,24 +200,26 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 			dsr_seed(&wc->i_randomGenerator, wc->i_randomSeed);
 
 			if (wc->i_userID == 0) {
-				wc->i_playerValue = Qnil;
-				wc->i_player = 0;
+				wc->i_playerValue = wc->i_originalPlayerValue = Qnil;
+				wc->i_player = wc->i_originalPlayer = 0;
 
 				if (wc->dsDebug)
 					printf("\nDS: Nobody              ");
 			} else {
 				if (wc->i_userID == wc->lastDeletedPlayerUID)
-					wc->i_playerValue = wc->lastDeletedPlayer;
+					wc->i_playerValue = wc->i_originalPlayerValue = wc->lastDeletedPlayer;
 				else
-					wc->i_playerValue = rb_hash_aref(wc->playersByUserID, INT2NUM(wc->i_userID));
+					wc->i_playerValue = wc->i_originalPlayerValue =
+						rb_hash_aref(wc->playersByUserID, INT2NUM(wc->i_userID));
 
 				if (wc->i_playerValue == Qnil) {
-					wc->i_player = 0;
+					wc->i_player = wc->i_originalPlayer = 0;
 
 					if (wc->dsDebug)
 						printf("\nDS: Unknown %08d    ", wc->i_userID);
 				} else {
 					Data_Get_Struct(wc->i_playerValue, Player, wc->i_player);
+					wc->i_originalPlayer = wc->i_player;
 
 					if (wc->dsDebug)
 						printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
@@ -533,13 +542,9 @@ void wc_execute_trigger(WorldContext *wc, int number, int x, int y, char isSelf)
 	wc->i_triggerX = x;
 	wc->i_triggerY = y;
 
-	// Before we start, grab as much info from the trigger as we can
+	// Before we start, move the player if needed
 	if (wc->i_player) {
 		rb_funcall(wc->bot, rb_intern("move_tracked_player"), 3, wc->i_playerValue, INT2FIX(x*2), INT2FIX(y));
-
-		wc->i_player->entryCode = wc->i_entryCode;
-		wc->i_player->heldObject = wc->i_heldObject;
-		wc->i_player->cookies = wc->i_playerCookies;
 	}
 
 	// Reset the DS engine
@@ -1372,6 +1377,11 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			if (sAffectedPlayer == wc->i_player) {
 				wc->i_heldObject = sAffectedPlayer->heldObject;
 			}
+
+			if (sAffectedPlayer == wc->i_originalPlayer) {
+				wc->i_origHeldObject = sAffectedPlayer->heldObject;
+			}
+
 			break;
 
 		case 80: case 81: case 82: case 83: case 84: case 85: case 86: case 87:
@@ -1485,6 +1495,10 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 	// gotta love C!
 	int i, x, y, targetX, targetY, divisor, dividend, index, total, count, max, modifier;
 	int x1, x2, y1, y2, width, height, totalArea, check, type, value, random, old;
+
+	unsigned int uid;
+	VALUE newPlayer;
+	Player *sNewPlayer;
 
 	switch (line->type) {
 		/* Those commented out are not relevant to us. */
@@ -1605,6 +1619,38 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			item_changed(wc, targetX, targetY);
 			break;
 
+		case 51:
+			GET_AND_VALIDATE_X_Y(0, 1);
+			newPlayer = rb_hash_aref(wc->playersByPosition, PLAYER_KEY(x, y));
+			goto changeTF;
+
+		case 56:
+			uid = wc_read_special(wc);
+			uid += (wc_read_special(wc) * 10000);
+			newPlayer = rb_hash_aref(wc->playersByUserID, INT2NUM(uid));
+			goto changeTF;
+
+changeTF:
+			if (!NIL_P(newPlayer)) {
+				Data_Get_Struct(newPlayer, Player, sNewPlayer);
+
+				wc->i_userID = sNewPlayer->uid;
+				wc->i_player = sNewPlayer;
+				wc->i_playerValue = newPlayer;
+
+				if (sNewPlayer->uid == wc->i_originalUserID) {
+					wc->i_heldObject = wc->i_origHeldObject;
+					wc->i_entryCode = wc->i_origEntryCode;
+					wc->i_didPlayerMove = wc->i_origDidPlayerMove;
+				} else {
+					wc->i_heldObject = sNewPlayer->heldObject;
+					wc->i_entryCode = sNewPlayer->entryCode;
+					wc->i_didPlayerMove = 0;
+				}
+			}
+
+			break;
+
 		case 76:
 			REQUIRE_PLAYER;
 			value = PARAM_VALUE(0);
@@ -1612,6 +1658,11 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			wc->i_player->heldObject = value;
 			wc->i_heldObject = wc->i_player->heldObject;
 			held_object_changed(wc, wc->i_playerValue, old, value);
+
+			if (wc->i_player = wc->i_originalPlayer) {
+				wc->i_origHeldObject = wc->i_heldObject;
+			}
+
 			break;
 
 		case 184:

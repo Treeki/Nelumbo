@@ -87,19 +87,27 @@ typedef struct _worldcontext {
 	int filterCount;
 
 	/* Trigger Info */
+	unsigned int i_originalUserID;
+	Player *i_originalPlayer;
+	VALUE i_originalPlayerValue;
+
+	unsigned int i_userID;
+	Player *i_player;
+	VALUE i_playerValue;
+
 	int i_movedFromX, i_movedFromY;
 	int i_movedToX, i_movedToY;
 	int i_triggerX, i_triggerY;
 	char i_didPlayerMove;
+	char i_origDidPlayerMove;
 	unsigned int i_randomSeed;
 	int i_numberSaid;
 	int i_facingDirection;
 	int i_entryCode;
+	int i_origEntryCode;
 	int i_heldObject;
+	int i_origHeldObject;
 	int i_playersInDream;
-	unsigned int i_userID;
-	Player *i_player;
-	VALUE i_playerValue;
 	int i_dsButtonPressed;
 	int i_dreamCookies;
 	int i_playerCookies;
