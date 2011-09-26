@@ -52,6 +52,30 @@ module Nelumbo
 			@current_event_data = saved
 		end
 
+		# Rebuild the cache of events. Call this whenever an event
+		# responder has been added or removed.
+		def cache_events
+			@event_cache = {}
+
+			modules = singleton_class.ancestors.reverse
+
+			# Mixology's got one little quirk: a mixed-in module
+			# (in this case, a plugin) appears *above* the class in the
+			# tree, so we remove it from the middle of the tree and
+			# add it in again at the end
+			modules.delete self.class
+			modules << self.class
+
+			modules.each do |mod|
+				if mod.respond_to?(:events)
+					mod.events.each_pair do |key, events|
+						list = (@event_cache[key] ||= [])
+						list.concat events
+					end
+				end
+			end
+		end
+
 		# Call the responders associated with an event.
 		# An optional data hash can be passed containing information about the event.
 		#
@@ -68,30 +92,23 @@ module Nelumbo
 			@current_event_data = event_data
 
 			catch(:halt_all_responders) do
-				# this will take care of all plugins (mixed-in modules)
-				# AND subclasses. yay!
-				singleton_class.ancestors.reverse_each do |mod|
-					if mod != self.class and mod.respond_to?(:events)
-						begin
-							_exec_event_list(mod.events[name])
-						rescue Exception => error
-							# oops, something went wrong
-							# raise :plugin_error if it's in a plugin
-							# if not, then just throw the exception up the stack
-							if name != :plugin_error and mod.include?(Nelumbo::Plugin)
-								dispatch_event :plugin_error,
-									plugin: mod, error: error
-							else
-								raise error
-							end
-						end
-					end
-				end
+				begin
+					_exec_event_list(@event_cache[name])
+				rescue Exception => error
+					# TODO: FIX THIS
+					
+					# oops, something went wrong
+					# raise :plugin_error if it's in a plugin
+					# if not, then just throw the exception up the stack
+					#if name != :plugin_error and mod.include?(Nelumbo::Plugin)
+					#	dispatch_event :plugin_error,
+					#		plugin: mod, error: error
+					#else
+					#	raise error
+					#end
 
-				# however, Mixology's got one little quirk: a mixed-in module
-				# (in this case, a plugin) appears *above* the class in the
-				# tree, so we ignore it in the loop above and process it here
-				_exec_event_list(self.class.events[name])
+					dispatch_event :plugin_error, plugin: :asdf, error: error
+				end
 			end
 
 			@current_event_data = saved_event_data

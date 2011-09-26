@@ -55,6 +55,7 @@ module Nelumbo
 			# Timers!
 			@timers = []
 			@recurring_timers = {}
+			cache_events
 			collect_initial_recurring_timers
 
 			# Networking fun stuff
@@ -239,6 +240,7 @@ module Nelumbo
 			mixin mod
 			mod.plugin_added(self)
 			add_timers_for(mod)
+			cache_events
 			@plugins << mod
 			mod
 		end
@@ -255,6 +257,7 @@ module Nelumbo
 			mod.plugin_removed(self)
 			unmix mod
 			remove_timers_for(mod)
+			cache_events
 			mod
 		end
 
