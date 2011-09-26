@@ -1569,14 +1569,14 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 650: case 651: case 880:
 			/* Cookies: */
 		case 700: case 701: case 702: case 703:
-		case 706: case 707: case 708: case 709: case 714:
+		case 706: case 707: case 708: case 709: case 710:
 			/* Localspecies: */
 		case 1200: case 1201: case 1202: case 1203:
 			/* Crash the Tribble: */
 		case 2000:
 			break;
 
-		case 14: case 15:
+		case 14: case 15: case 714: case 715:
 			// Here's a fun little quirk: Thanks to 5:15, it's practically impossible to
 			// accurately track a player around the dream using the DS and Triggers.
 			//
@@ -1606,6 +1606,8 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 
 			if (line->type == 15)
 				rb_warn("unsupported DS line (5:15) used");
+			if (line->type == 715)
+				rb_warn("unsupported DS line (5:715) used");
 			break;
 
 		case 40:
