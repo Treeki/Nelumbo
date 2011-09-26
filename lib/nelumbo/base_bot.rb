@@ -123,7 +123,7 @@ module Nelumbo
 			mod.recurring_timers.each do |t|
 				block = t[:block]
 				list << EM::add_periodic_timer(t[:interval]) do
-					instance_exec &block
+					catch(:halt_this_responder) { instance_exec &block }
 				end
 			end
 		end
