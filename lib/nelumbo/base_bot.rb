@@ -53,7 +53,7 @@ module Nelumbo
 			@plugins = []
 
 			# Timers!
-			@timers = []
+			@timer_ok = true
 			@recurring_timers = {}
 			cache_events
 			collect_initial_recurring_timers
@@ -71,18 +71,18 @@ module Nelumbo
 		#
 		def after(duration, event=nil)
 			if event
-				run = proc { dispatch_event event }
+				run = proc { dispatch_event(event) if @timer_ok }
 			else
 				raise "block not passed to BaseBot#after" unless block_given?
 
 				saved_data = data
 				block = Proc.new
 				run = proc {
-					with_event_data(saved_data, &block)
+					with_event_data(saved_data, &block) if @timer_ok
 				}
 			end
 
-			@timers << EM::add_timer(duration, run)
+			EM::add_timer(duration, run)
 		end
 
 		# @private
@@ -163,7 +163,8 @@ module Nelumbo
 			dispatch_event :raw, line: line
 
 			if line.start_with?(?()
-				try_parse_speech(line) or dispatch_event :message, line: line.from(1)
+				dispatch_event :message, line: line.from(1)
+				try_parse_speech(line)
 				return
 			end
 
@@ -188,6 +189,8 @@ module Nelumbo
 			end
 
 			remove_all_recurring_timers
+
+			@timer_ok = false
 
 			@output_timer.cancel
 
