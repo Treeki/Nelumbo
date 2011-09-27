@@ -1819,8 +1819,8 @@ do_dice_roll:
 			break;
 
 		case 384:
-			PARAM_VAR(0) = PARAM_VALUE(0);
-			PARAM_VAR_Y(0) = PARAM_VALUE(1);
+			PARAM_VAR(0) = PARAM_VALUE(1);
+			PARAM_VAR_Y(0) = PARAM_VALUE(2);
 			break;
 
 		case 390:
