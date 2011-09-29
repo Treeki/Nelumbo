@@ -309,11 +309,11 @@ module Nelumbo
 		end
 
 		def whisper(name, text)
-			write_line "wh #{name.gsub(' ', '|')} #{text}"
+			write_line "wh %#{name.gsub(' ', '|')} #{text}"
 		end
 
 		def whisper_back(text)
-			write_line "wh #{data[:shortname]} #{text}"
+			write_line "wh %#{data[:shortname]} #{text}"
 		end
 
 		private
