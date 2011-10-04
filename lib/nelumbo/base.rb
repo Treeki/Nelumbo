@@ -1,4 +1,3 @@
-$eventmachine_library = :pure_ruby
 require 'eventmachine'
 
 require 'mixology'
@@ -26,6 +25,7 @@ require 'nelumbo/nelumbo'
 # Submodules
 require 'nelumbo/core_ext'
 require 'nelumbo/script'
+require 'nelumbo/graphics'
 
 # Main stuff (TODO: Move into a Bot module)
 require 'nelumbo/event_dsl'

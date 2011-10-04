@@ -31,4 +31,5 @@ END
   s.add_dependency('rspec-core')
   s.add_dependency('rspec-expectations')
   s.add_dependency('rspec-mocks')
+  s.add_dependency('bindata')
 end
