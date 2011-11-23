@@ -25,7 +25,7 @@ require 'nelumbo/nelumbo'
 # Submodules
 require 'nelumbo/core_ext'
 require 'nelumbo/script'
-require 'nelumbo/graphics'
+#require 'nelumbo/graphics'
 
 # Main stuff (TODO: Move into a Bot module)
 require 'nelumbo/event_dsl'
