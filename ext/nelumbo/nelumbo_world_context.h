@@ -70,6 +70,8 @@ typedef struct _worldcontext {
 	unsigned short items[MAX_MAP_WIDTH][MAX_MAP_HEIGHT];
 	unsigned short floors[MAX_MAP_WIDTH][MAX_MAP_HEIGHT];
 	unsigned char walls[MAX_MAP_WIDTH*2][MAX_MAP_HEIGHT];
+	unsigned short regions[MAX_MAP_WIDTH][MAX_MAP_HEIGHT];
+	unsigned short effects[MAX_MAP_WIDTH][MAX_MAP_HEIGHT];
 
 	/* Patch Info */
 	char itemWalkable[MAX_ITEM];
@@ -111,6 +113,9 @@ typedef struct _worldcontext {
 	int i_dsButtonPressed;
 	int i_dreamCookies;
 	int i_playerCookies;
+	int i_lastPortalX, i_lastPortalY;
+	int i_second, i_minute, i_hour;
+	int i_day, i_month, i_year;
 	int i_special[1024];
 	int i_specialIndex;
 
@@ -120,6 +125,8 @@ typedef struct _worldcontext {
 	VALUE cb_itemChanged;
 	VALUE cb_floorChanged;
 	VALUE cb_wallChanged;
+	VALUE cb_regionChanged;
+	VALUE cb_effectChanged;
 
 	VALUE cb_heldObjectChanged;
 
@@ -129,6 +136,8 @@ typedef struct _worldcontext {
 	ChangeBuffer itemChangeBuffer;
 	ChangeBuffer floorChangeBuffer;
 	ChangeBuffer wallChangeBuffer;
+	ChangeBuffer regionChangeBuffer;
+	ChangeBuffer effectChangeBuffer;
 
 	/* Interop
 	 * NOTE: We don't mark this for the GC as the Bot is supposed to hold
@@ -138,8 +147,9 @@ typedef struct _worldcontext {
 } WorldContext;
 
 
-void wc_load_map(WorldContext *wc, char *buf, int width, int height);
-void wc_save_map(WorldContext *wc, char *buf);
+void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDataV29);
+void wc_save_map(WorldContext *wc, char *buf, char hasDataV29);
+char wc_has_data_v29(WorldContext *wc);
 
 void wc_process_line(WorldContext *wc, char *buf, int length);
 

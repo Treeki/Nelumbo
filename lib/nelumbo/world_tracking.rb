@@ -320,9 +320,12 @@ module Nelumbo
 				@current_map_version = map_version
 				@current_map_header = map_header
 
+				/V(\d\d)\.(\d\d)/ =~ map_version
+				version_number = ($1.to_i * 100) + $2.to_i
+
 				width = map_header['width'].to_i
 				height = map_header['height'].to_i
-				@context.load_map map_data, width, height
+				@context.load_map map_data, width, height, (version_number >= 140)
 
 				puts "Map data loaded (#{width}x#{height})"
 
@@ -335,7 +338,13 @@ module Nelumbo
 
 			def produce_map
 				# TODO: Abstract this into a Map class
-				@current_map_version + "\n" + @current_map_header.each_pair.map{|k,v| "#{k}=#{v}\n"}.join('') + "BODY\n" + @context.save_map
+				pieces = []
+				pieces << @current_map_version
+				pieces << "\n"
+				pieces.concat @current_map_header.each_pair.map{|k,v| "#{k}=#{v}\n"}
+				pieces << "BODY\n"
+				pieces << @context.save_map(@context.has_data_v29)
+				pieces.join('')
 			end
 
 			def load_ds_file(path)

@@ -90,7 +90,7 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 
 			break;
 
-		case '>': case '1': case '2':
+		case '>': case '1': case '2': case '4': case '5':
 			if (!wc->hasDream)
 				return;
 
@@ -111,6 +111,10 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 						wc->floors[x][y] = number;
 					else if (buf[0] == '2')
 						wc->walls[x][y] = number;
+					else if (buf[0] == '4')
+						wc->regions[x][y] = number;
+					else if (buf[0] == '5')
+						wc->effects[x][y] = number;
 					y++;
 				}
 
@@ -196,6 +200,14 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 			wc->i_dsButtonPressed = decode_b95(&buf[25], 2);
 			wc->i_dreamCookies = decode_b95(&buf[27], 3);
 			wc->i_playerCookies = decode_b95(&buf[30], 2);
+			wc->i_lastPortalX = decode_b95(&buf[32], 2);
+			wc->i_lastPortalY = decode_b95(&buf[34], 2);
+			wc->i_second = buf[36];
+			wc->i_minute = buf[37];
+			wc->i_hour = buf[38];
+			wc->i_day = buf[39];
+			wc->i_month = buf[40];
+			wc->i_year = decode_b95(&buf[41], 2);
 
 			dsr_seed(&wc->i_randomGenerator, wc->i_randomSeed);
 
@@ -231,7 +243,7 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 }
 
 
-void wc_load_map(WorldContext *wc, char *buf, int width, int height) {
+void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDataV29) {
 	wc->hasDream = 1;
 	wc->mapWidth = width;
 	wc->mapHeight = height;
@@ -263,6 +275,21 @@ void wc_load_map(WorldContext *wc, char *buf, int width, int height) {
 		}
 	}
 
+	if (hasDataV29) {
+		for (x = 0; x < width; x++) {
+			for (y = 0; y < height; y++) {
+				unsigned char firstByte = *(input++);
+				wc->regions[x][y] = firstByte | (*(input++) << 8);
+			}
+		}
+		for (x = 0; x < width; x++) {
+			for (y = 0; y < height; y++) {
+				unsigned char firstByte = *(input++);
+				wc->effects[x][y] = firstByte | (*(input++) << 8);
+			}
+		}
+	}
+
 	// TODO: Make this really work properly
 	int i;
 	for (i = 0; i < MAX_ITEM; i++)
@@ -272,7 +299,7 @@ void wc_load_map(WorldContext *wc, char *buf, int width, int height) {
 }
 
 
-void wc_save_map(WorldContext *wc, char *buf) {
+void wc_save_map(WorldContext *wc, char *buf, char hasDataV29) {
 	unsigned char *output = (unsigned char *)buf;
 
 	int x, y;
@@ -299,6 +326,36 @@ void wc_save_map(WorldContext *wc, char *buf) {
 			*(output++) = wc->walls[x*2+1][y];
 		}
 	}
+
+	if (hasDataV29) {
+		for (x = 0; x < wc->mapWidth; x++) {
+			for (y = 0; y < wc->mapHeight; y++) {
+				*(output++) = wc->regions[x][y] & 0xFF;
+				*(output++) = wc->regions[x][y] >> 8;
+			}
+		}
+
+		for (x = 0; x < wc->mapWidth; x++) {
+			for (y = 0; y < wc->mapHeight; y++) {
+				*(output++) = wc->effects[x][y] & 0xFF;
+				*(output++) = wc->effects[x][y] >> 8;
+			}
+		}
+	}
+}
+
+
+char wc_has_data_v29(WorldContext *wc) {
+	int x, y;
+
+	for (x = 0; x < wc->mapWidth; x++)
+		for (y = 0; y < wc->mapHeight; y++)
+			if (wc->regions[x][y] != 0)
+				return 1;
+			else if (wc->effects[x][y] != 0)
+				return 1;
+
+	return 0;
 }
 
 
@@ -636,8 +693,22 @@ static void floor_changed(WorldContext *wc, int x, int y) {
 
 static void wall_changed(WorldContext *wc, int x, int y) {
 	if (!NIL_P(wc->cb_wallChanged)) {
-		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->walls[x][y])};
+		VALUE args[3] = {INT2FIX(x), INT2FIX(y), INT2FIX(wc->walls[x][y])};
 		rb_proc_call_with_block(wc->cb_wallChanged, 3, args, Qnil);
+	}
+}
+
+static void region_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_regionChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->regions[x][y])};
+		rb_proc_call_with_block(wc->cb_regionChanged, 3, args, Qnil);
+	}
+}
+
+static void effect_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_effectChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->effects[x][y])};
+		rb_proc_call_with_block(wc->cb_effectChanged, 3, args, Qnil);
 	}
 }
 
@@ -711,13 +782,13 @@ void wc_set_area(WorldContext *wc, DSLine *line) {
 	int paramCount = 0;
 
 	switch (bakedLine->type) {
-		case 11: case 13: case 21: case 23:
+		case 11: case 13: case 21: case 23: case 30: case 31:
 		case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57:
 		case 511: case 512: case 521: case 522: case 531: case 532: case 541: case 542:
 			paramCount = 1;
 			break;
 
-		case 2: case 9:
+		case 2: case 9: case 32: case 33:
 		case 60: case 61: case 62: case 63: case 64: case 65: case 66: case 67:
 			paramCount = 2;
 			break;
@@ -744,7 +815,7 @@ void wc_set_area(WorldContext *wc, DSLine *line) {
 void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 	int x, y;
 	short startX, startY, endX, endY, leftX, leftY, rightX, rightY, moveX, moveY;
-	int top, bottom, steps, direction;
+	int top, bottom, steps, direction, region, low, high;
 
 	/* Note: Area params are "baked in" when assigned */
 	switch (wc->currentArea.type) {
@@ -869,6 +940,10 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 			direction = direction_behind[wc->i_facingDirection];
 			goto stepsInDirectionMovedTo_Param0;
 
+		case 18:
+			wc_execute_on_area_position(wc, line, wc->i_lastPortalX, wc->i_lastPortalY);
+			break;
+
 		case 20:
 			steps = 1;
 			direction = direction_left[wc->i_facingDirection];
@@ -884,6 +959,48 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 		case 23:
 			direction = direction_right[wc->i_facingDirection];
 			goto stepsInDirectionMovedTo_Param0;
+
+		case 30:
+			region = wc->currentArea.params[0];
+			for (x = 0; x < wc->mapWidth; x++) {
+				for (y = 0; y < wc->mapHeight; y++) {
+					if (wc->regions[x][y] == region)
+						wc_execute_on_area_position(wc, line, x, y);
+				}
+			}
+			break;
+
+		case 31:
+			region = wc->currentArea.params[0];
+			for (x = 0; x < wc->mapWidth; x++) {
+				for (y = 0; y < wc->mapHeight; y++) {
+					if (wc->regions[x][y] != region)
+						wc_execute_on_area_position(wc, line, x, y);
+				}
+			}
+			break;
+
+		case 32:
+			low = wc->currentArea.params[0];
+			high = wc->currentArea.params[1];
+			for (x = 0; x < wc->mapWidth; x++) {
+				for (y = 0; y < wc->mapHeight; y++) {
+					if (wc->regions[x][y] >= low && wc->regions[x][y] <= high)
+						wc_execute_on_area_position(wc, line, x, y);
+				}
+			}
+			break;
+
+		case 33:
+			low = wc->currentArea.params[0];
+			high = wc->currentArea.params[1];
+			for (x = 0; x < wc->mapWidth; x++) {
+				for (y = 0; y < wc->mapHeight; y++) {
+					if (wc->regions[x][y] < low || wc->regions[x][y] > high)
+						wc_execute_on_area_position(wc, line, x, y);
+				}
+			}
+			break;
 
 		case 50:
 			direction = DIR_NE;
@@ -984,10 +1101,10 @@ void wc_add_filter(WorldContext *wc, DSLine *line) {
 	bakedLine->annotation = line->annotation;
 
 	switch (bakedLine->type) {
-		case 1: case 2: case 3: case 4:
+		case 1: case 2: case 3: case 4: case 30: case 31: case 40: case 41:
 			bakedLine->params[0] = PARAM_VALUE(0);
 			break;
-		case 14: case 15:
+		case 14: case 15: case 32: case 33:
 			bakedLine->params[0] = PARAM_VALUE(0);
 			bakedLine->params[1] = PARAM_VALUE(1);
 			break;
@@ -1179,6 +1296,30 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 				if (position_is_visible_from(x, y, filter->params[0]/2, filter->params[1]))
 					return;
 				break;
+			case 30:
+				if (wc->regions[x][y] != filter->params[0])
+					return;
+				break;
+			case 31:
+				if (wc->regions[x][y] == filter->params[0])
+					return;
+				break;
+			case 32:
+				if (wc->regions[x][y] < filter->params[0] || wc->regions[x][y] > filter->params[1])
+					return;
+				break;
+			case 33:
+				if (wc->regions[x][y] >= filter->params[0] && wc->regions[x][y] <= filter->params[1])
+					return;
+				break;
+			case 40:
+				if (wc->effects[x][y] != filter->params[0])
+					return;
+				break;
+			case 41:
+				if (wc->effects[x][y] == filter->params[0])
+					return;
+				break;
 
 		}
 	}
@@ -1247,6 +1388,19 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 				wc->items[x][y] = one;
 				item_changed(wc, x, y);
 			}
+			break;
+
+		case 7:
+			one = PARAM_VALUE(0);
+			two = PARAM_VALUE(1);
+			wc->floors[x][y] = one + wc_random_number(wc, two - one + 1);
+			floor_changed(wc, x, y);
+			break;
+		case 13:
+			one = PARAM_VALUE(0);
+			two = PARAM_VALUE(1);
+			wc->items[x][y] = one + wc_random_number(wc, two - one + 1);
+			item_changed(wc, x, y);
 			break;
 
 		case 16: case 17: case 716: case 717:
@@ -1422,6 +1576,33 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			rb_funcall(wc->bot, rb_intern("move_tracked_player"), 3, affectedPlayer, INT2FIX(moveX*2), INT2FIX(moveY));
 			break;
 
+		case 120:
+			wc->regions[x][y] = PARAM_VALUE(0);
+			region_changed(wc, x, y);
+			break;
+
+		case 150:
+			wc->effects[x][y] = PARAM_VALUE(0);
+			effect_changed(wc, x, y);
+			break;
+		case 153:
+			if (wc->effects[x][y] == PARAM_VALUE(0)) {
+				wc->effects[x][y] = PARAM_VALUE(1);
+				effect_changed(wc, x, y);
+			}
+			break;
+		case 154:
+			one = PARAM_VALUE(0);
+			two = PARAM_VALUE(1);
+			if (wc->effects[x][y] == one) {
+				wc->effects[x][y] = two;
+				effect_changed(wc, x, y);
+			} else if (wc->effects[x][y] == two) {
+				wc->effects[x][y] = one;
+				effect_changed(wc, x, y);
+			}
+			break;
+
 		case 400: case 410:
 			cycleCount = 3;
 			goto do_cycle;
@@ -1502,8 +1683,9 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 
 	switch (line->type) {
 		/* Those commented out are not relevant to us. */
-		case 1: case 2: case 3: case 4: case 5: case 6:
+		case 1: case 2: case 3: case 4: case 5: case 6: case 7:
 			/*case 9:*/
+		case 13:
 		case 16: case 17: case 19: case 20: case 21: case 22: case 23: case 24:
 		case 25: case 26: case 27: case 28: case 29:
 			/*case 32:*/
@@ -1515,6 +1697,8 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 87:
 			/*case 94, 95, 96, 97, 98, 99:*/
 			/*case 103:*/
+		case 120:
+		case 150: case 153: case 154:
 			/*case 201:*/
 		case 400: case 401: case 402: case 410: case 411: case 412:
 			/*case 421, 423:*/
@@ -1536,6 +1720,14 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 104: case 105:
 		case 106: case 107: case 108: case 109: case 110: case 111:
 		case 112: case 113:
+			/* Region Display Control (Client Only): */
+		case 122: case 123: case 124: case 125: case 127: case 128:
+		case 130: case 131: case 132: case 133:
+		case 134: case 135: case 136: case 137: case 138: case 139:
+		case 140: case 141: case 142: case 143:
+		case 144: case 145: case 146: case 147:
+			/* Region Behaviour Control (Ignored Right Now): */
+		case 160: case 161: case 162: case 163: case 164: case 165: case 166: case 167:
 			/* Poses (Ignored Right Now): */
 		case 70: case 71: case 72: case 73: case 74: case 75:
 		case 88: case 89: case 90: case 91: case 92: case 93:
@@ -1560,6 +1752,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 434: case 435: case 436: case 437:
 		case 438: case 439: case 440: case 441:
 		case 442: case 443: case 444:
+		case 445: case 446: case 447:
 			/* PS Memorise: */
 		case 600: case 601: case 602: case 603: case 604: case 605:
 			/* PS Strings: */
@@ -1667,6 +1860,18 @@ changeTF:
 
 			break;
 
+		case 121:
+			GET_TARGET_POSITION(0, 1);
+			wc->regions[targetX][targetY] = PARAM_VALUE(2);
+			region_changed(wc, targetX, targetY);
+			break;
+
+		case 151:
+			GET_TARGET_POSITION(0, 1);
+			wc->effects[targetX][targetY] = PARAM_VALUE(2);
+			effect_changed(wc, targetX, targetY);
+			break;
+
 		case 184:
 			// Bugged in Furc currently!
 			PARAM_VAR(0) = wc->i_dsButtonPressed;
@@ -1769,6 +1974,40 @@ do_dice_roll:
 
 		case 318:
 			PARAM_VAR(0) = wc->i_playersInDream;
+			break;
+
+		case 319:
+			PARAM_VAR(0) = wc->i_lastPortalX * 2;
+			PARAM_VAR_Y(0) = wc->i_lastPortalY;
+			break;
+
+		case 320:
+			GET_TARGET_POSITION(1, 2);
+			PARAM_VAR(0) = wc->regions[targetX][targetY];
+			break;
+
+		case 321:
+			PARAM_VAR(0) = wc->i_day;
+			break;
+		case 322:
+			PARAM_VAR(0) = wc->i_hour;
+			break;
+		case 323:
+			PARAM_VAR(0) = wc->i_minute;
+			break;
+		case 324:
+			PARAM_VAR(0) = wc->i_month;
+			break;
+		case 325:
+			PARAM_VAR(0) = wc->i_second;
+			break;
+		case 326:
+			PARAM_VAR(0) = wc->i_year;
+			break;
+
+		case 330:
+			GET_TARGET_POSITION(1, 2);
+			PARAM_VAR(0) = wc->effects[targetX][targetY];
 			break;
 
 		case 350:

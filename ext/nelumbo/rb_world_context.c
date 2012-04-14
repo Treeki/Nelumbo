@@ -239,6 +239,66 @@ static VALUE set_wall(VALUE self, VALUE x, VALUE y, VALUE wall) {
 	return wall;
 }
 
+static VALUE get_region(VALUE self, VALUE x, VALUE y) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	return INT2FIX(wc->regions[realX][realY]);
+}
+
+static VALUE set_region(VALUE self, VALUE x, VALUE y, VALUE region) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+	Check_Type(region, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realregion = FIX2INT(region);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	if (wc->regions[realX][realY] != realregion) {
+		wc->regions[realX][realY] = realregion;
+
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->regionChangeBuffer, realX, realY, realregion);
+	}
+
+	return region;
+}
+
+static VALUE get_effect(VALUE self, VALUE x, VALUE y) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	return INT2FIX(wc->effects[realX][realY]);
+}
+
+static VALUE set_effect(VALUE self, VALUE x, VALUE y, VALUE effect) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+	Check_Type(effect, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realeffect = FIX2INT(effect);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	if (wc->effects[realX][realY] != realeffect) {
+		wc->effects[realX][realY] = realeffect;
+
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->effectChangeBuffer, realX, realY, realeffect);
+	}
+
+	return effect;
+}
+
 /*******************************************************************************
  * DS Trigger Parameter Access
  ******************************************************************************/
@@ -293,7 +353,7 @@ static VALUE set_variable(VALUE self, VALUE index, VALUE value) {
 /*******************************************************************************
  * Interfaces to C Methods
  ******************************************************************************/
-static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height) {
+static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height, VALUE hasDataV29) {
 	Check_Type(buf, T_STRING);
 	Check_Type(width, T_FIXNUM); Check_Type(height, T_FIXNUM);
 
@@ -306,23 +366,31 @@ static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height) {
 		rb_raise(rb_eArgError, "map size is out of bounds");
 	}
 
-	int expectedSize = rWidth * rHeight * 2 * 3;
+	int expectedSize = rWidth * rHeight * 2 * (RTEST(hasDataV29) ? 5 : 3);
 	if (RSTRING_LEN(rBuf) < expectedSize) {
 		rb_raise(rb_eTypeError, "buffer is too small to hold the map data");
 	}
 
-	wc_load_map(wc, RSTRING_PTR(rBuf), rWidth, rHeight);
+	wc_load_map(wc, RSTRING_PTR(rBuf), rWidth, rHeight, RTEST(hasDataV29));
 
 	return Qtrue;
 }
 
-static VALUE save_map(VALUE self) {
+static VALUE save_map(VALUE self, VALUE hasDataV29) {
 	GET_WC;
 
 	VALUE string = rb_str_new(0, wc->mapWidth * wc->mapHeight * 2 * 3);
-	wc_save_map(wc, RSTRING_PTR(string));
+	wc_save_map(wc, RSTRING_PTR(string), RTEST(hasDataV29));
 
 	return string;
+}
+
+static VALUE has_data_v29(VALUE self) {
+	GET_WC;
+
+	char ret = wc_has_data_v29(wc);
+
+	return ret ? Qtrue : Qfalse;
 }
 
 static VALUE process_line(VALUE self, VALUE line) {
@@ -480,8 +548,9 @@ void Init_nelumbo_world_context() {
 	rb_define_method(cNelumboWorldContext, "width", get_width, 0);
 	rb_define_method(cNelumboWorldContext, "height", get_height, 0);
 
-	rb_define_method(cNelumboWorldContext, "load_map", load_map, 3);
-	rb_define_method(cNelumboWorldContext, "save_map", save_map, 0);
+	rb_define_method(cNelumboWorldContext, "load_map", load_map, 4);
+	rb_define_method(cNelumboWorldContext, "save_map", save_map, 1);
+	rb_define_method(cNelumboWorldContext, "has_data_v29", has_data_v29, 0);
 
 	rb_define_method(cNelumboWorldContext, "bot", get_bot, 0);
 
@@ -491,6 +560,10 @@ void Init_nelumbo_world_context() {
 	rb_define_method(cNelumboWorldContext, "set_floor", set_floor, 3);
 	rb_define_method(cNelumboWorldContext, "wall", get_wall, 2);
 	rb_define_method(cNelumboWorldContext, "set_wall", set_wall, 3);
+	rb_define_method(cNelumboWorldContext, "region", get_region, 2);
+	rb_define_method(cNelumboWorldContext, "set_region", set_region, 3);
+	rb_define_method(cNelumboWorldContext, "effect", get_effect, 2);
+	rb_define_method(cNelumboWorldContext, "set_effect", set_effect, 3);
 
 	rb_define_method(cNelumboWorldContext, "create_and_add_player", create_and_add_player, 2);
 	rb_define_method(cNelumboWorldContext, "delete_and_remove_player", delete_and_remove_player, 1);

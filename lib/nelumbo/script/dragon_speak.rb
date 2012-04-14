@@ -20,16 +20,25 @@ module Nelumbo
 				line(7) { position_literal :position }
 				# Turning
 				line(4..6)
+				# Drop Object
+				line(8)
 				# Arrival
 				line(9..10)
 				# Poses
 				line(11..13)
 				# Getting/Dropping/Using Objects
+				line(14)
 				line(15..16)
 				line(17..19) { number_literal :object }
 				# Dicerolls
 				line(20..22) { number_literal :target_diceroll, :dice_count, :side_count }
 				line(23..25) { number_literal :target_diceroll }
+				# Regions
+				line(26) { number_literal :region }
+				line(27) { number_literal :low_region, :high_region }
+				line(28) { number_literal :from_region, :to_region }
+				# Effects
+				line(29) { number_literal :effect }
 				# Speech/Emotes/Emits
 				line(30)
 				line(31..32) { string_literal :text }
@@ -46,12 +55,19 @@ module Nelumbo
 				line(53..55)
 				# AFK
 				line(56..57)
+				# Summoning
+				line(58)
+				# Dream Portal Placement
+				line(59)
 				# Movement in Directions
 				line(60..63)
 				# Movement into Walls
 				line(64) { number_literal :wall_shape }
 				line(65) { number_literal :wall_texture }
 				line(66) { number_literal :wall_shape, :wall_texture }
+				# Movement from Floor/Object
+				line(67) { number_literal :floor }
+				line(68) { number_literal :object }
 				# Player Idling
 				line(70..73) { number_literal :seconds }
 				# Ejection
@@ -128,11 +144,22 @@ module Nelumbo
 				line(78, 82, 178, 182) { string_value :name }
 				line(79, 179)
 				line(80, 81, 180, 181) { position_value :top_left, :bottom_right }
+				# Regions
+				line(83, 183) { number_value :region }
+				line(84, 184) { number_value :low_region, :high_region }
+				line(85, 185) { number_value :region }
+				line(86, 186) { position_value :position; number_value :region }
+				line(87, 187) { number_value :region }
+				line(88, 188) { number_value :region, :threshold }
+				# Players, Again
 				line(90, 92, 93, 190, 192, 193) { number_value :entry_code }
 				line(91, 191) { number_value :entry_method }
 				line(95, 195) { number_value :button }
 				# Timer
 				line(94, 194) { number_value :timer }
+				# Effects
+				line(96, 97, 196, 197) { number_value :effect }
+				line(98, 198) { position_value :position; number_value :effect }
 				# Variables
 				line(200..202, 206) { number_variable :variable; number_value :value }
 				line(203..205, 207) { number_variable :variable, :value }
@@ -148,6 +175,7 @@ module Nelumbo
 				# PhoenixSpeak
 				line(600..603, 620..623) { string_value :info; number_value :value }
 				line(610..613) { string_value :info, :name; number_value :value }
+				line(680, 681)
 				# Cookies
 				line(700..703) { number_value :value }
 				# Dice
@@ -183,9 +211,15 @@ module Nelumbo
 				line(9) { position_value :position }
 				# Lines
 				line(14..17) { position_value :position; number_value :distance }
+				# Dream Portal
+				line(18)
 				# Relative to TF (again)
 				line(20, 22)
 				line(21, 23, 50..57) { number_value :distance }
+				# Regions
+				line(30, 31) { number_value :region }
+				line(32, 33) { number_value :low_region, :high_region }
+				# Relative to TF (yet again)
 				line(60..67) { number_value :first_distance, :second_distance }
 				# Random
 				line(500) { position_value :top_left, :bottom_right }
@@ -213,6 +247,11 @@ module Nelumbo
 				# Visible
 				line(12, 13)
 				line(14, 15) { position_value :position }
+				# Regions
+				line(30, 31) { number_value :region }
+				line(32, 33) { number_value :low_region, :high_region }
+				# Effects
+				line(40, 41) { number_value :effect }
 			end
 
 
@@ -223,6 +262,7 @@ module Nelumbo
 				line(4) { number_value :object }
 				line(2, 5) { number_value :from, :to }
 				line(3, 6) { number_value :first, :second }
+				line(7, 13) { number_value :low, :high }
 				# Sounds
 				line(8, 9, 11, 12) { number_value :sound }
 				line(10) { number_value :sound; position_value :position }
@@ -280,6 +320,24 @@ module Nelumbo
 				line(105) { number_value :midi }
 				line(106..111)
 				line(112, 113)
+				# Regions
+				line(120) { number_value :region }
+				line(121) { position_value :position; number_value :region }
+				line(122) { number_value :threshold }
+				line(123..128)
+				line(130..139) { number_value :region }
+				line(140, 144) { number_value :object }
+				line(141, 145) { number_value :wall }
+				line(142, 146) { number_value :floor }
+				line(143, 147) { number_value :effect }
+				# Effects
+				line(150) { number_value :effect }
+				line(151) { position_value :position; number_value :effect }
+				line(152) { number_value :effect }
+				line(153) { number_value :from, :to }
+				line(154) { number_value :first, :second }
+				# Region Configuration
+				line(160..167) { number_value :region }
 				# DS Buttons
 				line(180, 181, 190, 191) { number_value :button }
 				line(182, 192) { number_value :button; position_value :position }
@@ -326,9 +384,11 @@ module Nelumbo
 				# Variable Dice Rolls
 				line(312, 313) { number_variable :target; number_value :dice_count, :side_count, :delta }
 				# Variable Data / Entry Codes
-				line(314, 315, 317, 318) { number_variable :target }
-				line(350, 351) { position_variable :target }
+				line(314, 315, 317, 318, 321..326) { number_variable :target }
 				line(316) { number_value :entry_code }
+				line(319) { position_variable :target }
+				line(320, 330) { number_variable :target; position_value :position }
+				line(350, 351) { position_variable :target }
 				# Variable Relative Movement
 				line(352..355) { position_variable :target; number_value :distance }
 				# Map Data/Positions
@@ -357,6 +417,9 @@ module Nelumbo
 				line(439) { number_value :floor, :delay }
 				line(440) { number_value :wall_shape, :wall_texture, :delay }
 				line(441, 444) { number_value :button, :delay }
+				line(445) { number_value :effect, :step }
+				line(446) { number_value :effect }
+				line(447) { number_value :effect, :delay }
 				# Random Spots
 				line(500) { position_variable :target; position_value :top_left, :bottom_right }
 				line(501, 502) { position_variable :target }
