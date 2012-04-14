@@ -41,17 +41,20 @@ require 'nelumbo/world_tracking'
 module Nelumbo
 	VERSION = '0.0.1'
 
+	DEFAULT_PORT = 6500
+	DEFAULT_HOST = 'lightbringer.furcadia.com'
+
 
 	# Start an instance of a specified bot.
-	def self.begin_bot(klass)
-		EM::connect('lightbringer.furcadia.com', 6500, klass)
+	def self.begin_bot(klass, port=DEFAULT_PORT, host=DEFAULT_HOST)
+		EM::connect(host, port, klass)
 	end
 
 	# Start an instance of this bot and run it in an EventMachine event loop.
 	# The loop will automatically be terminated when this bot stops.
-	def self.run_simply(klass)
+	def self.run_simply(klass, port=DEFAULT_PORT, host=DEFAULT_HOST)
 		EventMachine::run {
-			bot = begin_bot(klass)
+			bot = begin_bot(klass, port, host)
 			bot.when_disconnected { EM::stop_event_loop }
 		}
 	end
