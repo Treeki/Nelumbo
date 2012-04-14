@@ -437,6 +437,8 @@ static VALUE begin_map_change_logging(VALUE self) {
 		wc_setup_change_buffer(wc, &wc->itemChangeBuffer, '>');
 		wc_setup_change_buffer(wc, &wc->floorChangeBuffer, '1');
 		wc_setup_change_buffer(wc, &wc->wallChangeBuffer, '2');
+		wc_setup_change_buffer(wc, &wc->regionChangeBuffer, '4');
+		wc_setup_change_buffer(wc, &wc->effectChangeBuffer, '5');
 	}
 
 	return Qtrue;
@@ -454,6 +456,8 @@ static VALUE end_map_change_logging(VALUE self) {
 		wc_flush_change_buffer(wc, &wc->itemChangeBuffer);
 		wc_flush_change_buffer(wc, &wc->floorChangeBuffer);
 		wc_flush_change_buffer(wc, &wc->wallChangeBuffer);
+		wc_flush_change_buffer(wc, &wc->regionChangeBuffer);
+		wc_flush_change_buffer(wc, &wc->effectChangeBuffer);
 	}
 
 	return Qtrue;
@@ -481,6 +485,10 @@ static VALUE set_callback(VALUE self, VALUE type) {
 		wc->cb_floorChanged = rb_block_proc();
 	} else if (typeID == rb_intern("wall_changed")) {
 		wc->cb_wallChanged = rb_block_proc();
+	} else if (typeID == rb_intern("region_changed")) {
+		wc->cb_regionChanged = rb_block_proc();
+	} else if (typeID == rb_intern("effect_changed")) {
+		wc->cb_effectChanged = rb_block_proc();
 	} else if (typeID == rb_intern("held_object_changed")) {
 		wc->cb_heldObjectChanged = rb_block_proc();
 	} else {
@@ -509,6 +517,8 @@ static VALUE initialize(VALUE self, VALUE bot) {
 	wc->cb_itemChanged = Qnil;
 	wc->cb_floorChanged = Qnil;
 	wc->cb_wallChanged = Qnil;
+	wc->cb_regionChanged = Qnil;
+	wc->cb_effectChanged = Qnil;
 	wc->cb_heldObjectChanged = Qnil;
 
 	return self;
@@ -529,6 +539,8 @@ static void mark(WorldContext *wc) {
 	rb_gc_mark(wc->cb_itemChanged);
 	rb_gc_mark(wc->cb_floorChanged);
 	rb_gc_mark(wc->cb_wallChanged);
+	rb_gc_mark(wc->cb_regionChanged);
+	rb_gc_mark(wc->cb_effectChanged);
 	rb_gc_mark(wc->cb_heldObjectChanged);
 }
 
