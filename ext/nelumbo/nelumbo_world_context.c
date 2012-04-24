@@ -1340,7 +1340,7 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 	// All filters passed, now do it!
 	switch (line->type) {
 		case 42: case 43: case 44: case 45: case 46: case 47:
-		case 60: case 61: case 62: case 63: case 64: case 65:
+		case 60: case 61: case 62:
 		case 66: case 67: case 68:
 			wc_execute_on_wall(wc, line, x*2, y);
 			wc_execute_on_wall(wc, line, x*2+1, y);
@@ -1676,6 +1676,7 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 	// gotta love C!
 	int i, x, y, targetX, targetY, divisor, dividend, index, total, count, max, modifier;
 	int x1, x2, y1, y2, width, height, totalArea, check, type, value, random, old;
+	int shape, texture;
 
 	unsigned int uid;
 	VALUE newPlayer;
@@ -1844,6 +1845,25 @@ changeTF:
 				}
 			}
 
+			break;
+
+		case 63:
+			GET_WALL_TARGET_POSITION(1, 2);
+			shape = PARAM_VALUE(0);
+			texture = wc->walls[targetX][targetY] / 12;
+			goto write_pwall;
+		case 64:
+			GET_WALL_TARGET_POSITION(1, 2);
+			shape = wc->walls[targetX][targetY] % 12;
+			texture = PARAM_VALUE(0);
+			goto write_pwall;
+		case 65:
+			GET_WALL_TARGET_POSITION(2, 3);
+			shape = PARAM_VALUE(0);
+			texture = PARAM_VALUE(1);
+write_pwall:
+			wc->walls[targetX][targetY] = (texture * 12) + shape;
+			wall_changed(wc, targetX, targetY);
 			break;
 
 		case 76:
