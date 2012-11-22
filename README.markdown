@@ -4,20 +4,34 @@ Nelumbo by Treeki
 Nelumbo is a framework for creating Furcadia bots, written in the powerful and
 flexible Ruby programming language. It uses EventMachine for networking.
 
+## Caveats and Updated Information
+I'm releasing this in November 2012, over a year after it was originally
+written. While I currently don't have time to update it any further, here's
+some stuff...
+- The documentation is really not as good as it could be. Sorry for that :/
+  Some of it also isn't 100% up to date.
+- Nelumbo does not run on Ruby 1.9.3 because the "mixology" gem doesn't seem
+  to be compatible with it. If you don't mind losing the plugin functionality
+  you can remove *require 'mixology'* from *lib/nelumbo/base.rb*.
+- Nelumbo has been powering the bot in Cypress Homes (a complex beast with
+  over 6,000 lines of code, using DataMapper for database storage) for over
+  a year with very few issues. This includes the DS engine and advanced
+  world tracking.
+- If you have any questions (and you probably will), feel free to whisper me.
+- There's some interesting code in the repo history. Nelumbo used to have
+  a "Core" system for dealing with timers/multiple bots, but I ditched it in
+  favour of EventMachine. I admittedly can't remember why... I think I was
+  having trouble getting something working. And at one point I started working
+  on code that would convert DS to Ruby code, but that didn't go anywhere; I
+  ended up going with a C interpreter instead (which ended up being a much
+  better solution).
+- I'm not planning to work on this in the near future, except for keeping it
+  up-to-date with Furcadia updates.
+
 ## Current Progress
 Basic bots are functional. Handling for most of the Furcadia protocol (both for
 sending commands and acting on events) needs to be added. Documentation is also
 needed for various classes and methods.
-
-One little quirk of the system right now is that for the advanced bot manager
-features to work properly, your bot code should **all** be located in a module
-named after the bot's .rb file. Also, the class should be named Bot.
-For example, if the file is named test\_bot.rb, the bot class should be
-TestBot::Bot. Putting everything into that module will make reloading work
-properly!
-
-Eventually, I'll probably also need to make the Cores and the Bot/BaseBot
-classes thread-safe. That can come later though.
 
 Documentation is really required. I'll probably use YARD for this.
 
