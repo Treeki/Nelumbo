@@ -325,7 +325,7 @@ module Nelumbo
 
 				width = map_header['width'].to_i
 				height = map_header['height'].to_i
-				@context.load_map map_data, width, height, (version_number >= 140), (version >= 150)
+				@context.load_map map_data, width, height, (version_number >= 140), (version_number >= 150)
 
 				puts "Map data loaded (#{width}x#{height})"
 
