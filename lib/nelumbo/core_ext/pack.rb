@@ -13,7 +13,8 @@ class String
 				# Colour code: lowercase = colours only, uppercase = full code
 				cc_format = self[offset]
 				cc_size = (piece == 'K') ? 13 : 10
-				if cc_format == 't'
+				cc_size += 2 if cc_format == 'w'
+				if cc_format == 't' or cc_format == 'w'
 					output << slice(offset, cc_size + 1)
 					offset += cc_size + 1
 				else
@@ -61,8 +62,10 @@ class Array
 
 			when 'k', 'K'
 				# Colour code: lowercase = colours only, uppercase = full code
+				cc_format = element[0]
 				cc_size = (piece == 'K') ? 13 : 10
-				if element.start_with? 't'
+				cc_size += 2 if cc_format == 'w'
+				if cc_format == 't' or cc_format == 'w'
 					cc = element.slice(0,cc_size+1).ljust(cc_size+1,'#')
 					output << cc
 				else
@@ -91,4 +94,3 @@ class Array
 		output
 	end
 end
-

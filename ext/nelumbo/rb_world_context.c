@@ -84,7 +84,7 @@ static VALUE find_player_at_position(VALUE self, VALUE x, VALUE y) {
 static VALUE each_player(VALUE self) {
 	if (rb_block_given_p()) {
 		GET_WC;
-		
+
 		int i, length = RARRAY_LEN(wc->playerList);
 		for (i = 0; i < length; i++) {
 			rb_yield(RARRAY_PTR(wc->playerList)[i]);
@@ -299,6 +299,66 @@ static VALUE set_effect(VALUE self, VALUE x, VALUE y, VALUE effect) {
 	return effect;
 }
 
+static VALUE get_lighting(VALUE self, VALUE x, VALUE y) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	return INT2FIX(wc->lighting[realX][realY]);
+}
+
+static VALUE set_lighting(VALUE self, VALUE x, VALUE y, VALUE lighting) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+	Check_Type(lighting, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realLighting = FIX2INT(lighting);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	if (wc->lighting[realX][realY] != realLighting) {
+		wc->lighting[realX][realY] = realLighting;
+
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->lightingChangeBuffer, realX, realY, realLighting);
+	}
+
+	return lighting;
+}
+
+static VALUE get_ambience(VALUE self, VALUE x, VALUE y) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	return INT2FIX(wc->ambience[realX][realY]);
+}
+
+static VALUE set_ambience(VALUE self, VALUE x, VALUE y, VALUE ambience) {
+	Check_Type(x, T_FIXNUM); Check_Type(y, T_FIXNUM);
+	Check_Type(ambience, T_FIXNUM);
+
+	GET_WC;
+
+	int realX = FIX2INT(x) / 2, realY = FIX2INT(y), realAmbience = FIX2INT(ambience);
+	fail_if_out_of_bounds(wc, realX, realY);
+
+	if (wc->ambience[realX][realY] != realAmbience) {
+		wc->ambience[realX][realY] = realAmbience;
+
+		if (wc->isLoggingMapChanges)
+			wc_append_to_change_buffer(wc, &wc->ambienceChangeBuffer, realX, realY, realAmbience);
+	}
+
+	return ambience;
+}
+
 /*******************************************************************************
  * DS Trigger Parameter Access
  ******************************************************************************/
@@ -353,7 +413,7 @@ static VALUE set_variable(VALUE self, VALUE index, VALUE value) {
 /*******************************************************************************
  * Interfaces to C Methods
  ******************************************************************************/
-static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height, VALUE hasDataV29) {
+static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height, VALUE hasDataV29, VALUE hasDataV30) {
 	Check_Type(buf, T_STRING);
 	Check_Type(width, T_FIXNUM); Check_Type(height, T_FIXNUM);
 
@@ -366,21 +426,31 @@ static VALUE load_map(VALUE self, VALUE buf, VALUE width, VALUE height, VALUE ha
 		rb_raise(rb_eArgError, "map size is out of bounds");
 	}
 
-	int expectedSize = rWidth * rHeight * 2 * (RTEST(hasDataV29) ? 5 : 3);
+	int planeAmount = 3;
+	if (RTEST(hasDataV29) || RTEST(hasDataV30))
+		planeAmount += 2;
+	if (RTEST(hasDataV30))
+		planeAmount += 2;
+	int expectedSize = rWidth * rHeight * 2 * planeAmount;
 	if (RSTRING_LEN(rBuf) < expectedSize) {
 		rb_raise(rb_eTypeError, "buffer is too small to hold the map data");
 	}
 
-	wc_load_map(wc, RSTRING_PTR(rBuf), rWidth, rHeight, RTEST(hasDataV29));
+	wc_load_map(wc, RSTRING_PTR(rBuf), rWidth, rHeight, RTEST(hasDataV29), RTEST(hasDataV30));
 
 	return Qtrue;
 }
 
-static VALUE save_map(VALUE self, VALUE hasDataV29) {
+static VALUE save_map(VALUE self, VALUE hasDataV29, VALUE hasDataV30) {
 	GET_WC;
 
-	VALUE string = rb_str_new(0, wc->mapWidth * wc->mapHeight * 2 * 3);
-	wc_save_map(wc, RSTRING_PTR(string), RTEST(hasDataV29));
+	int planeAmount = 3;
+	if (RTEST(hasDataV29) || RTEST(hasDataV30))
+		planeAmount += 2;
+	if (RTEST(hasDataV30))
+		planeAmount += 2;
+	VALUE string = rb_str_new(0, wc->mapWidth * wc->mapHeight * 2 * planeAmount);
+	wc_save_map(wc, RSTRING_PTR(string), RTEST(hasDataV29), RTEST(hasDataV30));
 
 	return string;
 }
@@ -393,13 +463,21 @@ static VALUE has_data_v29(VALUE self) {
 	return ret ? Qtrue : Qfalse;
 }
 
+static VALUE has_data_v30(VALUE self) {
+	GET_WC;
+
+	char ret = wc_has_data_v30(wc);
+
+	return ret ? Qtrue : Qfalse;
+}
+
 static VALUE process_line(VALUE self, VALUE line) {
 	Check_Type(line, T_STRING);
 
 	GET_WC;
 
 	wc_process_line(wc, RSTRING_PTR(line), RSTRING_LEN(line));
-	
+
 	return Qtrue;
 }
 
@@ -439,6 +517,8 @@ static VALUE begin_map_change_logging(VALUE self) {
 		wc_setup_change_buffer(wc, &wc->wallChangeBuffer, '2');
 		wc_setup_change_buffer(wc, &wc->regionChangeBuffer, '4');
 		wc_setup_change_buffer(wc, &wc->effectChangeBuffer, '5');
+		wc_setup_change_buffer(wc, &wc->lightingChangeBuffer, 'E');
+		wc_setup_change_buffer(wc, &wc->ambienceChangeBuffer, 'F');
 	}
 
 	return Qtrue;
@@ -458,6 +538,8 @@ static VALUE end_map_change_logging(VALUE self) {
 		wc_flush_change_buffer(wc, &wc->wallChangeBuffer);
 		wc_flush_change_buffer(wc, &wc->regionChangeBuffer);
 		wc_flush_change_buffer(wc, &wc->effectChangeBuffer);
+		wc_flush_change_buffer(wc, &wc->lightingChangeBuffer);
+		wc_flush_change_buffer(wc, &wc->ambienceChangeBuffer);
 	}
 
 	return Qtrue;
@@ -489,6 +571,10 @@ static VALUE set_callback(VALUE self, VALUE type) {
 		wc->cb_regionChanged = rb_block_proc();
 	} else if (typeID == rb_intern("effect_changed")) {
 		wc->cb_effectChanged = rb_block_proc();
+	} else if (typeID == rb_intern("lighting_changed")) {
+		wc->cb_lightingChanged = rb_block_proc();
+	} else if (typeID == rb_intern("ambience_changed")) {
+		wc->cb_ambienceChanged = rb_block_proc();
 	} else if (typeID == rb_intern("held_object_changed")) {
 		wc->cb_heldObjectChanged = rb_block_proc();
 	} else {
@@ -519,6 +605,8 @@ static VALUE initialize(VALUE self, VALUE bot) {
 	wc->cb_wallChanged = Qnil;
 	wc->cb_regionChanged = Qnil;
 	wc->cb_effectChanged = Qnil;
+	wc->cb_lightingChanged = Qnil;
+	wc->cb_ambienceChanged = Qnil;
 	wc->cb_heldObjectChanged = Qnil;
 
 	return self;
@@ -541,6 +629,8 @@ static void mark(WorldContext *wc) {
 	rb_gc_mark(wc->cb_wallChanged);
 	rb_gc_mark(wc->cb_regionChanged);
 	rb_gc_mark(wc->cb_effectChanged);
+	rb_gc_mark(wc->cb_lightingChanged);
+	rb_gc_mark(wc->cb_ambienceChanged);
 	rb_gc_mark(wc->cb_heldObjectChanged);
 }
 
@@ -560,9 +650,10 @@ void Init_nelumbo_world_context() {
 	rb_define_method(cNelumboWorldContext, "width", get_width, 0);
 	rb_define_method(cNelumboWorldContext, "height", get_height, 0);
 
-	rb_define_method(cNelumboWorldContext, "load_map", load_map, 4);
-	rb_define_method(cNelumboWorldContext, "save_map", save_map, 1);
+	rb_define_method(cNelumboWorldContext, "load_map", load_map, 5);
+	rb_define_method(cNelumboWorldContext, "save_map", save_map, 2);
 	rb_define_method(cNelumboWorldContext, "has_data_v29", has_data_v29, 0);
+	rb_define_method(cNelumboWorldContext, "has_data_v30", has_data_v30, 0);
 
 	rb_define_method(cNelumboWorldContext, "bot", get_bot, 0);
 
@@ -576,6 +667,10 @@ void Init_nelumbo_world_context() {
 	rb_define_method(cNelumboWorldContext, "set_region", set_region, 3);
 	rb_define_method(cNelumboWorldContext, "effect", get_effect, 2);
 	rb_define_method(cNelumboWorldContext, "set_effect", set_effect, 3);
+	rb_define_method(cNelumboWorldContext, "lighting", get_lighting, 2);
+	rb_define_method(cNelumboWorldContext, "set_lighting", set_lighting, 3);
+	rb_define_method(cNelumboWorldContext, "ambience", get_ambience, 2);
+	rb_define_method(cNelumboWorldContext, "set_ambience", set_ambience, 3);
 
 	rb_define_method(cNelumboWorldContext, "create_and_add_player", create_and_add_player, 2);
 	rb_define_method(cNelumboWorldContext, "delete_and_remove_player", delete_and_remove_player, 1);
@@ -608,7 +703,7 @@ void Init_nelumbo_world_context() {
 	rb_define_method(cNelumboWorldContext, "button_pressed", get_button_pressed, 0);
 	rb_define_method(cNelumboWorldContext, "dream_cookies", get_dream_cookies, 0);
 	rb_define_method(cNelumboWorldContext, "player_cookies", get_player_cookies, 0);
-	
+
 	rb_define_method(cNelumboWorldContext, "variable", get_variable, 1);
 	rb_define_method(cNelumboWorldContext, "set_variable", set_variable, 2);
 
@@ -617,4 +712,3 @@ void Init_nelumbo_world_context() {
 
 	rb_define_method(cNelumboWorldContext, "set_callback", set_callback, 1);
 }
-

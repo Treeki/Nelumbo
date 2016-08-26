@@ -241,7 +241,7 @@ module Nelumbo
 						write_line 'vascodagama'
 					end
 
-					on_raw line: /^[>0123678]/ do
+					on_raw line: /^[>0123678EF]/ do
 						# this bit is done in C code to save some time.
 						# every little helps, right?
 						@context.process_line(data[:line])
@@ -269,7 +269,7 @@ module Nelumbo
 				# TODO: make this better
 				url.downcase.gsub(%r(/$), '')
 			end
-			
+
 			attr_reader :current_dream_url
 
 			def map_directory
@@ -325,7 +325,7 @@ module Nelumbo
 
 				width = map_header['width'].to_i
 				height = map_header['height'].to_i
-				@context.load_map map_data, width, height, (version_number >= 140)
+				@context.load_map map_data, width, height, (version_number >= 140), (version >= 150)
 
 				puts "Map data loaded (#{width}x#{height})"
 
@@ -343,7 +343,7 @@ module Nelumbo
 				pieces << "\n"
 				pieces.concat @current_map_header.each_pair.map{|k,v| "#{k}=#{v}\n"}
 				pieces << "BODY\n"
-				pieces << @context.save_map(@context.has_data_v29)
+				pieces << @context.save_map(@context.has_data_v29, @context.has_data_v30)
 				pieces.join('')
 			end
 
@@ -396,11 +396,11 @@ module Nelumbo
 					end
 
 					#p category, type, params
-					
+
 					if annotation
 						split_an = annotation.split
 						annotation = {action: split_an.first.to_sym}
-						
+
 						case annotation[:action]
 						when :event
 							annotation[:name] = split_an[1]

@@ -347,7 +347,7 @@ module Nelumbo
 					dispatch_event :ds_emit, text: message
 				end
 
-			elsif /^\(<font color='query'><name shortname='(?<shortname>[^']+)'>(?<name>[^<]+)<\/name> asks you to join his or her company in <b>(?<dreamname>[^<]+)<\/b>/ =~ line
+			elsif /^\(<font color='query'><name shortname='(?<shortname>[^']+)'>(?<name>[^<]+)<\/name> asks you to join their company in <b>(?<dreamname>[^<]+)<\/b>/ =~ line
 				  dispatch_event :summon, shortname: shortname, name: name, dreamname: dreamname
 
 			elsif /^\(<font color='query'><name shortname='(?<shortname>[^']+)'>(?<name>[^<]+)<\/name> requests permission to join your company/ =~ line

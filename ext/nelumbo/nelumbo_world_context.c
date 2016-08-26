@@ -90,7 +90,7 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 
 			break;
 
-		case '>': case '1': case '2': case '4': case '5':
+		case '>': case '1': case '2': case '4': case '5': case 'E': case 'F':
 			if (!wc->hasDream)
 				return;
 
@@ -115,6 +115,10 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 						wc->regions[x][y] = number;
 					else if (buf[0] == '5')
 						wc->effects[x][y] = number;
+					else if (buf[0] == 'E')
+						wc->lighting[x][y] = number;
+					else if (buf[0] == 'F')
+						wc->ambience[x][y] = number;
 					y++;
 				}
 
@@ -208,6 +212,8 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 			wc->i_day = buf[39];
 			wc->i_month = buf[40];
 			wc->i_year = decode_b95(&buf[41], 2);
+			wc->i_lastDeadPortalX = decode_b95(&buf[43], 2);
+			wc->i_lastDeadPortalY = decode_b95(&buf[45], 2);
 
 			dsr_seed(&wc->i_randomGenerator, wc->i_randomSeed);
 
@@ -237,13 +243,13 @@ void wc_process_line(WorldContext *wc, char *buf, int length) {
 						printf("\nDS: %20s", RSTRING_PTR(wc->i_player->name));
 				}
 			}
-			
+
 			break;
 	}
 }
 
 
-void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDataV29) {
+void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDataV29, char hasDataV30) {
 	wc->hasDream = 1;
 	wc->mapWidth = width;
 	wc->mapHeight = height;
@@ -275,7 +281,7 @@ void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDat
 		}
 	}
 
-	if (hasDataV29) {
+	if (hasDataV29 || hasDataV30) {
 		for (x = 0; x < width; x++) {
 			for (y = 0; y < height; y++) {
 				unsigned char firstByte = *(input++);
@@ -290,6 +296,21 @@ void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDat
 		}
 	}
 
+	if (hasDataV30) {
+		for (x = 0; x < width; x++) {
+			for (y = 0; y < height; y++) {
+				unsigned char firstByte = *(input++);
+				wc->lighting[x][y] = firstByte | (*(input++) << 8);
+			}
+		}
+		for (x = 0; x < width; x++) {
+			for (y = 0; y < height; y++) {
+				unsigned char firstByte = *(input++);
+				wc->ambience[x][y] = firstByte | (*(input++) << 8);
+			}
+		}
+	}
+
 	// TODO: Make this really work properly
 	int i;
 	for (i = 0; i < MAX_ITEM; i++)
@@ -299,7 +320,7 @@ void wc_load_map(WorldContext *wc, char *buf, int width, int height, char hasDat
 }
 
 
-void wc_save_map(WorldContext *wc, char *buf, char hasDataV29) {
+void wc_save_map(WorldContext *wc, char *buf, char hasDataV29, char hasDataV30) {
 	unsigned char *output = (unsigned char *)buf;
 
 	int x, y;
@@ -327,7 +348,7 @@ void wc_save_map(WorldContext *wc, char *buf, char hasDataV29) {
 		}
 	}
 
-	if (hasDataV29) {
+	if (hasDataV29 || hasDataV30) {
 		for (x = 0; x < wc->mapWidth; x++) {
 			for (y = 0; y < wc->mapHeight; y++) {
 				*(output++) = wc->regions[x][y] & 0xFF;
@@ -342,6 +363,22 @@ void wc_save_map(WorldContext *wc, char *buf, char hasDataV29) {
 			}
 		}
 	}
+
+	if (hasDataV30) {
+		for (x = 0; x < wc->mapWidth; x++) {
+			for (y = 0; y < wc->mapHeight; y++) {
+				*(output++) = wc->lighting[x][y] & 0xFF;
+				*(output++) = wc->lighting[x][y] >> 8;
+			}
+		}
+
+		for (x = 0; x < wc->mapWidth; x++) {
+			for (y = 0; y < wc->mapHeight; y++) {
+				*(output++) = wc->ambience[x][y] & 0xFF;
+				*(output++) = wc->ambience[x][y] >> 8;
+			}
+		}
+	}
 }
 
 
@@ -353,6 +390,18 @@ char wc_has_data_v29(WorldContext *wc) {
 			if (wc->regions[x][y] != 0)
 				return 1;
 			else if (wc->effects[x][y] != 0)
+				return 1;
+
+	return 0;
+}
+char wc_has_data_v30(WorldContext *wc) {
+	int x, y;
+
+	for (x = 0; x < wc->mapWidth; x++)
+		for (y = 0; y < wc->mapHeight; y++)
+			if (wc->lighting[x][y] != 0)
+				return 1;
+			else if (wc->ambience[x][y] != 0)
 				return 1;
 
 	return 0;
@@ -388,6 +437,7 @@ void wc_flush_change_buffer(WorldContext *wc, ChangeBuffer *cb) {
 
 
 char wc_position_is_walkable(WorldContext *wc, int x, int y, Player *player) {
+	// TODO: Make this understand region flags sometime?
 	if (x <= 3 || y <= 8 || x >= (wc->mapWidth - 6) || y >= (wc->mapHeight - 8))
 		return 0;
 
@@ -430,7 +480,7 @@ void wc_get_visibility_bounds(WorldContext *wc, int x, int y, int *x1, int *y1, 
 	} else if (*x1 > (wc->mapWidth - 10)) {
 		*x1 = wc->mapWidth - 10;
 	}
-	
+
 	if (*y1 < 0) {
 		*y1 = 0;
 	} else if (*y1 > (wc->mapHeight - 17)) {
@@ -716,6 +766,20 @@ static void effect_changed(WorldContext *wc, int x, int y) {
 	}
 }
 
+static void lighting_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_lightingChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->lighting[x][y])};
+		rb_proc_call_with_block(wc->cb_lightingChanged, 3, args, Qnil);
+	}
+}
+
+static void ambience_changed(WorldContext *wc, int x, int y) {
+	if (!NIL_P(wc->cb_ambienceChanged)) {
+		VALUE args[3] = {INT2FIX(x*2), INT2FIX(y), INT2FIX(wc->ambience[x][y])};
+		rb_proc_call_with_block(wc->cb_ambienceChanged, 3, args, Qnil);
+	}
+}
+
 static void held_object_changed(WorldContext *wc, VALUE player, int oldObj, int newObj) {
 	if (!NIL_P(wc->cb_heldObjectChanged)) {
 		VALUE args[3] = {player, INT2FIX(oldObj), INT2FIX(newObj)};
@@ -789,6 +853,8 @@ void wc_set_area(WorldContext *wc, DSLine *line) {
 		case 11: case 13: case 21: case 23: case 30: case 31:
 		case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57:
 		case 511: case 512: case 521: case 522: case 531: case 532: case 541: case 542:
+		case 551: case 552: case 561: case 562: case 571: case 572:
+		case 581: case 582: case 591: case 592: case 601: case 602:
 			paramCount = 1;
 			break;
 
@@ -805,7 +871,8 @@ void wc_set_area(WorldContext *wc, DSLine *line) {
 			paramCount = 4;
 			break;
 
-		case 510: case 520: case 530: case 540:
+		case 510: case 520: case 530: case 540: case 550:
+		case 560: case 570: case 580: case 590: case 600:
 			paramCount = 5;
 			break;
 	}
@@ -901,7 +968,7 @@ void wc_execute_on_area(WorldContext *wc, DSLine *line) {
 			}
 
 			break;
-			
+
 		case 4:
 			startX = wc->currentArea.params[0] / 2;
 			startY = wc->currentArea.params[1];
@@ -1090,7 +1157,16 @@ doMoveTwoDirs:
 			wc_execute_on_area_position(wc, line, moveX, moveY);
 			break;
 
+		case 70:
+			// Pretty sure this one is broken
+			break;
+		case 71:
+			if (wc->i_lastDeadPortalX > 0 || wc->i_lastDeadPortalY > 0)
+				wc_execute_on_area_position(wc, line, wc->i_lastDeadPortalX, wc->i_lastDeadPortalY);
+			break;
+
 		default:
+			//TODO: Implement all the random spot areas
 			printf("unknown area: %d\n", line->type);
 	}
 }
@@ -1106,6 +1182,7 @@ void wc_add_filter(WorldContext *wc, DSLine *line) {
 
 	switch (bakedLine->type) {
 		case 1: case 2: case 3: case 4: case 30: case 31: case 40: case 41:
+		case 42: case 43: case 44: case 45:
 			bakedLine->params[0] = PARAM_VALUE(0);
 			break;
 		case 14: case 15: case 32: case 33:
@@ -1324,6 +1401,22 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 				if (wc->effects[x][y] == filter->params[0])
 					return;
 				break;
+			case 42:
+				if (wc->lighting[x][y] != filter->params[0])
+					return;
+				break;
+			case 43:
+				if (wc->lighting[x][y] == filter->params[0])
+					return;
+				break;
+			case 44:
+				if (wc->ambience[x][y] != filter->params[0])
+					return;
+				break;
+			case 45:
+				if (wc->ambience[x][y] == filter->params[0])
+					return;
+				break;
 
 		}
 	}
@@ -1406,6 +1499,12 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			wc->items[x][y] = one + wc_random_number(wc, two - one + 1);
 			item_changed(wc, x, y);
 			break;
+		case 230:
+			one = PARAM_VALUE(0);
+			two = PARAM_VALUE(1);
+			wc->effects[x][y] = one + wc_random_number(wc, two - one + 1);
+			effect_changed(wc, x, y);
+			break;
 
 		case 16: case 17: case 716: case 717:
 			// This code is closely paired with (5:14) and (5:15). If it is modified,
@@ -1454,6 +1553,7 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			break;
 
 		case 20:
+		case 231:
 			moveX = x;
 			moveY = y;
 			if (wc->i_facingDirection == DIR_SW)
@@ -1465,10 +1565,17 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			else if (wc->i_facingDirection == DIR_NE)
 				wc_move_position_ne_clamped(wc, &moveX, &moveY, PARAM_VALUE(0));
 
-			wc->items[moveX][moveY] = wc->items[x][y];
-			wc->items[x][y] = 0;
-			item_changed(wc, x, y);
-			item_changed(wc, moveX, moveY);
+			if (line->type == 20) {
+				wc->items[moveX][moveY] = wc->items[x][y];
+				wc->items[x][y] = 0;
+				item_changed(wc, x, y);
+				item_changed(wc, moveX, moveY);
+			} else {
+				wc->effects[moveX][moveY] = wc->effects[x][y];
+				wc->effects[x][y] = 0;
+				effect_changed(wc, x, y);
+				effect_changed(wc, moveX, moveY);
+			}
 			break;
 
 		case 21:
@@ -1607,19 +1714,97 @@ void wc_execute_on_area_position(WorldContext *wc, DSLine *line, int x, int y) {
 			}
 			break;
 
-		case 400: case 410:
+		case 155:
+			wc->lighting[x][y] = PARAM_VALUE(0);
+			lighting_changed(wc, x, y);
+			break;
+		case 158:
+			if (wc->lighting[x][y] == PARAM_VALUE(0)) {
+				wc->lighting[x][y] = PARAM_VALUE(1);
+				lighting_changed(wc, x, y);
+			}
+			break;
+		case 159:
+			one = PARAM_VALUE(0);
+			two = PARAM_VALUE(1);
+			if (wc->lighting[x][y] == one) {
+				wc->lighting[x][y] = two;
+				lighting_changed(wc, x, y);
+			} else if (wc->lighting[x][y] == two) {
+				wc->lighting[x][y] = one;
+				lighting_changed(wc, x, y);
+			}
+			break;
+
+		case 225:
+			wc->ambience[x][y] = PARAM_VALUE(0);
+			ambience_changed(wc, x, y);
+			break;
+		case 228:
+			if (wc->ambience[x][y] == PARAM_VALUE(0)) {
+				wc->ambience[x][y] = PARAM_VALUE(1);
+				ambience_changed(wc, x, y);
+			}
+			break;
+		case 229:
+			one = PARAM_VALUE(0);
+			two = PARAM_VALUE(1);
+			if (wc->ambience[x][y] == one) {
+				wc->ambience[x][y] = two;
+				ambience_changed(wc, x, y);
+			} else if (wc->ambience[x][y] == two) {
+				wc->ambience[x][y] = one;
+				ambience_changed(wc, x, y);
+			}
+			break;
+
+		case 232:
+			GET_TARGET_POSITION(0, 1);
+			wc->effects[targetX][targetY] = wc->effects[x][y];
+			wc->effects[x][y] = 0;
+			effect_changed(wc, x, y);
+			effect_changed(wc, targetX, targetY);
+			break;
+		case 233:
+			GET_TARGET_POSITION(0, 1);
+			wc->effects[targetX][targetY] = wc->effects[x][y];
+			effect_changed(wc, targetX, targetY);
+			break;
+		case 234:
+			GET_TARGET_POSITION(0, 1);
+			swap = wc->effects[x][y];
+			wc->effects[x][y] = wc->effects[targetX][targetY];
+			wc->effects[targetX][targetY] = swap;
+			effect_changed(wc, x, y);
+			effect_changed(wc, targetX, targetY);
+			break;
+
+		case 400: case 405: case 410: case 415:
 			cycleCount = 3;
 			goto do_cycle;
-		case 401: case 411:
+		case 401: case 406: case 411: case 416:
 			cycleCount = 4;
 			goto do_cycle;
-		case 402: case 412:
+		case 402: case 407: case 412: case 417:
 			cycleCount = 5;
 do_cycle:
 			for (i = 0; i < cycleCount; i++)
 				cycle[i] = PARAM_VALUE(i);
 
-			if (line->type >= 410) {
+			if (line->type >= 415) {
+				for (i = 1; i < cycleCount; i++) {
+					if (wc->ambience[x][y] == cycle[i - 1]) {
+						wc->ambience[x][y] = cycle[i];
+						ambience_changed(wc, x, y);
+						return;
+					}
+				}
+
+				if (wc->ambience[x][y] == cycle[0]) {
+					wc->ambience[x][y] = cycle[cycleCount - 1];
+					ambience_changed(wc, x, y);
+				}
+			} else if (line->type >= 410) {
 				for (i = 1; i < cycleCount; i++) {
 					if (wc->floors[x][y] == cycle[i - 1]) {
 						wc->floors[x][y] = cycle[i];
@@ -1631,6 +1816,19 @@ do_cycle:
 				if (wc->floors[x][y] == cycle[0]) {
 					wc->floors[x][y] = cycle[cycleCount - 1];
 					floor_changed(wc, x, y);
+				}
+			} else if (line->type >= 405) {
+				for (i = 1; i < cycleCount; i++) {
+					if (wc->lighting[x][y] == cycle[i - 1]) {
+						wc->lighting[x][y] = cycle[i];
+						lighting_changed(wc, x, y);
+						return;
+					}
+				}
+
+				if (wc->lighting[x][y] == cycle[0]) {
+					wc->lighting[x][y] = cycle[cycleCount - 1];
+					lighting_changed(wc, x, y);
 				}
 			} else {
 				for (i = 1; i < cycleCount; i++) {
@@ -1686,6 +1884,20 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 	VALUE newPlayer;
 	Player *sNewPlayer;
 
+	/* UNIMPLEMENTED v30/v31 LINES:
+	 * 48,722 move triggering furre to random location in region #
+	 * 49,723 move any furre present to random location in region #
+	 * 148,720 move triggering furre to #,# or nearby in same region
+	 * 149,721 move any furre present to #,# or nearby in same region
+	 * 157,227 place lighting/ambience # at triggering furre pos
+	 * 460..463 move any item present # steps NE/SE/SW/NW
+	 * 470..473 move any effect present # steps NE/SE/SW/NW
+	 * 1251 set var # to colour of trig furre's remap #
+	 *
+	 * there might be more stuff from previous updates that was
+	 * left out
+	 */
+
 	switch (line->type) {
 		/* Those commented out are not relevant to us. */
 		case 1: case 2: case 3: case 4: case 5: case 6: case 7:
@@ -1702,10 +1914,15 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 87:
 			/*case 94, 95, 96, 97, 98, 99:*/
 			/*case 103:*/
+			/*case 115:*/
 		case 120:
 		case 150: case 153: case 154:
+		case 155: case 158: case 159:
+		case 225: case 228: case 229:
+		case 230: case 231: case 232: case 233: case 234:
 			/*case 201:*/
-		case 400: case 401: case 402: case 410: case 411: case 412:
+		case 400: case 401: case 402: case 405: case 406: case 407:
+		case 410: case 411: case 412: case 415: case 416: case 417:
 			/*case 421, 423:*/
 			/*case 701, 703:*/
 		case 716: case 717: case 719: case 780: case 781: case 782: case 783:
@@ -1724,15 +1941,19 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 78: case 102: case 103:
 		case 104: case 105:
 		case 106: case 107: case 108: case 109: case 110: case 111:
-		case 112: case 113:
+		case 112: case 113: case 114:
 			/* Region Display Control (Client Only): */
 		case 122: case 123: case 124: case 125: case 127: case 128:
 		case 130: case 131: case 132: case 133:
 		case 134: case 135: case 136: case 137: case 138: case 139:
 		case 140: case 141: case 142: case 143:
 		case 144: case 145: case 146: case 147:
+		case 170: case 171: case 172: case 173:
+		case 174: case 175: case 176: case 177:
+		case 178: case 179:
 			/* Region Behaviour Control (Ignored Right Now): */
 		case 160: case 161: case 162: case 163: case 164: case 165: case 166: case 167:
+		case 168: case 169: case 194: case 195: case 196: case 197: case 198: case 199:
 			/* Poses (Ignored Right Now): */
 		case 70: case 71: case 72: case 73: case 74: case 75:
 		case 88: case 89: case 90: case 91: case 92: case 93:
@@ -1758,6 +1979,8 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 		case 438: case 439: case 440: case 441:
 		case 442: case 443: case 444:
 		case 445: case 446: case 447:
+		case 448: case 449: case 450:
+		case 451: case 452: case 453:
 			/* PS Memorise: */
 		case 600: case 601: case 602: case 603: case 604: case 605:
 			/* PS Strings: */
@@ -1768,8 +1991,13 @@ void wc_execute_effect(WorldContext *wc, DSLine *line) {
 			/* Cookies: */
 		case 700: case 701: case 702: case 703:
 		case 706: case 707: case 708: case 709: case 710:
+			/* Dialog Boxes: */
+		case 900: case 901: case 910: case 911:
 			/* Localspecies: */
 		case 1200: case 1201: case 1202: case 1203:
+		case 1205: case 1206: case 1207:
+			/* Remap Changes: */
+		case 1250:
 			/* Crash the Tribble: */
 		case 2000:
 			break;
@@ -1896,9 +2124,30 @@ write_pwall:
 			effect_changed(wc, targetX, targetY);
 			break;
 
+		case 156:
+			GET_TARGET_POSITION(0, 1);
+			wc->lighting[targetX][targetY] = PARAM_VALUE(2);
+			lighting_changed(wc, targetX, targetY);
+			break;
+
+		case 226:
+			GET_TARGET_POSITION(0, 1);
+			wc->ambience[targetX][targetY] = PARAM_VALUE(2);
+			ambience_changed(wc, targetX, targetY);
+			break;
+
 		case 184:
 			// Bugged in Furc currently!
 			PARAM_VAR(0) = wc->i_dsButtonPressed;
+			break;
+
+		case 280:
+		case 281:
+		case 282:
+		case 283:
+		case 284:
+		case 327:
+			PARAM_VAR(0) = wc_read_special(wc);
 			break;
 
 		case 300:
@@ -2032,6 +2281,14 @@ do_dice_roll:
 		case 330:
 			GET_TARGET_POSITION(1, 2);
 			PARAM_VAR(0) = wc->effects[targetX][targetY];
+			break;
+		case 331:
+			GET_TARGET_POSITION(1, 2);
+			PARAM_VAR(0) = wc->lighting[targetX][targetY];
+			break;
+		case 332:
+			GET_TARGET_POSITION(1, 2);
+			PARAM_VAR(0) = wc->ambience[targetX][targetY];
 			break;
 
 		case 350:
@@ -2207,4 +2464,3 @@ rememberPSValue:
 			printf("unknown effect: %d\n", line->type);
 	}
 }
-

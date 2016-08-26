@@ -16,6 +16,7 @@ module Nelumbo
 	# The :username and :password settings are not optional:
 	#   set username: 'Treeki', password: 'hunter2'
 	# The :color_code and :description settings are optional, but recommended.
+	# Alternatively, a :costume setting can be used.
 	# Usage is fairly obvious.
 	#
 	class Bot < BaseBot
@@ -92,6 +93,7 @@ module Nelumbo
 			write_line "connect #{setting :username} #{setting :password}"
 			write_line "color #{setting :color_code}" if setting?(:color_code)
 			write_line "desc #{setting :description}" if setting?(:description)
+			write_line "costume #{setting :costume}" if setting?(:costume)
 		end
 
 		on_enter_dream do
