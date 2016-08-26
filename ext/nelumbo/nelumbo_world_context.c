@@ -665,8 +665,12 @@ void wc_handle_annotation(WorldContext *wc, DSLine *line) {
 		ID an_type = SYM2ID(rb_hash_aref(line->annotation, ID2SYM(rb_intern("action"))));
 		if (an_type == rb_intern("event")) {
 			VALUE event_name = rb_hash_aref(line->annotation, ID2SYM(rb_intern("name")));
-			//VALUE info = rb_hash_new();
+			VALUE params_list = rb_hash_aref(line->annotation, ID2SYM(rb_intern("params")));
 			VALUE info = Qnil;
+			if (RARRAY_LEN(params_list) > 0) {
+				info = rb_hash_new();
+				rb_hash_aset(info, ID2SYM(rb_intern("annotation_params")), params_list);
+			}
 
 			printf("Going to dispatch event [ %s ]\n", RSTRING_PTR(event_name));
 			VALUE event_sym = ID2SYM(rb_intern2(RSTRING_PTR(event_name), RSTRING_LEN(event_name)));

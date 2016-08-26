@@ -404,6 +404,7 @@ module Nelumbo
 						case annotation[:action]
 						when :event
 							annotation[:name] = split_an[1]
+							annotation[:params] = split_an[2..-1]
 						else
 							puts "unknown annotation type: #{annotation[:action]}"
 						end

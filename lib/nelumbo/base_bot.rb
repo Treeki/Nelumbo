@@ -214,7 +214,7 @@ module Nelumbo
 		# @private
 		def write_line_from_buffer
 			if (line = @output_buffer.shift)
-				puts "Sending:", line.inspect
+				#puts "Sending:", line.inspect
 				send_data "#{line}\n"
 			end
 		end

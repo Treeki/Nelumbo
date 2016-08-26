@@ -27,7 +27,7 @@ END
   s.add_dependency('i18n')
   s.add_dependency('eventmachine')
   s.add_dependency('mixology')
-  s.add_dependency('activesupport')
+  s.add_dependency('activesupport', '~> 3.2.17')
   s.add_dependency('rspec-core')
   s.add_dependency('rspec-expectations')
   s.add_dependency('rspec-mocks')

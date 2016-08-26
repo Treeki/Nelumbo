@@ -1,6 +1,8 @@
 #require 'bundler/gem_tasks'
 
 require 'rubygems'
+#require 'rake/dsl_definition'
+#require 'rake/alt_system'
 require 'rake'
 require 'rake/extensiontask'
 require 'bundler'

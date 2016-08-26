@@ -49,6 +49,7 @@ module Nelumbo
 				line(39)
 				line(40..41) { string_literal :text }
 				# Timers
+				line(49)
 				line(50) { number_literal :timer }
 				# Cookies/Cookie Banks
 				line(51..52) { number_literal :request }
@@ -68,6 +69,8 @@ module Nelumbo
 				# Movement from Floor/Object
 				line(67) { number_literal :floor }
 				line(68) { number_literal :object }
+				# Movement into Region
+				line(69) { number_literal :region }
 				# Player Idling
 				line(70..73) { number_literal :seconds }
 				# Ejection
@@ -78,6 +81,8 @@ module Nelumbo
 				# DS Buttons
 				line(80) { number_literal :button }
 				line(81)
+				# Dialogs
+				line(85..87) { number_literal :request }
 				# iOS
 				line(90)
 				# Regular Timers
@@ -92,10 +97,14 @@ module Nelumbo
 				line(209) { number_literal :wall_texture }
 				line(210) { number_literal :wall_shape, :wall_texture }
 				line(220)
+				line(240)
 				# Digo Activation
 				line(250..253, 270..274)
 				# Digo Deactivation
 				line(350..353, 370..374)
+				# Desctags
+				line(400, 402..405) { number_literal :desctag }
+				line(401)
 			end
 
 
@@ -127,6 +136,9 @@ module Nelumbo
 				line(44..47, 144..147) { number_value :first_distance, :second_distance, :floor }
 				line(50..53, 150..153) { number_value :distance, :object }
 				line(54..57, 154..157) { number_value :first_distance, :second_distance, :object }
+				# Facing Towards
+				line(58, 158) { number_value :object }
+				line(59, 159) { number_value :floor }
 				# Moving Through Walls
 				line(60, 160) { number_value :wall_shape }
 				line(61, 161) { number_value :wall_texture }
@@ -172,9 +184,16 @@ module Nelumbo
 				line(310..313) { number_value :index; number_variable :array_base; number_value :value }
 				# Species
 				line(340, 440) { number_value :species }
+				line(341, 441) { number_value :digo_category }
+				line(350, 450)
+				line(351, 352, 353, 451) { number_value :size }
 				# PhoenixSpeak
 				line(600..603, 620..623) { string_value :info; number_value :value }
+				line(605, 606, 625, 626) { string_value :info }
 				line(610..613) { string_value :info, :name; number_value :value }
+				line(615, 616) { string_value :info, :name }
+				line(630, 631) { string_value :info, :needle }
+				line(632..635) { string_value :info; number_value :value }
 				line(680, 681)
 				# Cookies
 				line(700..703) { number_value :value }
@@ -193,6 +212,10 @@ module Nelumbo
 				line(1100, 1101) { position_value :position }
 				# Localspecies
 				line(1200, 1202) { number_value :species }
+				# Remaps
+				line(1250, 1251) { number_value :remap, :id }
+				# Desctags
+				line(1300..1302) { number_value :count, :desctag }
 			end
 
 
@@ -320,6 +343,7 @@ module Nelumbo
 				line(105) { number_value :midi }
 				line(106..111)
 				line(112, 113)
+				line(114, 115) { number_value :text_filter }
 				# Regions
 				line(120) { number_value :region }
 				line(121) { position_value :position; number_value :region }
@@ -330,6 +354,7 @@ module Nelumbo
 				line(141, 145) { number_value :wall }
 				line(142, 146) { number_value :floor }
 				line(143, 147) { number_value :effect }
+				line(148, 149) { position_value :position }
 				# Effects
 				line(150) { number_value :effect }
 				line(151) { position_value :position; number_value :effect }
@@ -337,7 +362,7 @@ module Nelumbo
 				line(153) { number_value :from, :to }
 				line(154) { number_value :first, :second }
 				# Region Configuration
-				line(160..167) { number_value :region }
+				line(160..167, 178, 179) { number_value :region }
 				# DS Buttons
 				line(180, 181, 190, 191) { number_value :button }
 				line(182, 192) { number_value :button; position_value :position }
@@ -352,6 +377,10 @@ module Nelumbo
 				line(213) { number_value :floor }
 				line(214) { number_value :object }
 				line(215) { string_value :message }
+				# Effects
+				line(230) { number_value :low, :high }
+				line(231) { number_value :distance }
+				line(232..234) { position_value :position }
 				# String Variables
 				line(250) { string_variable :target; string_value :message }
 				line(251) { string_variable :source, :target }
@@ -384,7 +413,7 @@ module Nelumbo
 				# Variable Dice Rolls
 				line(312, 313) { number_variable :target; number_value :dice_count, :side_count, :delta }
 				# Variable Data / Entry Codes
-				line(314, 315, 317, 318, 321..326) { number_variable :target }
+				line(314, 315, 317, 318, 321..327) { number_variable :target }
 				line(316) { number_value :entry_code }
 				line(319) { position_variable :target }
 				line(320, 330) { number_variable :target; position_value :position }
@@ -420,6 +449,8 @@ module Nelumbo
 				line(445) { number_value :effect, :step }
 				line(446) { number_value :effect }
 				line(447) { number_value :effect, :delay }
+				# Move Stuff
+				line(460..463, 470..473) { number_value :distance }
 				# Random Spots
 				line(500) { position_variable :target; position_value :top_left, :bottom_right }
 				line(501, 502) { position_variable :target }
@@ -451,19 +482,29 @@ module Nelumbo
 				line(706, 707)
 				line(708, 709) { string_value :message }
 				# Move and Animate
-				line(714..717) { position_value :position }
+				line(714..717, 720, 721) { position_value :position }
 				line(718)
 				line(719) { number_value :distance }
 				line(780..783) { number_value :distance }
 				line(784..787) { number_value :first_distance, :second_distance }
 				# PS Timed Forget
 				line(880) { number_value :days, :hours, :minutes, :seconds }
+				# Dialogs
+				line(900, 901, 910, 911) { number_value :request; string_value :message }
 				# Misc
 				line(1000)
 				line(2000)
 				# LocalSpecies
 				line(1200, 1201) { number_value :species }
 				line(1202, 1203)
+				line(1205) { number_value :species, :avatar }
+				line(1206) { number_value :species, :avatar, :gender }
+				line(1207)
+				# Remaps
+				line(1250) { number_value :remap, :id }
+				line(1251) { number_variable :target; number_value :remap }
+				# Scale
+				line(3443) { number_value :percentage }
 			end
 		end
 	end
